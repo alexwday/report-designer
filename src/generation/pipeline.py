@@ -43,12 +43,11 @@ from ..workspace.sections import get_section_by_id
 from ..retrievers.transcripts import search_transcripts
 from ..retrievers.financials import search_financials
 from ..retrievers.stock_prices import search_stock_prices
-from ..config.settings import get_settings
-from ..infra.llm import get_openai_client
+from ..infra.llm import get_openai_client, resolve_chat_runtime
 
 
 # Configuration
-OPENAI_MODEL = get_settings().OPENAI_MODEL
+OPENAI_MODEL, OPENAI_MAX_TOKENS, _OPENAI_AUTH_MODE = resolve_chat_runtime()
 client = get_openai_client()
 
 
@@ -1631,16 +1630,18 @@ Example:
 {data_context}"""
 
     # Call LLM
-    response = client.chat.completions.create(
-        model=OPENAI_MODEL,
-        messages=[
+    request_kwargs = {
+        "model": OPENAI_MODEL,
+        "messages": [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_message},
         ],
-        temperature=0.7,
-        max_tokens=2000,
-        response_format={"type": "json_object"},
-    )
+        "temperature": 0.7,
+        "response_format": {"type": "json_object"},
+    }
+    if OPENAI_MAX_TOKENS is not None:
+        request_kwargs["max_tokens"] = OPENAI_MAX_TOKENS
+    response = client.chat.completions.create(**request_kwargs)
 
     response_text = response.choices[0].message.content or "{}"
 

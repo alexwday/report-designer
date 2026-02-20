@@ -64,11 +64,10 @@ from ..uploads import (
     get_upload_content,
     TOOL_DEFINITION as UPLOADS_TOOL,
 )
-from ..config.settings import get_settings
-from ..infra.llm import get_openai_client
+from ..infra.llm import get_openai_client, resolve_chat_runtime
 
 # Configuration
-OPENAI_MODEL = get_settings().OPENAI_MODEL
+OPENAI_MODEL, OPENAI_MAX_TOKENS, _OPENAI_AUTH_MODE = resolve_chat_runtime()
 MAX_TOOL_ITERATIONS = 10
 
 # Initialize OpenAI client via centralized auth resolution.
@@ -1229,12 +1228,15 @@ async def chat_with_agent(
         iteration += 1
 
         # Call OpenAI
-        response = client.chat.completions.create(
-            model=OPENAI_MODEL,
-            messages=messages,
-            tools=openai_tools,
-            tool_choice="auto",
-        )
+        request_kwargs = {
+            "model": OPENAI_MODEL,
+            "messages": messages,
+            "tools": openai_tools,
+            "tool_choice": "auto",
+        }
+        if OPENAI_MAX_TOKENS is not None:
+            request_kwargs["max_tokens"] = OPENAI_MAX_TOKENS
+        response = client.chat.completions.create(**request_kwargs)
 
         assistant_message = response.choices[0].message
 

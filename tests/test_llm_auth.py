@@ -4,8 +4,13 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
-from src.infra.llm import get_openai_client
-from src.infra.oauth import OFFICIAL_OPENAI_BASE_URL, fetch_oauth_access_token, resolve_llm_auth
+from src.infra.llm import get_openai_client, resolve_chat_runtime
+from src.infra.oauth import (
+    OFFICIAL_OPENAI_BASE_URL,
+    detect_auth_mode,
+    fetch_oauth_access_token,
+    resolve_llm_auth,
+)
 from src.infra.security import configure_rbc_security_certs
 
 
@@ -17,6 +22,11 @@ class LLMAuthTests(unittest.TestCase):
             CLIENT_ID="client-id",
             CLIENT_SECRET="client-secret",
             AZURE_BASE_URL="https://custom-llm.example/v1",
+            OPENAI_MODEL="gpt-4o",
+            AGENT_MODEL="",
+            AGENT_MODEL_OAUTH="",
+            AGENT_MAX_TOKENS=None,
+            AGENT_MAX_TOKENS_OAUTH=None,
         )
 
         with patch("src.infra.oauth.fetch_oauth_access_token") as fetch_mock:
@@ -34,6 +44,11 @@ class LLMAuthTests(unittest.TestCase):
             CLIENT_ID="client-id",
             CLIENT_SECRET="client-secret",
             AZURE_BASE_URL="https://custom-llm.example/v1",
+            OPENAI_MODEL="gpt-4o",
+            AGENT_MODEL="",
+            AGENT_MODEL_OAUTH="",
+            AGENT_MAX_TOKENS=None,
+            AGENT_MAX_TOKENS_OAUTH=None,
         )
 
         with patch(
@@ -57,6 +72,11 @@ class LLMAuthTests(unittest.TestCase):
             CLIENT_ID="client-id",
             CLIENT_SECRET="client-secret",
             AZURE_BASE_URL="",
+            OPENAI_MODEL="gpt-4o",
+            AGENT_MODEL="",
+            AGENT_MODEL_OAUTH="",
+            AGENT_MAX_TOKENS=None,
+            AGENT_MAX_TOKENS_OAUTH=None,
         )
 
         with self.assertRaises(ValueError) as context:
@@ -83,6 +103,98 @@ class LLMAuthTests(unittest.TestCase):
 
         self.assertEqual(token, "oauth-token")
         session.post.assert_called_once()
+
+    def test_detect_auth_mode_oauth_when_complete(self):
+        settings = SimpleNamespace(
+            OPENAI_API_KEY="",
+            OAUTH_URL="https://oauth.example/token",
+            CLIENT_ID="client-id",
+            CLIENT_SECRET="client-secret",
+            AZURE_BASE_URL="https://custom-llm.example/v1",
+        )
+
+        mode = detect_auth_mode(settings)
+
+        self.assertEqual(mode, "oauth")
+
+    def test_resolve_chat_runtime_local_mode_model_selection(self):
+        settings = SimpleNamespace(
+            OPENAI_API_KEY="sk-test",
+            OAUTH_URL="",
+            CLIENT_ID="",
+            CLIENT_SECRET="",
+            AZURE_BASE_URL="",
+            OPENAI_MODEL="config-model",
+            AGENT_MODEL="local-model",
+            AGENT_MODEL_OAUTH="oauth-model",
+            AGENT_MAX_TOKENS=None,
+            AGENT_MAX_TOKENS_OAUTH=9000,
+        )
+
+        model, max_tokens, mode = resolve_chat_runtime(settings)
+
+        self.assertEqual(mode, "api_key_local")
+        self.assertEqual(model, "local-model")
+        self.assertIsNone(max_tokens)
+
+    def test_resolve_chat_runtime_oauth_mode_model_selection(self):
+        settings = SimpleNamespace(
+            OPENAI_API_KEY="",
+            OAUTH_URL="https://oauth.example/token",
+            CLIENT_ID="client-id",
+            CLIENT_SECRET="client-secret",
+            AZURE_BASE_URL="https://custom-llm.example/v1",
+            OPENAI_MODEL="config-model",
+            AGENT_MODEL="local-model",
+            AGENT_MODEL_OAUTH="oauth-model",
+            AGENT_MAX_TOKENS=2000,
+            AGENT_MAX_TOKENS_OAUTH=8000,
+        )
+
+        model, max_tokens, mode = resolve_chat_runtime(settings)
+
+        self.assertEqual(mode, "oauth")
+        self.assertEqual(model, "oauth-model")
+        self.assertEqual(max_tokens, 8000)
+
+    def test_resolve_chat_runtime_max_tokens_oauth_falls_back_to_common_override(self):
+        settings = SimpleNamespace(
+            OPENAI_API_KEY="",
+            OAUTH_URL="https://oauth.example/token",
+            CLIENT_ID="client-id",
+            CLIENT_SECRET="client-secret",
+            AZURE_BASE_URL="https://custom-llm.example/v1",
+            OPENAI_MODEL="config-model",
+            AGENT_MODEL="",
+            AGENT_MODEL_OAUTH="",
+            AGENT_MAX_TOKENS=4096,
+            AGENT_MAX_TOKENS_OAUTH=None,
+        )
+
+        model, max_tokens, mode = resolve_chat_runtime(settings)
+
+        self.assertEqual(mode, "oauth")
+        self.assertEqual(model, "config-model")
+        self.assertEqual(max_tokens, 4096)
+
+    def test_resolve_chat_runtime_rejects_invalid_max_tokens(self):
+        settings = SimpleNamespace(
+            OPENAI_API_KEY="sk-test",
+            OAUTH_URL="",
+            CLIENT_ID="",
+            CLIENT_SECRET="",
+            AZURE_BASE_URL="",
+            OPENAI_MODEL="config-model",
+            AGENT_MODEL="",
+            AGENT_MODEL_OAUTH="",
+            AGENT_MAX_TOKENS=-1,
+            AGENT_MAX_TOKENS_OAUTH=None,
+        )
+
+        with self.assertRaises(ValueError) as context:
+            resolve_chat_runtime(settings)
+
+        self.assertIn("positive integers", str(context.exception))
 
     @patch("src.infra.llm.OpenAI")
     @patch("src.infra.llm.resolve_llm_auth", return_value=("token", "https://base/v1", "oauth"))
