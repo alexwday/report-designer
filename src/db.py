@@ -627,10 +627,6 @@ def _seed_demo_template(conn: sqlite3.Connection) -> None:
         return
 
     template_id = str(uuid4())
-    section_id = str(uuid4())
-    summary_subsection_id = str(uuid4())
-    income_chart_subsection_id = str(uuid4())
-    stock_chart_subsection_id = str(uuid4())
 
     formatting_profile = {
         "theme_id": "executive_blue",
@@ -654,6 +650,20 @@ def _seed_demo_template(conn: sqlite3.Connection) -> None:
 3. Capital ratios remain solid across all banks, with CET1 buffers generally above 12%.
 
 Use this template as a starting point for your own report layout and prompts."""
+
+    profitability_narrative = """### Profitability and Capital Readout
+
+- Net income leadership remains concentrated in RBC and TD.
+- CET1 levels are broadly stable and above regulatory minimums.
+- Monitor earnings quality through margin sustainability and credit costs.
+"""
+
+    credit_narrative = """### Credit Quality Highlights
+
+- PCL ratios have normalized versus prior-year stress periods.
+- Relative movement suggests credit quality remains manageable in aggregate.
+- Use this section to add management commentary from transcripts as context.
+"""
 
     income_chart_content = _build_chart_payload(
         "Big 6 Net Income (Q1 2025)",
@@ -715,6 +725,94 @@ Use this template as a starting point for your own report layout and prompts."""
         ],
     )
 
+    cet1_chart_content = _build_chart_payload(
+        "CET1 Ratio Comparison (Q1 2025)",
+        chart_type="bar",
+        x_label="Bank",
+        y_label="CET1 Ratio (%)",
+        series=[
+            {
+                "name": "CET1 Ratio",
+                "points": [
+                    {"x": "RY", "y": 13.2},
+                    {"x": "TD", "y": 13.1},
+                    {"x": "BMO", "y": 13.4},
+                    {"x": "BNS", "y": 12.8},
+                    {"x": "CM", "y": 12.9},
+                    {"x": "NA", "y": 13.6},
+                ],
+            }
+        ],
+        insights=[
+            "Capital buffers remain healthy across the Big 6.",
+            "Dispersion is narrow, supporting peer comparability.",
+            "Use alongside ROE to assess capital efficiency.",
+        ],
+    )
+
+    pcl_trend_content = _build_chart_payload(
+        "PCL Ratio Trend",
+        chart_type="line",
+        x_label="Fiscal Quarter",
+        y_label="PCL Ratio (%)",
+        series=[
+            {
+                "name": "RY",
+                "points": [
+                    {"x": "2024 Q3", "y": 0.30},
+                    {"x": "2024 Q4", "y": 0.28},
+                    {"x": "2025 Q1", "y": 0.27},
+                ],
+            },
+            {
+                "name": "TD",
+                "points": [
+                    {"x": "2024 Q3", "y": 0.34},
+                    {"x": "2024 Q4", "y": 0.33},
+                    {"x": "2025 Q1", "y": 0.31},
+                ],
+            },
+            {
+                "name": "BNS",
+                "points": [
+                    {"x": "2024 Q3", "y": 0.39},
+                    {"x": "2024 Q4", "y": 0.37},
+                    {"x": "2025 Q1", "y": 0.35},
+                ],
+            },
+        ],
+        insights=[
+            "PCL ratios are trending lower in this sample window.",
+            "Scotiabank remains elevated relative to peers but improving.",
+            "Combine with transcript commentary for forward risk signals.",
+        ],
+    )
+
+    stock_qoq_bar_content = _build_chart_payload(
+        "QoQ Stock Performance",
+        chart_type="bar",
+        x_label="Bank",
+        y_label="QoQ Change (%)",
+        series=[
+            {
+                "name": "QoQ Change",
+                "points": [
+                    {"x": "RY", "y": 4.2},
+                    {"x": "TD", "y": 2.9},
+                    {"x": "BMO", "y": 3.8},
+                    {"x": "BNS", "y": 5.1},
+                    {"x": "CM", "y": 2.4},
+                    {"x": "NA", "y": 7.5},
+                ],
+            }
+        ],
+        insights=[
+            "National Bank and Scotiabank outperform on QoQ move.",
+            "CIBC lags the group in this quarter.",
+            "Use with valuation context before drawing directional conclusions.",
+        ],
+    )
+
     cur.execute(
         """
         INSERT INTO templates (
@@ -734,135 +832,222 @@ Use this template as a starting point for your own report layout and prompts."""
         ),
     )
 
-    cur.execute(
-        """
-        INSERT INTO sections (id, template_id, title, position)
-        VALUES (?, ?, ?, ?)
-        """,
-        (
-            section_id,
-            template_id,
-            "Earnings Dashboard",
-            1,
-        ),
-    )
-
-    cur.execute(
-        """
-        INSERT INTO subsections (
-            id, section_id, title, position, widget_type, data_source_config,
-            notes, instructions, content, content_type, version_number
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """,
-        (
-            summary_subsection_id,
-            section_id,
-            "Executive Summary",
-            1,
-            "summary",
-            json.dumps(
+    sections = [
+        {
+            "title": "Executive Summary",
+            "subsections": [
                 {
-                    "inputs": [
-                        {
-                            "source_id": "financials",
-                            "method_id": "compare_banks",
-                            "parameters": {
-                                "bank_ids": ["RY", "TD", "BMO", "BNS", "CM", "NA"],
-                                "fiscal_year": 2025,
-                                "fiscal_quarter": "Q1",
-                                "metrics": ["net_income", "roe", "cet1_ratio"],
-                            },
-                        }
-                    ]
-                }
-            ),
-            "Seeded summary block so the UI is populated on first run.",
-            "Summarize the quarter in concise executive language.",
-            summary_content,
-            "markdown",
-            1,
-        ),
-    )
-
-    cur.execute(
-        """
-        INSERT INTO subsections (
-            id, section_id, title, position, widget_type, data_source_config,
-            notes, instructions, content, content_type, version_number
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """,
-        (
-            income_chart_subsection_id,
-            section_id,
-            "Net Income Comparison",
-            2,
-            "chart",
-            json.dumps(
+                    "title": "Quarter Snapshot",
+                    "widget_type": "summary",
+                    "data_source_config": {
+                        "inputs": [
+                            {
+                                "source_id": "financials",
+                                "method_id": "compare_banks",
+                                "parameters": {
+                                    "bank_ids": ["RY", "TD", "BMO", "BNS", "CM", "NA"],
+                                    "fiscal_year": 2025,
+                                    "fiscal_quarter": "Q1",
+                                    "metrics": ["net_income", "roe", "cet1_ratio"],
+                                },
+                            }
+                        ]
+                    },
+                    "notes": "Seeded summary block so the UI is populated on first run.",
+                    "instructions": "Summarize the quarter in concise executive language.",
+                    "content": summary_content,
+                    "content_type": "markdown",
+                },
+            ],
+        },
+        {
+            "title": "Profitability and Capital",
+            "subsections": [
                 {
-                    "inputs": [
-                        {
-                            "source_id": "financials",
-                            "method_id": "compare_banks",
-                            "parameters": {
-                                "bank_ids": ["RY", "TD", "BMO", "BNS", "CM", "NA"],
-                                "fiscal_year": 2025,
-                                "fiscal_quarter": "Q1",
-                                "metrics": ["net_income"],
-                            },
-                        }
-                    ],
-                    "visualization": {"chart_type": "bar", "x_key": "bank_id", "y_key": "net_income"},
-                }
-            ),
-            "Chart payload is pre-rendered so the component loads immediately.",
-            "Compare net income across the selected banks.",
-            income_chart_content,
-            "json",
-            1,
-        ),
-    )
-
-    cur.execute(
-        """
-        INSERT INTO subsections (
-            id, section_id, title, position, widget_type, data_source_config,
-            notes, instructions, content, content_type, version_number
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """,
-        (
-            stock_chart_subsection_id,
-            section_id,
-            "Stock Trend",
-            3,
-            "chart",
-            json.dumps(
+                    "title": "Net Income Comparison",
+                    "widget_type": "chart",
+                    "data_source_config": {
+                        "inputs": [
+                            {
+                                "source_id": "financials",
+                                "method_id": "compare_banks",
+                                "parameters": {
+                                    "bank_ids": ["RY", "TD", "BMO", "BNS", "CM", "NA"],
+                                    "fiscal_year": 2025,
+                                    "fiscal_quarter": "Q1",
+                                    "metrics": ["net_income"],
+                                },
+                            }
+                        ],
+                        "visualization": {"chart_type": "bar", "x_key": "bank_id", "y_key": "net_income"},
+                    },
+                    "notes": "Chart payload is pre-rendered so the component loads immediately.",
+                    "instructions": "Compare net income across the selected banks.",
+                    "content": income_chart_content,
+                    "content_type": "json",
+                },
                 {
-                    "inputs": [
-                        {
-                            "source_id": "stock_prices",
-                            "method_id": "trend",
-                            "parameters": {
-                                "bank_id": "RY",
-                                "periods": [
-                                    {"fiscal_year": 2024, "fiscal_quarter": "Q4"},
-                                    {"fiscal_year": 2025, "fiscal_quarter": "Q1"},
-                                ],
-                            },
-                        }
-                    ],
-                    "visualization": {"chart_type": "line", "x_key": "period", "y_key": "close_price"},
-                }
+                    "title": "CET1 Comparison",
+                    "widget_type": "chart",
+                    "data_source_config": {
+                        "inputs": [
+                            {
+                                "source_id": "financials",
+                                "method_id": "compare_banks",
+                                "parameters": {
+                                    "bank_ids": ["RY", "TD", "BMO", "BNS", "CM", "NA"],
+                                    "fiscal_year": 2025,
+                                    "fiscal_quarter": "Q1",
+                                    "metrics": ["cet1_ratio"],
+                                },
+                            }
+                        ],
+                        "visualization": {"chart_type": "bar", "x_key": "bank_id", "y_key": "cet1_ratio"},
+                    },
+                    "notes": "Capital section complements profitability view.",
+                    "instructions": "Highlight comparative capital strength across peers.",
+                    "content": cet1_chart_content,
+                    "content_type": "json",
+                },
+                {
+                    "title": "Profitability Commentary",
+                    "widget_type": "summary",
+                    "data_source_config": None,
+                    "notes": "Narrative subsection for context around the metrics.",
+                    "instructions": "Provide a concise interpretation of profitability and capital results.",
+                    "content": profitability_narrative,
+                    "content_type": "markdown",
+                },
+            ],
+        },
+        {
+            "title": "Credit Quality",
+            "subsections": [
+                {
+                    "title": "PCL Ratio Trend",
+                    "widget_type": "chart",
+                    "data_source_config": {
+                        "inputs": [
+                            {
+                                "source_id": "financials",
+                                "method_id": "compare_banks",
+                                "parameters": {
+                                    "bank_ids": ["RY", "TD", "BNS"],
+                                    "fiscal_year": 2025,
+                                    "fiscal_quarter": "Q1",
+                                    "metrics": ["pcl_ratio"],
+                                },
+                            }
+                        ],
+                        "visualization": {"chart_type": "line", "x_key": "period", "y_key": "pcl_ratio"},
+                    },
+                    "notes": "Trend chart for credit normalization narrative.",
+                    "instructions": "Track credit quality over recent quarters.",
+                    "content": pcl_trend_content,
+                    "content_type": "json",
+                },
+                {
+                    "title": "Credit Narrative",
+                    "widget_type": "summary",
+                    "data_source_config": None,
+                    "notes": "Use alongside transcript commentary for forward-looking language.",
+                    "instructions": "Summarize key credit quality takeaways.",
+                    "content": credit_narrative,
+                    "content_type": "markdown",
+                },
+            ],
+        },
+        {
+            "title": "Market Performance",
+            "subsections": [
+                {
+                    "title": "Stock Trend",
+                    "widget_type": "chart",
+                    "data_source_config": {
+                        "inputs": [
+                            {
+                                "source_id": "stock_prices",
+                                "method_id": "trend",
+                                "parameters": {
+                                    "bank_id": "RY",
+                                    "periods": [
+                                        {"fiscal_year": 2024, "fiscal_quarter": "Q4"},
+                                        {"fiscal_year": 2025, "fiscal_quarter": "Q1"},
+                                    ],
+                                },
+                            }
+                        ],
+                        "visualization": {"chart_type": "line", "x_key": "period", "y_key": "close_price"},
+                    },
+                    "notes": "Swap bank IDs in config to tailor this trend panel.",
+                    "instructions": "Show stock momentum over recent quarters.",
+                    "content": stock_chart_content,
+                    "content_type": "json",
+                },
+                {
+                    "title": "QoQ Market Comparison",
+                    "widget_type": "chart",
+                    "data_source_config": {
+                        "inputs": [
+                            {
+                                "source_id": "stock_prices",
+                                "method_id": "compare_banks",
+                                "parameters": {
+                                    "bank_ids": ["RY", "TD", "BMO", "BNS", "CM", "NA"],
+                                    "fiscal_year": 2025,
+                                    "fiscal_quarter": "Q1",
+                                },
+                            }
+                        ],
+                        "visualization": {"chart_type": "bar", "x_key": "bank_id", "y_key": "qoq_change_pct"},
+                    },
+                    "notes": "Prebuilt cross-bank market move comparison.",
+                    "instructions": "Compare quarter-over-quarter share-price movement.",
+                    "content": stock_qoq_bar_content,
+                    "content_type": "json",
+                },
+            ],
+        },
+    ]
+
+    for section_position, section in enumerate(sections, start=1):
+        section_id = str(uuid4())
+        cur.execute(
+            """
+            INSERT INTO sections (id, template_id, title, position)
+            VALUES (?, ?, ?, ?)
+            """,
+            (
+                section_id,
+                template_id,
+                section["title"],
+                section_position,
             ),
-            "Swap the bank IDs in data source config to tailor this trend panel.",
-            "Show stock momentum over recent quarters.",
-            stock_chart_content,
-            "json",
-            1,
-        ),
-    )
+        )
+
+        for subsection_position, subsection in enumerate(section["subsections"], start=1):
+            cur.execute(
+                """
+                INSERT INTO subsections (
+                    id, section_id, title, position, widget_type, data_source_config,
+                    notes, instructions, content, content_type, version_number
+                )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    str(uuid4()),
+                    section_id,
+                    subsection["title"],
+                    subsection_position,
+                    subsection["widget_type"],
+                    json.dumps(subsection["data_source_config"]) if subsection["data_source_config"] is not None else None,
+                    subsection["notes"],
+                    subsection["instructions"],
+                    subsection["content"],
+                    subsection["content_type"],
+                    1,
+                ),
+            )
 
 
 def _seed_sqlite_if_needed(conn: sqlite3.Connection) -> None:

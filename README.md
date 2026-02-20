@@ -29,7 +29,7 @@ Set required values in `.env`:
 
 - `OPENAI_API_KEY`, or OAuth settings (`OAUTH_URL`, `CLIENT_ID`, `CLIENT_SECRET`, `AZURE_BASE_URL`)
 - Database mode:
-  - Default/self-contained: `DB_BACKEND=sqlite` (auto-creates local DB, seeds mock datasets, and includes a prebuilt demo template with charts on startup)
+  - Default/self-contained: `DB_BACKEND=sqlite` (auto-creates local DB, seeds mock datasets, and includes a prebuilt 4-section demo template with charts on startup)
   - Optional external DB: `DB_BACKEND=postgres` plus `DB_HOST/DB_PORT/DB_NAME/DB_USER/DB_PASSWORD`
 
 Optional LLM runtime overrides (env-only):

@@ -64,7 +64,7 @@ class SQLiteBootstrapTests(unittest.TestCase):
                 """,
                 (template_id,),
             )
-            self.assertGreaterEqual(cur.fetchone()[0], 1)
+            self.assertGreaterEqual(cur.fetchone()[0], 4)
 
             cur.execute(
                 """
@@ -131,6 +131,17 @@ class SQLiteBootstrapTests(unittest.TestCase):
                 ("Demo: Big 6 Earnings Dashboard",),
             )
             self.assertEqual(cur.fetchone()[0], 1)
+
+            cur.execute(
+                """
+                SELECT COUNT(*)
+                FROM sections sec
+                JOIN templates t ON t.id = sec.template_id
+                WHERE t.name = ?
+                """,
+                ("Demo: Big 6 Earnings Dashboard",),
+            )
+            self.assertEqual(cur.fetchone()[0], 4)
         finally:
             conn.close()
 
