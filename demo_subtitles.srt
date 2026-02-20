@@ -1,0 +1,47 @@
+1
+00:00:00,000 --> 00:00:15,000
+Report Designer: AI-Powered Financial Report Generation
+
+2
+00:00:15,000 --> 00:00:35,000
+Creating a new report template in seconds
+
+3
+00:00:35,000 --> 00:00:55,000
+The workspace: Sections, Subsections, and AI Assistant
+
+4
+00:00:55,000 --> 00:01:15,000
+Sections organize your report — each can span multiple pages
+
+5
+00:01:15,000 --> 00:01:50,000
+Instructions tell the AI exactly what content to generate
+
+6
+00:01:50,000 --> 00:02:30,000
+AI generates content using real earnings data and transcripts
+
+7
+00:02:30,000 --> 00:02:55,000
+Subsections (A, B, C) stack vertically — add as many as needed
+
+8
+00:02:55,000 --> 00:03:15,000
+Preview shows how your report will look when exported
+
+9
+00:03:15,000 --> 00:03:45,000
+Natural language chat — ask the AI to modify your report
+
+10
+00:03:45,000 --> 00:04:05,000
+Build comprehensive reports with multiple sections
+
+11
+00:04:05,000 --> 00:04:25,000
+One-click export to professional PDF format
+
+12
+00:04:25,000 --> 00:04:35,000
+Report Designer: From data to insights in minutes

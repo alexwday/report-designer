@@ -1,0 +1,272 @@
+[
+  {
+    "bank_id": "RY",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q1",
+    "period_end_date": "2024-01-31",
+    "close_price": 152.81,
+    "qoq_change_pct": 0.4,
+    "yoy_change_pct": 0.3
+  },
+  {
+    "bank_id": "TD",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q1",
+    "period_end_date": "2024-01-31",
+    "close_price": 81.69,
+    "qoq_change_pct": -0.1,
+    "yoy_change_pct": 13.5
+  },
+  {
+    "bank_id": "BMO",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q1",
+    "period_end_date": "2024-01-31",
+    "close_price": 122.26,
+    "qoq_change_pct": -0.9,
+    "yoy_change_pct": -1.8
+  },
+  {
+    "bank_id": "BNS",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q1",
+    "period_end_date": "2024-01-31",
+    "close_price": 66.71,
+    "qoq_change_pct": 1.8,
+    "yoy_change_pct": 10.6
+  },
+  {
+    "bank_id": "CM",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q1",
+    "period_end_date": "2024-01-31",
+    "close_price": 71.55,
+    "qoq_change_pct": 1.6,
+    "yoy_change_pct": -2.6
+  },
+  {
+    "bank_id": "NA",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q1",
+    "period_end_date": "2024-01-31",
+    "close_price": 103.25,
+    "qoq_change_pct": 3.1,
+    "yoy_change_pct": 11.0
+  },
+  {
+    "bank_id": "RY",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q2",
+    "period_end_date": "2024-04-30",
+    "close_price": 162.23,
+    "qoq_change_pct": 4.7,
+    "yoy_change_pct": 4.7
+  },
+  {
+    "bank_id": "TD",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q2",
+    "period_end_date": "2024-04-30",
+    "close_price": 82.48,
+    "qoq_change_pct": 0.6,
+    "yoy_change_pct": -2.4
+  },
+  {
+    "bank_id": "BMO",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q2",
+    "period_end_date": "2024-04-30",
+    "close_price": 124.49,
+    "qoq_change_pct": 5.5,
+    "yoy_change_pct": -1.9
+  },
+  {
+    "bank_id": "BNS",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q2",
+    "period_end_date": "2024-04-30",
+    "close_price": 65.67,
+    "qoq_change_pct": 1.0,
+    "yoy_change_pct": 13.0
+  },
+  {
+    "bank_id": "CM",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q2",
+    "period_end_date": "2024-04-30",
+    "close_price": 71.93,
+    "qoq_change_pct": -0.1,
+    "yoy_change_pct": 13.4
+  },
+  {
+    "bank_id": "NA",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q2",
+    "period_end_date": "2024-04-30",
+    "close_price": 106.17,
+    "qoq_change_pct": -1.7,
+    "yoy_change_pct": 3.7
+  },
+  {
+    "bank_id": "RY",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q3",
+    "period_end_date": "2024-07-31",
+    "close_price": 163.29,
+    "qoq_change_pct": 2.3,
+    "yoy_change_pct": 6.6
+  },
+  {
+    "bank_id": "TD",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q3",
+    "period_end_date": "2024-07-31",
+    "close_price": 83.93,
+    "qoq_change_pct": -0.6,
+    "yoy_change_pct": 8.8
+  },
+  {
+    "bank_id": "BMO",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q3",
+    "period_end_date": "2024-07-31",
+    "close_price": 128.51,
+    "qoq_change_pct": 5.7,
+    "yoy_change_pct": 5.4
+  },
+  {
+    "bank_id": "BNS",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q3",
+    "period_end_date": "2024-07-31",
+    "close_price": 71.03,
+    "qoq_change_pct": 6.1,
+    "yoy_change_pct": 13.0
+  },
+  {
+    "bank_id": "CM",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q3",
+    "period_end_date": "2024-07-31",
+    "close_price": 78.29,
+    "qoq_change_pct": 5.6,
+    "yoy_change_pct": -4.0
+  },
+  {
+    "bank_id": "NA",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q3",
+    "period_end_date": "2024-07-31",
+    "close_price": 109.72,
+    "qoq_change_pct": -1.4,
+    "yoy_change_pct": 8.8
+  },
+  {
+    "bank_id": "RY",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q4",
+    "period_end_date": "2024-10-31",
+    "close_price": 174.89,
+    "qoq_change_pct": 6.4,
+    "yoy_change_pct": 6.8
+  },
+  {
+    "bank_id": "TD",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q4",
+    "period_end_date": "2024-10-31",
+    "close_price": 87.76,
+    "qoq_change_pct": 0.9,
+    "yoy_change_pct": 3.1
+  },
+  {
+    "bank_id": "BMO",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q4",
+    "period_end_date": "2024-10-31",
+    "close_price": 124.13,
+    "qoq_change_pct": -0.8,
+    "yoy_change_pct": -4.1
+  },
+  {
+    "bank_id": "BNS",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q4",
+    "period_end_date": "2024-10-31",
+    "close_price": 70.18,
+    "qoq_change_pct": 1.8,
+    "yoy_change_pct": 13.2
+  },
+  {
+    "bank_id": "CM",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q4",
+    "period_end_date": "2024-10-31",
+    "close_price": 79.03,
+    "qoq_change_pct": 3.5,
+    "yoy_change_pct": 8.0
+  },
+  {
+    "bank_id": "NA",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q4",
+    "period_end_date": "2024-10-31",
+    "close_price": 121.12,
+    "qoq_change_pct": 5.7,
+    "yoy_change_pct": -1.5
+  },
+  {
+    "bank_id": "RY",
+    "fiscal_year": 2025,
+    "fiscal_quarter": "Q1",
+    "period_end_date": "2025-01-31",
+    "close_price": 169.0,
+    "qoq_change_pct": -0.2,
+    "yoy_change_pct": 9.0
+  },
+  {
+    "bank_id": "TD",
+    "fiscal_year": 2025,
+    "fiscal_quarter": "Q1",
+    "period_end_date": "2025-01-31",
+    "close_price": 91.89,
+    "qoq_change_pct": 2.6,
+    "yoy_change_pct": 12.1
+  },
+  {
+    "bank_id": "BMO",
+    "fiscal_year": 2025,
+    "fiscal_quarter": "Q1",
+    "period_end_date": "2025-01-31",
+    "close_price": 126.75,
+    "qoq_change_pct": -1.7,
+    "yoy_change_pct": 7.4
+  },
+  {
+    "bank_id": "BNS",
+    "fiscal_year": 2025,
+    "fiscal_quarter": "Q1",
+    "period_end_date": "2025-01-31",
+    "close_price": 76.48,
+    "qoq_change_pct": 7.7,
+    "yoy_change_pct": 17.7
+  },
+  {
+    "bank_id": "CM",
+    "fiscal_year": 2025,
+    "fiscal_quarter": "Q1",
+    "period_end_date": "2025-01-31",
+    "close_price": 82.52,
+    "qoq_change_pct": 4.9,
+    "yoy_change_pct": 14.6
+  },
+  {
+    "bank_id": "NA",
+    "fiscal_year": 2025,
+    "fiscal_quarter": "Q1",
+    "period_end_date": "2025-01-31",
+    "close_price": 115.58,
+    "qoq_change_pct": -2.1,
+    "yoy_change_pct": 7.0
+  }
+]

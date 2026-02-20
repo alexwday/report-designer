@@ -1,0 +1,3212 @@
+[
+  {
+    "bank_id": "RY",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q1",
+    "metrics": {
+      "total_revenue": {
+        "value": 14329.0,
+        "formatted": "$14.3B"
+      },
+      "net_income": {
+        "value": 3999.0,
+        "formatted": "$4.0B"
+      },
+      "diluted_eps": {
+        "value": 2.85,
+        "formatted": "$2.85"
+      },
+      "roe": {
+        "value": 14.9,
+        "formatted": "14.9%"
+      },
+      "roa": {
+        "value": 0.9,
+        "formatted": "0.9%"
+      },
+      "cet1_ratio": {
+        "value": 12.7,
+        "formatted": "12.7%"
+      },
+      "tier1_ratio": {
+        "value": 14.3,
+        "formatted": "14.3%"
+      },
+      "total_capital_ratio": {
+        "value": 15.3,
+        "formatted": "15.3%"
+      },
+      "book_value_per_share": {
+        "value": 82.91,
+        "formatted": "$82.91"
+      },
+      "nim": {
+        "value": 2.5,
+        "formatted": "2.5%"
+      },
+      "efficiency_ratio": {
+        "value": 50.6,
+        "formatted": "50.6%"
+      },
+      "operating_leverage": {
+        "value": 2.0,
+        "formatted": "2.0%"
+      },
+      "net_interest_income": {
+        "value": 7808.0,
+        "formatted": "$7.8B"
+      },
+      "pcl": {
+        "value": 818.0,
+        "formatted": "$818M"
+      },
+      "pcl_ratio": {
+        "value": 23.7,
+        "formatted": "24 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 4127.0,
+        "formatted": "$4.1B"
+      },
+      "gil_ratio": {
+        "value": 0.5,
+        "formatted": "0.5%"
+      },
+      "total_assets": {
+        "value": 2020.0,
+        "formatted": "$2020B"
+      },
+      "total_loans": {
+        "value": 878.0,
+        "formatted": "$878B"
+      },
+      "total_deposits": {
+        "value": 1065.0,
+        "formatted": "$1065B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 78.4,
+        "formatted": "78.4%"
+      },
+      "common_equity": {
+        "value": 119.0,
+        "formatted": "$119B"
+      },
+      "non_interest_revenue": {
+        "value": 6115.0,
+        "formatted": "$6.1B"
+      },
+      "aum": {
+        "value": 1267.0,
+        "formatted": "$1267B"
+      },
+      "dividend_per_share": {
+        "value": 1.36,
+        "formatted": "$1.36"
+      }
+    }
+  },
+  {
+    "bank_id": "TD",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q1",
+    "metrics": {
+      "total_revenue": {
+        "value": 12868.0,
+        "formatted": "$12.9B"
+      },
+      "net_income": {
+        "value": 3128.0,
+        "formatted": "$3.1B"
+      },
+      "diluted_eps": {
+        "value": 1.71,
+        "formatted": "$1.71"
+      },
+      "roe": {
+        "value": 11.6,
+        "formatted": "11.6%"
+      },
+      "roa": {
+        "value": 0.7,
+        "formatted": "0.7%"
+      },
+      "cet1_ratio": {
+        "value": 12.1,
+        "formatted": "12.1%"
+      },
+      "tier1_ratio": {
+        "value": 13.8,
+        "formatted": "13.8%"
+      },
+      "total_capital_ratio": {
+        "value": 16.2,
+        "formatted": "16.2%"
+      },
+      "book_value_per_share": {
+        "value": 60.26,
+        "formatted": "$60.26"
+      },
+      "nim": {
+        "value": 2.7,
+        "formatted": "2.7%"
+      },
+      "efficiency_ratio": {
+        "value": 53.5,
+        "formatted": "53.5%"
+      },
+      "operating_leverage": {
+        "value": 0.5,
+        "formatted": "0.5%"
+      },
+      "net_interest_income": {
+        "value": 8466.0,
+        "formatted": "$8.5B"
+      },
+      "pcl": {
+        "value": 1210.0,
+        "formatted": "$1.2B"
+      },
+      "pcl_ratio": {
+        "value": 52.0,
+        "formatted": "52 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 5208.0,
+        "formatted": "$5.2B"
+      },
+      "gil_ratio": {
+        "value": 0.5,
+        "formatted": "0.5%"
+      },
+      "total_assets": {
+        "value": 1857.0,
+        "formatted": "$1857B"
+      },
+      "total_loans": {
+        "value": 920.0,
+        "formatted": "$920B"
+      },
+      "total_deposits": {
+        "value": 1152.0,
+        "formatted": "$1152B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 74.5,
+        "formatted": "74.5%"
+      },
+      "common_equity": {
+        "value": 107.0,
+        "formatted": "$107B"
+      },
+      "non_interest_revenue": {
+        "value": 4959.0,
+        "formatted": "$5.0B"
+      },
+      "aum": {
+        "value": 505.0,
+        "formatted": "$505B"
+      },
+      "dividend_per_share": {
+        "value": 0.95,
+        "formatted": "$0.95"
+      }
+    }
+  },
+  {
+    "bank_id": "BMO",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q1",
+    "metrics": {
+      "total_revenue": {
+        "value": 7730.0,
+        "formatted": "$7.7B"
+      },
+      "net_income": {
+        "value": 1879.0,
+        "formatted": "$1.9B"
+      },
+      "diluted_eps": {
+        "value": 2.54,
+        "formatted": "$2.54"
+      },
+      "roe": {
+        "value": 10.5,
+        "formatted": "10.5%"
+      },
+      "roa": {
+        "value": 0.7,
+        "formatted": "0.7%"
+      },
+      "cet1_ratio": {
+        "value": 13.0,
+        "formatted": "13.0%"
+      },
+      "tier1_ratio": {
+        "value": 14.6,
+        "formatted": "14.6%"
+      },
+      "total_capital_ratio": {
+        "value": 16.1,
+        "formatted": "16.1%"
+      },
+      "book_value_per_share": {
+        "value": 97.36,
+        "formatted": "$97.36"
+      },
+      "nim": {
+        "value": 2.7,
+        "formatted": "2.7%"
+      },
+      "efficiency_ratio": {
+        "value": 57.1,
+        "formatted": "57.1%"
+      },
+      "operating_leverage": {
+        "value": 5.0,
+        "formatted": "5.0%"
+      },
+      "net_interest_income": {
+        "value": 4623.0,
+        "formatted": "$4.6B"
+      },
+      "pcl": {
+        "value": 568.0,
+        "formatted": "$568M"
+      },
+      "pcl_ratio": {
+        "value": 52.1,
+        "formatted": "52 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 3064.0,
+        "formatted": "$3.1B"
+      },
+      "gil_ratio": {
+        "value": 0.7,
+        "formatted": "0.7%"
+      },
+      "total_assets": {
+        "value": 1055.0,
+        "formatted": "$1055B"
+      },
+      "total_loans": {
+        "value": 447.0,
+        "formatted": "$447B"
+      },
+      "total_deposits": {
+        "value": 668.0,
+        "formatted": "$668B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 65.8,
+        "formatted": "65.8%"
+      },
+      "common_equity": {
+        "value": 72.0,
+        "formatted": "$72B"
+      },
+      "non_interest_revenue": {
+        "value": 2955.0,
+        "formatted": "$3.0B"
+      },
+      "aum": {
+        "value": 350.0,
+        "formatted": "$350B"
+      },
+      "dividend_per_share": {
+        "value": 1.52,
+        "formatted": "$1.52"
+      }
+    }
+  },
+  {
+    "bank_id": "BNS",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q1",
+    "metrics": {
+      "total_revenue": {
+        "value": 8123.0,
+        "formatted": "$8.1B"
+      },
+      "net_income": {
+        "value": 1823.0,
+        "formatted": "$1.8B"
+      },
+      "diluted_eps": {
+        "value": 1.38,
+        "formatted": "$1.38"
+      },
+      "roe": {
+        "value": 9.4,
+        "formatted": "9.4%"
+      },
+      "roa": {
+        "value": 0.6,
+        "formatted": "0.6%"
+      },
+      "cet1_ratio": {
+        "value": 12.1,
+        "formatted": "12.1%"
+      },
+      "tier1_ratio": {
+        "value": 13.8,
+        "formatted": "13.8%"
+      },
+      "total_capital_ratio": {
+        "value": 15.9,
+        "formatted": "15.9%"
+      },
+      "book_value_per_share": {
+        "value": 59.44,
+        "formatted": "$59.44"
+      },
+      "nim": {
+        "value": 2.3,
+        "formatted": "2.3%"
+      },
+      "efficiency_ratio": {
+        "value": 59.7,
+        "formatted": "59.7%"
+      },
+      "operating_leverage": {
+        "value": -1.5,
+        "formatted": "-1.5%"
+      },
+      "net_interest_income": {
+        "value": 4780.0,
+        "formatted": "$4.8B"
+      },
+      "pcl": {
+        "value": 951.0,
+        "formatted": "$951M"
+      },
+      "pcl_ratio": {
+        "value": 50.3,
+        "formatted": "50 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 5567.0,
+        "formatted": "$5.6B"
+      },
+      "gil_ratio": {
+        "value": 0.7,
+        "formatted": "0.7%"
+      },
+      "total_assets": {
+        "value": 1271.0,
+        "formatted": "$1271B"
+      },
+      "total_loans": {
+        "value": 770.0,
+        "formatted": "$770B"
+      },
+      "total_deposits": {
+        "value": 867.0,
+        "formatted": "$867B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 89.7,
+        "formatted": "89.7%"
+      },
+      "common_equity": {
+        "value": 76.0,
+        "formatted": "$76B"
+      },
+      "non_interest_revenue": {
+        "value": 3253.0,
+        "formatted": "$3.3B"
+      },
+      "aum": {
+        "value": 316.0,
+        "formatted": "$316B"
+      },
+      "dividend_per_share": {
+        "value": 1.03,
+        "formatted": "$1.03"
+      }
+    }
+  },
+  {
+    "bank_id": "CM",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q1",
+    "metrics": {
+      "total_revenue": {
+        "value": 6087.0,
+        "formatted": "$6.1B"
+      },
+      "net_income": {
+        "value": 1569.0,
+        "formatted": "$1.6B"
+      },
+      "diluted_eps": {
+        "value": 1.67,
+        "formatted": "$1.67"
+      },
+      "roe": {
+        "value": 11.9,
+        "formatted": "11.9%"
+      },
+      "roa": {
+        "value": 0.8,
+        "formatted": "0.8%"
+      },
+      "cet1_ratio": {
+        "value": 13.0,
+        "formatted": "13.0%"
+      },
+      "tier1_ratio": {
+        "value": 14.5,
+        "formatted": "14.5%"
+      },
+      "total_capital_ratio": {
+        "value": 15.5,
+        "formatted": "15.5%"
+      },
+      "book_value_per_share": {
+        "value": 53.42,
+        "formatted": "$53.42"
+      },
+      "nim": {
+        "value": 2.7,
+        "formatted": "2.7%"
+      },
+      "efficiency_ratio": {
+        "value": 54.8,
+        "formatted": "54.8%"
+      },
+      "operating_leverage": {
+        "value": 1.4,
+        "formatted": "1.4%"
+      },
+      "net_interest_income": {
+        "value": 3623.0,
+        "formatted": "$3.6B"
+      },
+      "pcl": {
+        "value": 401.0,
+        "formatted": "$401M"
+      },
+      "pcl_ratio": {
+        "value": 31.9,
+        "formatted": "32 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 1991.0,
+        "formatted": "$2.0B"
+      },
+      "gil_ratio": {
+        "value": 0.4,
+        "formatted": "0.4%"
+      },
+      "total_assets": {
+        "value": 861.0,
+        "formatted": "$861B"
+      },
+      "total_loans": {
+        "value": 501.0,
+        "formatted": "$501B"
+      },
+      "total_deposits": {
+        "value": 628.0,
+        "formatted": "$628B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 78.6,
+        "formatted": "78.6%"
+      },
+      "common_equity": {
+        "value": 53.0,
+        "formatted": "$53B"
+      },
+      "non_interest_revenue": {
+        "value": 2408.0,
+        "formatted": "$2.4B"
+      },
+      "aum": {
+        "value": 295.0,
+        "formatted": "$295B"
+      },
+      "dividend_per_share": {
+        "value": 0.86,
+        "formatted": "$0.86"
+      }
+    }
+  },
+  {
+    "bank_id": "NA",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q1",
+    "metrics": {
+      "total_revenue": {
+        "value": 2554.0,
+        "formatted": "$2.6B"
+      },
+      "net_income": {
+        "value": 854.0,
+        "formatted": "$854M"
+      },
+      "diluted_eps": {
+        "value": 2.44,
+        "formatted": "$2.44"
+      },
+      "roe": {
+        "value": 16.4,
+        "formatted": "16.4%"
+      },
+      "roa": {
+        "value": 1.0,
+        "formatted": "1.0%"
+      },
+      "cet1_ratio": {
+        "value": 12.6,
+        "formatted": "12.6%"
+      },
+      "tier1_ratio": {
+        "value": 14.6,
+        "formatted": "14.6%"
+      },
+      "total_capital_ratio": {
+        "value": 15.9,
+        "formatted": "15.9%"
+      },
+      "book_value_per_share": {
+        "value": 60.23,
+        "formatted": "$60.23"
+      },
+      "nim": {
+        "value": 2.9,
+        "formatted": "2.9%"
+      },
+      "efficiency_ratio": {
+        "value": 50.6,
+        "formatted": "50.6%"
+      },
+      "operating_leverage": {
+        "value": 3.4,
+        "formatted": "3.4%"
+      },
+      "net_interest_income": {
+        "value": 1564.0,
+        "formatted": "$1.6B"
+      },
+      "pcl": {
+        "value": 120.0,
+        "formatted": "$120M"
+      },
+      "pcl_ratio": {
+        "value": 20.1,
+        "formatted": "20 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 623.0,
+        "formatted": "$623M"
+      },
+      "gil_ratio": {
+        "value": 0.3,
+        "formatted": "0.3%"
+      },
+      "total_assets": {
+        "value": 391.0,
+        "formatted": "$391B"
+      },
+      "total_loans": {
+        "value": 234.0,
+        "formatted": "$234B"
+      },
+      "total_deposits": {
+        "value": 279.0,
+        "formatted": "$279B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 80.7,
+        "formatted": "80.7%"
+      },
+      "common_equity": {
+        "value": 20.0,
+        "formatted": "$20B"
+      },
+      "non_interest_revenue": {
+        "value": 1044.0,
+        "formatted": "$1.0B"
+      },
+      "aum": {
+        "value": 137.0,
+        "formatted": "$137B"
+      },
+      "dividend_per_share": {
+        "value": 1.04,
+        "formatted": "$1.04"
+      }
+    }
+  },
+  {
+    "bank_id": "RY",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q2",
+    "metrics": {
+      "total_revenue": {
+        "value": 14443.0,
+        "formatted": "$14.4B"
+      },
+      "net_income": {
+        "value": 4205.0,
+        "formatted": "$4.2B"
+      },
+      "diluted_eps": {
+        "value": 3.02,
+        "formatted": "$3.02"
+      },
+      "roe": {
+        "value": 15.5,
+        "formatted": "15.5%"
+      },
+      "roa": {
+        "value": 1.0,
+        "formatted": "1.0%"
+      },
+      "cet1_ratio": {
+        "value": 13.0,
+        "formatted": "13.0%"
+      },
+      "tier1_ratio": {
+        "value": 14.9,
+        "formatted": "14.9%"
+      },
+      "total_capital_ratio": {
+        "value": 15.9,
+        "formatted": "15.9%"
+      },
+      "book_value_per_share": {
+        "value": 88.3,
+        "formatted": "$88.30"
+      },
+      "nim": {
+        "value": 2.7,
+        "formatted": "2.7%"
+      },
+      "efficiency_ratio": {
+        "value": 52.3,
+        "formatted": "52.3%"
+      },
+      "operating_leverage": {
+        "value": 2.1,
+        "formatted": "2.1%"
+      },
+      "net_interest_income": {
+        "value": 8384.0,
+        "formatted": "$8.4B"
+      },
+      "pcl": {
+        "value": 842.0,
+        "formatted": "$842M"
+      },
+      "pcl_ratio": {
+        "value": 23.9,
+        "formatted": "24 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 4349.0,
+        "formatted": "$4.3B"
+      },
+      "gil_ratio": {
+        "value": 0.5,
+        "formatted": "0.5%"
+      },
+      "total_assets": {
+        "value": 2079.0,
+        "formatted": "$2079B"
+      },
+      "total_loans": {
+        "value": 897.0,
+        "formatted": "$897B"
+      },
+      "total_deposits": {
+        "value": 1167.0,
+        "formatted": "$1167B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 82.1,
+        "formatted": "82.1%"
+      },
+      "common_equity": {
+        "value": 120.0,
+        "formatted": "$120B"
+      },
+      "non_interest_revenue": {
+        "value": 6234.0,
+        "formatted": "$6.2B"
+      },
+      "aum": {
+        "value": 1338.0,
+        "formatted": "$1338B"
+      },
+      "dividend_per_share": {
+        "value": 1.41,
+        "formatted": "$1.41"
+      }
+    }
+  },
+  {
+    "bank_id": "TD",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q2",
+    "metrics": {
+      "total_revenue": {
+        "value": 13514.0,
+        "formatted": "$13.5B"
+      },
+      "net_income": {
+        "value": 3209.0,
+        "formatted": "$3.2B"
+      },
+      "diluted_eps": {
+        "value": 1.77,
+        "formatted": "$1.77"
+      },
+      "roe": {
+        "value": 11.9,
+        "formatted": "11.9%"
+      },
+      "roa": {
+        "value": 0.7,
+        "formatted": "0.7%"
+      },
+      "cet1_ratio": {
+        "value": 12.6,
+        "formatted": "12.6%"
+      },
+      "tier1_ratio": {
+        "value": 13.9,
+        "formatted": "13.9%"
+      },
+      "total_capital_ratio": {
+        "value": 16.5,
+        "formatted": "16.5%"
+      },
+      "book_value_per_share": {
+        "value": 64.83,
+        "formatted": "$64.83"
+      },
+      "nim": {
+        "value": 2.8,
+        "formatted": "2.8%"
+      },
+      "efficiency_ratio": {
+        "value": 55.6,
+        "formatted": "55.6%"
+      },
+      "operating_leverage": {
+        "value": 0.5,
+        "formatted": "0.5%"
+      },
+      "net_interest_income": {
+        "value": 8853.0,
+        "formatted": "$8.9B"
+      },
+      "pcl": {
+        "value": 1192.0,
+        "formatted": "$1.2B"
+      },
+      "pcl_ratio": {
+        "value": 51.7,
+        "formatted": "52 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 5419.0,
+        "formatted": "$5.4B"
+      },
+      "gil_ratio": {
+        "value": 0.6,
+        "formatted": "0.6%"
+      },
+      "total_assets": {
+        "value": 1989.0,
+        "formatted": "$1989B"
+      },
+      "total_loans": {
+        "value": 942.0,
+        "formatted": "$942B"
+      },
+      "total_deposits": {
+        "value": 1230.0,
+        "formatted": "$1230B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 76.1,
+        "formatted": "76.1%"
+      },
+      "common_equity": {
+        "value": 107.0,
+        "formatted": "$107B"
+      },
+      "non_interest_revenue": {
+        "value": 5148.0,
+        "formatted": "$5.1B"
+      },
+      "aum": {
+        "value": 522.0,
+        "formatted": "$522B"
+      },
+      "dividend_per_share": {
+        "value": 1.01,
+        "formatted": "$1.01"
+      }
+    }
+  },
+  {
+    "bank_id": "BMO",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q2",
+    "metrics": {
+      "total_revenue": {
+        "value": 8025.0,
+        "formatted": "$8.0B"
+      },
+      "net_income": {
+        "value": 1984.0,
+        "formatted": "$2.0B"
+      },
+      "diluted_eps": {
+        "value": 2.74,
+        "formatted": "$2.74"
+      },
+      "roe": {
+        "value": 11.0,
+        "formatted": "11.0%"
+      },
+      "roa": {
+        "value": 0.7,
+        "formatted": "0.7%"
+      },
+      "cet1_ratio": {
+        "value": 13.4,
+        "formatted": "13.4%"
+      },
+      "tier1_ratio": {
+        "value": 14.9,
+        "formatted": "14.9%"
+      },
+      "total_capital_ratio": {
+        "value": 16.4,
+        "formatted": "16.4%"
+      },
+      "book_value_per_share": {
+        "value": 104.27,
+        "formatted": "$104.27"
+      },
+      "nim": {
+        "value": 2.7,
+        "formatted": "2.7%"
+      },
+      "efficiency_ratio": {
+        "value": 57.9,
+        "formatted": "57.9%"
+      },
+      "operating_leverage": {
+        "value": 5.1,
+        "formatted": "5.1%"
+      },
+      "net_interest_income": {
+        "value": 4769.0,
+        "formatted": "$4.8B"
+      },
+      "pcl": {
+        "value": 583.0,
+        "formatted": "$583M"
+      },
+      "pcl_ratio": {
+        "value": 52.4,
+        "formatted": "52 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 3150.0,
+        "formatted": "$3.1B"
+      },
+      "gil_ratio": {
+        "value": 0.7,
+        "formatted": "0.7%"
+      },
+      "total_assets": {
+        "value": 1109.0,
+        "formatted": "$1109B"
+      },
+      "total_loans": {
+        "value": 472.0,
+        "formatted": "$472B"
+      },
+      "total_deposits": {
+        "value": 706.0,
+        "formatted": "$706B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 67.6,
+        "formatted": "67.6%"
+      },
+      "common_equity": {
+        "value": 76.0,
+        "formatted": "$76B"
+      },
+      "non_interest_revenue": {
+        "value": 3070.0,
+        "formatted": "$3.1B"
+      },
+      "aum": {
+        "value": 377.0,
+        "formatted": "$377B"
+      },
+      "dividend_per_share": {
+        "value": 1.5,
+        "formatted": "$1.50"
+      }
+    }
+  },
+  {
+    "bank_id": "BNS",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q2",
+    "metrics": {
+      "total_revenue": {
+        "value": 8254.0,
+        "formatted": "$8.3B"
+      },
+      "net_income": {
+        "value": 1854.0,
+        "formatted": "$1.9B"
+      },
+      "diluted_eps": {
+        "value": 1.43,
+        "formatted": "$1.43"
+      },
+      "roe": {
+        "value": 9.8,
+        "formatted": "9.8%"
+      },
+      "roa": {
+        "value": 0.6,
+        "formatted": "0.6%"
+      },
+      "cet1_ratio": {
+        "value": 12.8,
+        "formatted": "12.8%"
+      },
+      "tier1_ratio": {
+        "value": 14.1,
+        "formatted": "14.1%"
+      },
+      "total_capital_ratio": {
+        "value": 16.5,
+        "formatted": "16.5%"
+      },
+      "book_value_per_share": {
+        "value": 59.55,
+        "formatted": "$59.55"
+      },
+      "nim": {
+        "value": 2.5,
+        "formatted": "2.5%"
+      },
+      "efficiency_ratio": {
+        "value": 61.9,
+        "formatted": "61.9%"
+      },
+      "operating_leverage": {
+        "value": -1.5,
+        "formatted": "-1.5%"
+      },
+      "net_interest_income": {
+        "value": 4847.0,
+        "formatted": "$4.8B"
+      },
+      "pcl": {
+        "value": 977.0,
+        "formatted": "$977M"
+      },
+      "pcl_ratio": {
+        "value": 54.6,
+        "formatted": "55 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 5796.0,
+        "formatted": "$5.8B"
+      },
+      "gil_ratio": {
+        "value": 0.8,
+        "formatted": "0.8%"
+      },
+      "total_assets": {
+        "value": 1322.0,
+        "formatted": "$1322B"
+      },
+      "total_loans": {
+        "value": 793.0,
+        "formatted": "$793B"
+      },
+      "total_deposits": {
+        "value": 857.0,
+        "formatted": "$857B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 94.4,
+        "formatted": "94.4%"
+      },
+      "common_equity": {
+        "value": 80.0,
+        "formatted": "$80B"
+      },
+      "non_interest_revenue": {
+        "value": 3395.0,
+        "formatted": "$3.4B"
+      },
+      "aum": {
+        "value": 317.0,
+        "formatted": "$317B"
+      },
+      "dividend_per_share": {
+        "value": 1.04,
+        "formatted": "$1.04"
+      }
+    }
+  },
+  {
+    "bank_id": "CM",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q2",
+    "metrics": {
+      "total_revenue": {
+        "value": 6436.0,
+        "formatted": "$6.4B"
+      },
+      "net_income": {
+        "value": 1719.0,
+        "formatted": "$1.7B"
+      },
+      "diluted_eps": {
+        "value": 1.8,
+        "formatted": "$1.80"
+      },
+      "roe": {
+        "value": 12.5,
+        "formatted": "12.5%"
+      },
+      "roa": {
+        "value": 0.8,
+        "formatted": "0.8%"
+      },
+      "cet1_ratio": {
+        "value": 12.9,
+        "formatted": "12.9%"
+      },
+      "tier1_ratio": {
+        "value": 15.0,
+        "formatted": "15.0%"
+      },
+      "total_capital_ratio": {
+        "value": 16.7,
+        "formatted": "16.7%"
+      },
+      "book_value_per_share": {
+        "value": 56.8,
+        "formatted": "$56.80"
+      },
+      "nim": {
+        "value": 2.8,
+        "formatted": "2.8%"
+      },
+      "efficiency_ratio": {
+        "value": 54.4,
+        "formatted": "54.4%"
+      },
+      "operating_leverage": {
+        "value": 1.6,
+        "formatted": "1.6%"
+      },
+      "net_interest_income": {
+        "value": 3857.0,
+        "formatted": "$3.9B"
+      },
+      "pcl": {
+        "value": 441.0,
+        "formatted": "$441M"
+      },
+      "pcl_ratio": {
+        "value": 33.2,
+        "formatted": "33 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 2087.0,
+        "formatted": "$2.1B"
+      },
+      "gil_ratio": {
+        "value": 0.4,
+        "formatted": "0.4%"
+      },
+      "total_assets": {
+        "value": 910.0,
+        "formatted": "$910B"
+      },
+      "total_loans": {
+        "value": 515.0,
+        "formatted": "$515B"
+      },
+      "total_deposits": {
+        "value": 680.0,
+        "formatted": "$680B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 81.5,
+        "formatted": "81.5%"
+      },
+      "common_equity": {
+        "value": 56.0,
+        "formatted": "$56B"
+      },
+      "non_interest_revenue": {
+        "value": 2598.0,
+        "formatted": "$2.6B"
+      },
+      "aum": {
+        "value": 302.0,
+        "formatted": "$302B"
+      },
+      "dividend_per_share": {
+        "value": 0.9,
+        "formatted": "$0.90"
+      }
+    }
+  },
+  {
+    "bank_id": "NA",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q2",
+    "metrics": {
+      "total_revenue": {
+        "value": 2679.0,
+        "formatted": "$2.7B"
+      },
+      "net_income": {
+        "value": 915.0,
+        "formatted": "$915M"
+      },
+      "diluted_eps": {
+        "value": 2.59,
+        "formatted": "$2.59"
+      },
+      "roe": {
+        "value": 17.1,
+        "formatted": "17.1%"
+      },
+      "roa": {
+        "value": 1.0,
+        "formatted": "1.0%"
+      },
+      "cet1_ratio": {
+        "value": 13.4,
+        "formatted": "13.4%"
+      },
+      "tier1_ratio": {
+        "value": 14.9,
+        "formatted": "14.9%"
+      },
+      "total_capital_ratio": {
+        "value": 16.4,
+        "formatted": "16.4%"
+      },
+      "book_value_per_share": {
+        "value": 62.2,
+        "formatted": "$62.20"
+      },
+      "nim": {
+        "value": 2.9,
+        "formatted": "2.9%"
+      },
+      "efficiency_ratio": {
+        "value": 54.1,
+        "formatted": "54.1%"
+      },
+      "operating_leverage": {
+        "value": 3.6,
+        "formatted": "3.6%"
+      },
+      "net_interest_income": {
+        "value": 1645.0,
+        "formatted": "$1.6B"
+      },
+      "pcl": {
+        "value": 126.0,
+        "formatted": "$126M"
+      },
+      "pcl_ratio": {
+        "value": 20.8,
+        "formatted": "21 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 647.0,
+        "formatted": "$647M"
+      },
+      "gil_ratio": {
+        "value": 0.3,
+        "formatted": "0.3%"
+      },
+      "total_assets": {
+        "value": 410.0,
+        "formatted": "$410B"
+      },
+      "total_loans": {
+        "value": 247.0,
+        "formatted": "$247B"
+      },
+      "total_deposits": {
+        "value": 278.0,
+        "formatted": "$278B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 86.1,
+        "formatted": "86.1%"
+      },
+      "common_equity": {
+        "value": 21.0,
+        "formatted": "$21B"
+      },
+      "non_interest_revenue": {
+        "value": 1110.0,
+        "formatted": "$1.1B"
+      },
+      "aum": {
+        "value": 142.0,
+        "formatted": "$142B"
+      },
+      "dividend_per_share": {
+        "value": 1.11,
+        "formatted": "$1.11"
+      }
+    }
+  },
+  {
+    "bank_id": "RY",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q3",
+    "metrics": {
+      "total_revenue": {
+        "value": 14947.0,
+        "formatted": "$14.9B"
+      },
+      "net_income": {
+        "value": 4404.0,
+        "formatted": "$4.4B"
+      },
+      "diluted_eps": {
+        "value": 3.07,
+        "formatted": "$3.07"
+      },
+      "roe": {
+        "value": 16.4,
+        "formatted": "16.4%"
+      },
+      "roa": {
+        "value": 1.0,
+        "formatted": "1.0%"
+      },
+      "cet1_ratio": {
+        "value": 12.9,
+        "formatted": "12.9%"
+      },
+      "tier1_ratio": {
+        "value": 14.7,
+        "formatted": "14.7%"
+      },
+      "total_capital_ratio": {
+        "value": 16.9,
+        "formatted": "16.9%"
+      },
+      "book_value_per_share": {
+        "value": 89.73,
+        "formatted": "$89.73"
+      },
+      "nim": {
+        "value": 2.7,
+        "formatted": "2.7%"
+      },
+      "efficiency_ratio": {
+        "value": 54.6,
+        "formatted": "54.6%"
+      },
+      "operating_leverage": {
+        "value": 2.0,
+        "formatted": "2.0%"
+      },
+      "net_interest_income": {
+        "value": 8645.0,
+        "formatted": "$8.6B"
+      },
+      "pcl": {
+        "value": 876.0,
+        "formatted": "$876M"
+      },
+      "pcl_ratio": {
+        "value": 25.0,
+        "formatted": "25 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 4279.0,
+        "formatted": "$4.3B"
+      },
+      "gil_ratio": {
+        "value": 0.5,
+        "formatted": "0.5%"
+      },
+      "total_assets": {
+        "value": 2118.0,
+        "formatted": "$2118B"
+      },
+      "total_loans": {
+        "value": 889.0,
+        "formatted": "$889B"
+      },
+      "total_deposits": {
+        "value": 1165.0,
+        "formatted": "$1165B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 80.3,
+        "formatted": "80.3%"
+      },
+      "common_equity": {
+        "value": 125.0,
+        "formatted": "$125B"
+      },
+      "non_interest_revenue": {
+        "value": 6360.0,
+        "formatted": "$6.4B"
+      },
+      "aum": {
+        "value": 1365.0,
+        "formatted": "$1365B"
+      },
+      "dividend_per_share": {
+        "value": 1.38,
+        "formatted": "$1.38"
+      }
+    }
+  },
+  {
+    "bank_id": "TD",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q3",
+    "metrics": {
+      "total_revenue": {
+        "value": 14029.0,
+        "formatted": "$14.0B"
+      },
+      "net_income": {
+        "value": 3288.0,
+        "formatted": "$3.3B"
+      },
+      "diluted_eps": {
+        "value": 1.83,
+        "formatted": "$1.83"
+      },
+      "roe": {
+        "value": 11.6,
+        "formatted": "11.6%"
+      },
+      "roa": {
+        "value": 0.7,
+        "formatted": "0.7%"
+      },
+      "cet1_ratio": {
+        "value": 13.2,
+        "formatted": "13.2%"
+      },
+      "tier1_ratio": {
+        "value": 14.7,
+        "formatted": "14.7%"
+      },
+      "total_capital_ratio": {
+        "value": 16.3,
+        "formatted": "16.3%"
+      },
+      "book_value_per_share": {
+        "value": 62.24,
+        "formatted": "$62.24"
+      },
+      "nim": {
+        "value": 2.9,
+        "formatted": "2.9%"
+      },
+      "efficiency_ratio": {
+        "value": 58.1,
+        "formatted": "58.1%"
+      },
+      "operating_leverage": {
+        "value": 0.5,
+        "formatted": "0.5%"
+      },
+      "net_interest_income": {
+        "value": 8919.0,
+        "formatted": "$8.9B"
+      },
+      "pcl": {
+        "value": 1254.0,
+        "formatted": "$1.3B"
+      },
+      "pcl_ratio": {
+        "value": 54.1,
+        "formatted": "54 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 5265.0,
+        "formatted": "$5.3B"
+      },
+      "gil_ratio": {
+        "value": 0.6,
+        "formatted": "0.6%"
+      },
+      "total_assets": {
+        "value": 1900.0,
+        "formatted": "$1900B"
+      },
+      "total_loans": {
+        "value": 933.0,
+        "formatted": "$933B"
+      },
+      "total_deposits": {
+        "value": 1234.0,
+        "formatted": "$1234B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 80.6,
+        "formatted": "80.6%"
+      },
+      "common_equity": {
+        "value": 108.0,
+        "formatted": "$108B"
+      },
+      "non_interest_revenue": {
+        "value": 5122.0,
+        "formatted": "$5.1B"
+      },
+      "aum": {
+        "value": 529.0,
+        "formatted": "$529B"
+      },
+      "dividend_per_share": {
+        "value": 1.01,
+        "formatted": "$1.01"
+      }
+    }
+  },
+  {
+    "bank_id": "BMO",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q3",
+    "metrics": {
+      "total_revenue": {
+        "value": 8220.0,
+        "formatted": "$8.2B"
+      },
+      "net_income": {
+        "value": 2051.0,
+        "formatted": "$2.1B"
+      },
+      "diluted_eps": {
+        "value": 2.76,
+        "formatted": "$2.76"
+      },
+      "roe": {
+        "value": 11.0,
+        "formatted": "11.0%"
+      },
+      "roa": {
+        "value": 0.8,
+        "formatted": "0.8%"
+      },
+      "cet1_ratio": {
+        "value": 13.6,
+        "formatted": "13.6%"
+      },
+      "tier1_ratio": {
+        "value": 15.2,
+        "formatted": "15.2%"
+      },
+      "total_capital_ratio": {
+        "value": 17.0,
+        "formatted": "17.0%"
+      },
+      "book_value_per_share": {
+        "value": 105.38,
+        "formatted": "$105.38"
+      },
+      "nim": {
+        "value": 2.8,
+        "formatted": "2.8%"
+      },
+      "efficiency_ratio": {
+        "value": 58.4,
+        "formatted": "58.4%"
+      },
+      "operating_leverage": {
+        "value": 5.0,
+        "formatted": "5.0%"
+      },
+      "net_interest_income": {
+        "value": 4932.0,
+        "formatted": "$4.9B"
+      },
+      "pcl": {
+        "value": 598.0,
+        "formatted": "$598M"
+      },
+      "pcl_ratio": {
+        "value": 53.7,
+        "formatted": "54 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 3157.0,
+        "formatted": "$3.2B"
+      },
+      "gil_ratio": {
+        "value": 0.7,
+        "formatted": "0.7%"
+      },
+      "total_assets": {
+        "value": 1129.0,
+        "formatted": "$1129B"
+      },
+      "total_loans": {
+        "value": 472.0,
+        "formatted": "$472B"
+      },
+      "total_deposits": {
+        "value": 717.0,
+        "formatted": "$717B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 67.9,
+        "formatted": "67.9%"
+      },
+      "common_equity": {
+        "value": 78.0,
+        "formatted": "$78B"
+      },
+      "non_interest_revenue": {
+        "value": 3079.0,
+        "formatted": "$3.1B"
+      },
+      "aum": {
+        "value": 363.0,
+        "formatted": "$363B"
+      },
+      "dividend_per_share": {
+        "value": 1.59,
+        "formatted": "$1.59"
+      }
+    }
+  },
+  {
+    "bank_id": "BNS",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q3",
+    "metrics": {
+      "total_revenue": {
+        "value": 8507.0,
+        "formatted": "$8.5B"
+      },
+      "net_income": {
+        "value": 1879.0,
+        "formatted": "$1.9B"
+      },
+      "diluted_eps": {
+        "value": 1.42,
+        "formatted": "$1.42"
+      },
+      "roe": {
+        "value": 9.7,
+        "formatted": "9.7%"
+      },
+      "roa": {
+        "value": 0.6,
+        "formatted": "0.6%"
+      },
+      "cet1_ratio": {
+        "value": 12.7,
+        "formatted": "12.7%"
+      },
+      "tier1_ratio": {
+        "value": 14.4,
+        "formatted": "14.4%"
+      },
+      "total_capital_ratio": {
+        "value": 15.9,
+        "formatted": "15.9%"
+      },
+      "book_value_per_share": {
+        "value": 60.78,
+        "formatted": "$60.78"
+      },
+      "nim": {
+        "value": 2.5,
+        "formatted": "2.5%"
+      },
+      "efficiency_ratio": {
+        "value": 62.0,
+        "formatted": "62.0%"
+      },
+      "operating_leverage": {
+        "value": -1.5,
+        "formatted": "-1.5%"
+      },
+      "net_interest_income": {
+        "value": 4915.0,
+        "formatted": "$4.9B"
+      },
+      "pcl": {
+        "value": 1012.0,
+        "formatted": "$1.0B"
+      },
+      "pcl_ratio": {
+        "value": 53.3,
+        "formatted": "53 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 5867.0,
+        "formatted": "$5.9B"
+      },
+      "gil_ratio": {
+        "value": 0.8,
+        "formatted": "0.8%"
+      },
+      "total_assets": {
+        "value": 1350.0,
+        "formatted": "$1350B"
+      },
+      "total_loans": {
+        "value": 802.0,
+        "formatted": "$802B"
+      },
+      "total_deposits": {
+        "value": 896.0,
+        "formatted": "$896B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 94.8,
+        "formatted": "94.8%"
+      },
+      "common_equity": {
+        "value": 82.0,
+        "formatted": "$82B"
+      },
+      "non_interest_revenue": {
+        "value": 3476.0,
+        "formatted": "$3.5B"
+      },
+      "aum": {
+        "value": 320.0,
+        "formatted": "$320B"
+      },
+      "dividend_per_share": {
+        "value": 1.05,
+        "formatted": "$1.05"
+      }
+    }
+  },
+  {
+    "bank_id": "CM",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q3",
+    "metrics": {
+      "total_revenue": {
+        "value": 6379.0,
+        "formatted": "$6.4B"
+      },
+      "net_income": {
+        "value": 1676.0,
+        "formatted": "$1.7B"
+      },
+      "diluted_eps": {
+        "value": 1.77,
+        "formatted": "$1.77"
+      },
+      "roe": {
+        "value": 12.8,
+        "formatted": "12.8%"
+      },
+      "roa": {
+        "value": 0.9,
+        "formatted": "0.9%"
+      },
+      "cet1_ratio": {
+        "value": 13.6,
+        "formatted": "13.6%"
+      },
+      "tier1_ratio": {
+        "value": 15.1,
+        "formatted": "15.1%"
+      },
+      "total_capital_ratio": {
+        "value": 16.8,
+        "formatted": "16.8%"
+      },
+      "book_value_per_share": {
+        "value": 59.11,
+        "formatted": "$59.11"
+      },
+      "nim": {
+        "value": 2.9,
+        "formatted": "2.9%"
+      },
+      "efficiency_ratio": {
+        "value": 56.2,
+        "formatted": "56.2%"
+      },
+      "operating_leverage": {
+        "value": 1.6,
+        "formatted": "1.6%"
+      },
+      "net_interest_income": {
+        "value": 3831.0,
+        "formatted": "$3.8B"
+      },
+      "pcl": {
+        "value": 437.0,
+        "formatted": "$437M"
+      },
+      "pcl_ratio": {
+        "value": 32.1,
+        "formatted": "32 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 2050.0,
+        "formatted": "$2.0B"
+      },
+      "gil_ratio": {
+        "value": 0.4,
+        "formatted": "0.4%"
+      },
+      "total_assets": {
+        "value": 889.0,
+        "formatted": "$889B"
+      },
+      "total_loans": {
+        "value": 518.0,
+        "formatted": "$518B"
+      },
+      "total_deposits": {
+        "value": 662.0,
+        "formatted": "$662B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 80.6,
+        "formatted": "80.6%"
+      },
+      "common_equity": {
+        "value": 55.0,
+        "formatted": "$55B"
+      },
+      "non_interest_revenue": {
+        "value": 2633.0,
+        "formatted": "$2.6B"
+      },
+      "aum": {
+        "value": 305.0,
+        "formatted": "$305B"
+      },
+      "dividend_per_share": {
+        "value": 0.92,
+        "formatted": "$0.92"
+      }
+    }
+  },
+  {
+    "bank_id": "NA",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q3",
+    "metrics": {
+      "total_revenue": {
+        "value": 2802.0,
+        "formatted": "$2.8B"
+      },
+      "net_income": {
+        "value": 891.0,
+        "formatted": "$891M"
+      },
+      "diluted_eps": {
+        "value": 2.49,
+        "formatted": "$2.49"
+      },
+      "roe": {
+        "value": 18.0,
+        "formatted": "18.0%"
+      },
+      "roa": {
+        "value": 1.0,
+        "formatted": "1.0%"
+      },
+      "cet1_ratio": {
+        "value": 13.2,
+        "formatted": "13.2%"
+      },
+      "tier1_ratio": {
+        "value": 15.0,
+        "formatted": "15.0%"
+      },
+      "total_capital_ratio": {
+        "value": 17.3,
+        "formatted": "17.3%"
+      },
+      "book_value_per_share": {
+        "value": 62.23,
+        "formatted": "$62.23"
+      },
+      "nim": {
+        "value": 2.9,
+        "formatted": "2.9%"
+      },
+      "efficiency_ratio": {
+        "value": 54.5,
+        "formatted": "54.5%"
+      },
+      "operating_leverage": {
+        "value": 3.5,
+        "formatted": "3.5%"
+      },
+      "net_interest_income": {
+        "value": 1670.0,
+        "formatted": "$1.7B"
+      },
+      "pcl": {
+        "value": 128.0,
+        "formatted": "$128M"
+      },
+      "pcl_ratio": {
+        "value": 21.3,
+        "formatted": "21 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 633.0,
+        "formatted": "$633M"
+      },
+      "gil_ratio": {
+        "value": 0.3,
+        "formatted": "0.3%"
+      },
+      "total_assets": {
+        "value": 423.0,
+        "formatted": "$423B"
+      },
+      "total_loans": {
+        "value": 245.0,
+        "formatted": "$245B"
+      },
+      "total_deposits": {
+        "value": 293.0,
+        "formatted": "$293B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 84.6,
+        "formatted": "84.6%"
+      },
+      "common_equity": {
+        "value": 21.0,
+        "formatted": "$21B"
+      },
+      "non_interest_revenue": {
+        "value": 1107.0,
+        "formatted": "$1.1B"
+      },
+      "aum": {
+        "value": 148.0,
+        "formatted": "$148B"
+      },
+      "dividend_per_share": {
+        "value": 1.1,
+        "formatted": "$1.10"
+      }
+    }
+  },
+  {
+    "bank_id": "RY",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q4",
+    "metrics": {
+      "total_revenue": {
+        "value": 15952.0,
+        "formatted": "$16.0B"
+      },
+      "net_income": {
+        "value": 4476.0,
+        "formatted": "$4.5B"
+      },
+      "diluted_eps": {
+        "value": 3.27,
+        "formatted": "$3.27"
+      },
+      "roe": {
+        "value": 17.3,
+        "formatted": "17.3%"
+      },
+      "roa": {
+        "value": 1.0,
+        "formatted": "1.0%"
+      },
+      "cet1_ratio": {
+        "value": 13.7,
+        "formatted": "13.7%"
+      },
+      "tier1_ratio": {
+        "value": 16.1,
+        "formatted": "16.1%"
+      },
+      "total_capital_ratio": {
+        "value": 17.8,
+        "formatted": "17.8%"
+      },
+      "book_value_per_share": {
+        "value": 91.95,
+        "formatted": "$91.95"
+      },
+      "nim": {
+        "value": 2.8,
+        "formatted": "2.8%"
+      },
+      "efficiency_ratio": {
+        "value": 56.9,
+        "formatted": "56.9%"
+      },
+      "operating_leverage": {
+        "value": 2.2,
+        "formatted": "2.2%"
+      },
+      "net_interest_income": {
+        "value": 8867.0,
+        "formatted": "$8.9B"
+      },
+      "pcl": {
+        "value": 947.0,
+        "formatted": "$947M"
+      },
+      "pcl_ratio": {
+        "value": 26.7,
+        "formatted": "27 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 4477.0,
+        "formatted": "$4.5B"
+      },
+      "gil_ratio": {
+        "value": 0.5,
+        "formatted": "0.5%"
+      },
+      "total_assets": {
+        "value": 2256.0,
+        "formatted": "$2256B"
+      },
+      "total_loans": {
+        "value": 980.0,
+        "formatted": "$980B"
+      },
+      "total_deposits": {
+        "value": 1238.0,
+        "formatted": "$1238B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 85.5,
+        "formatted": "85.5%"
+      },
+      "common_equity": {
+        "value": 133.0,
+        "formatted": "$133B"
+      },
+      "non_interest_revenue": {
+        "value": 7070.0,
+        "formatted": "$7.1B"
+      },
+      "aum": {
+        "value": 1421.0,
+        "formatted": "$1421B"
+      },
+      "dividend_per_share": {
+        "value": 1.5,
+        "formatted": "$1.50"
+      }
+    }
+  },
+  {
+    "bank_id": "TD",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q4",
+    "metrics": {
+      "total_revenue": {
+        "value": 14582.0,
+        "formatted": "$14.6B"
+      },
+      "net_income": {
+        "value": 3440.0,
+        "formatted": "$3.4B"
+      },
+      "diluted_eps": {
+        "value": 1.99,
+        "formatted": "$1.99"
+      },
+      "roe": {
+        "value": 12.4,
+        "formatted": "12.4%"
+      },
+      "roa": {
+        "value": 0.8,
+        "formatted": "0.8%"
+      },
+      "cet1_ratio": {
+        "value": 13.9,
+        "formatted": "13.9%"
+      },
+      "tier1_ratio": {
+        "value": 15.3,
+        "formatted": "15.3%"
+      },
+      "total_capital_ratio": {
+        "value": 17.9,
+        "formatted": "17.9%"
+      },
+      "book_value_per_share": {
+        "value": 67.03,
+        "formatted": "$67.03"
+      },
+      "nim": {
+        "value": 3.0,
+        "formatted": "3.0%"
+      },
+      "efficiency_ratio": {
+        "value": 60.5,
+        "formatted": "60.5%"
+      },
+      "operating_leverage": {
+        "value": 0.5,
+        "formatted": "0.5%"
+      },
+      "net_interest_income": {
+        "value": 9199.0,
+        "formatted": "$9.2B"
+      },
+      "pcl": {
+        "value": 1291.0,
+        "formatted": "$1.3B"
+      },
+      "pcl_ratio": {
+        "value": 56.0,
+        "formatted": "56 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 5710.0,
+        "formatted": "$5.7B"
+      },
+      "gil_ratio": {
+        "value": 0.6,
+        "formatted": "0.6%"
+      },
+      "total_assets": {
+        "value": 2081.0,
+        "formatted": "$2081B"
+      },
+      "total_loans": {
+        "value": 1005.0,
+        "formatted": "$1005B"
+      },
+      "total_deposits": {
+        "value": 1286.0,
+        "formatted": "$1286B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 82.4,
+        "formatted": "82.4%"
+      },
+      "common_equity": {
+        "value": 117.0,
+        "formatted": "$117B"
+      },
+      "non_interest_revenue": {
+        "value": 5477.0,
+        "formatted": "$5.5B"
+      },
+      "aum": {
+        "value": 548.0,
+        "formatted": "$548B"
+      },
+      "dividend_per_share": {
+        "value": 1.09,
+        "formatted": "$1.09"
+      }
+    }
+  },
+  {
+    "bank_id": "BMO",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q4",
+    "metrics": {
+      "total_revenue": {
+        "value": 8385.0,
+        "formatted": "$8.4B"
+      },
+      "net_income": {
+        "value": 2150.0,
+        "formatted": "$2.1B"
+      },
+      "diluted_eps": {
+        "value": 2.84,
+        "formatted": "$2.84"
+      },
+      "roe": {
+        "value": 11.5,
+        "formatted": "11.5%"
+      },
+      "roa": {
+        "value": 0.8,
+        "formatted": "0.8%"
+      },
+      "cet1_ratio": {
+        "value": 14.6,
+        "formatted": "14.6%"
+      },
+      "tier1_ratio": {
+        "value": 16.0,
+        "formatted": "16.0%"
+      },
+      "total_capital_ratio": {
+        "value": 17.9,
+        "formatted": "17.9%"
+      },
+      "book_value_per_share": {
+        "value": 111.05,
+        "formatted": "$111.05"
+      },
+      "nim": {
+        "value": 2.9,
+        "formatted": "2.9%"
+      },
+      "efficiency_ratio": {
+        "value": 62.3,
+        "formatted": "62.3%"
+      },
+      "operating_leverage": {
+        "value": 5.5,
+        "formatted": "5.5%"
+      },
+      "net_interest_income": {
+        "value": 5183.0,
+        "formatted": "$5.2B"
+      },
+      "pcl": {
+        "value": 642.0,
+        "formatted": "$642M"
+      },
+      "pcl_ratio": {
+        "value": 58.3,
+        "formatted": "58 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 3423.0,
+        "formatted": "$3.4B"
+      },
+      "gil_ratio": {
+        "value": 0.7,
+        "formatted": "0.7%"
+      },
+      "total_assets": {
+        "value": 1218.0,
+        "formatted": "$1218B"
+      },
+      "total_loans": {
+        "value": 485.0,
+        "formatted": "$485B"
+      },
+      "total_deposits": {
+        "value": 746.0,
+        "formatted": "$746B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 73.4,
+        "formatted": "73.4%"
+      },
+      "common_equity": {
+        "value": 81.0,
+        "formatted": "$81B"
+      },
+      "non_interest_revenue": {
+        "value": 3370.0,
+        "formatted": "$3.4B"
+      },
+      "aum": {
+        "value": 401.0,
+        "formatted": "$401B"
+      },
+      "dividend_per_share": {
+        "value": 1.63,
+        "formatted": "$1.63"
+      }
+    }
+  },
+  {
+    "bank_id": "BNS",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q4",
+    "metrics": {
+      "total_revenue": {
+        "value": 8713.0,
+        "formatted": "$8.7B"
+      },
+      "net_income": {
+        "value": 1995.0,
+        "formatted": "$2.0B"
+      },
+      "diluted_eps": {
+        "value": 1.59,
+        "formatted": "$1.59"
+      },
+      "roe": {
+        "value": 10.5,
+        "formatted": "10.5%"
+      },
+      "roa": {
+        "value": 0.7,
+        "formatted": "0.7%"
+      },
+      "cet1_ratio": {
+        "value": 13.3,
+        "formatted": "13.3%"
+      },
+      "tier1_ratio": {
+        "value": 14.8,
+        "formatted": "14.8%"
+      },
+      "total_capital_ratio": {
+        "value": 17.0,
+        "formatted": "17.0%"
+      },
+      "book_value_per_share": {
+        "value": 65.42,
+        "formatted": "$65.42"
+      },
+      "nim": {
+        "value": 2.6,
+        "formatted": "2.6%"
+      },
+      "efficiency_ratio": {
+        "value": 66.8,
+        "formatted": "66.8%"
+      },
+      "operating_leverage": {
+        "value": -1.6,
+        "formatted": "-1.6%"
+      },
+      "net_interest_income": {
+        "value": 5354.0,
+        "formatted": "$5.4B"
+      },
+      "pcl": {
+        "value": 1045.0,
+        "formatted": "$1.0B"
+      },
+      "pcl_ratio": {
+        "value": 55.3,
+        "formatted": "55 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 6329.0,
+        "formatted": "$6.3B"
+      },
+      "gil_ratio": {
+        "value": 0.8,
+        "formatted": "0.8%"
+      },
+      "total_assets": {
+        "value": 1413.0,
+        "formatted": "$1413B"
+      },
+      "total_loans": {
+        "value": 828.0,
+        "formatted": "$828B"
+      },
+      "total_deposits": {
+        "value": 956.0,
+        "formatted": "$956B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 101.0,
+        "formatted": "101.0%"
+      },
+      "common_equity": {
+        "value": 83.0,
+        "formatted": "$83B"
+      },
+      "non_interest_revenue": {
+        "value": 3656.0,
+        "formatted": "$3.7B"
+      },
+      "aum": {
+        "value": 351.0,
+        "formatted": "$351B"
+      },
+      "dividend_per_share": {
+        "value": 1.12,
+        "formatted": "$1.12"
+      }
+    }
+  },
+  {
+    "bank_id": "CM",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q4",
+    "metrics": {
+      "total_revenue": {
+        "value": 6687.0,
+        "formatted": "$6.7B"
+      },
+      "net_income": {
+        "value": 1811.0,
+        "formatted": "$1.8B"
+      },
+      "diluted_eps": {
+        "value": 1.87,
+        "formatted": "$1.87"
+      },
+      "roe": {
+        "value": 13.7,
+        "formatted": "13.7%"
+      },
+      "roa": {
+        "value": 0.9,
+        "formatted": "0.9%"
+      },
+      "cet1_ratio": {
+        "value": 14.6,
+        "formatted": "14.6%"
+      },
+      "tier1_ratio": {
+        "value": 15.5,
+        "formatted": "15.5%"
+      },
+      "total_capital_ratio": {
+        "value": 17.7,
+        "formatted": "17.7%"
+      },
+      "book_value_per_share": {
+        "value": 61.6,
+        "formatted": "$61.60"
+      },
+      "nim": {
+        "value": 2.9,
+        "formatted": "2.9%"
+      },
+      "efficiency_ratio": {
+        "value": 58.0,
+        "formatted": "58.0%"
+      },
+      "operating_leverage": {
+        "value": 1.6,
+        "formatted": "1.6%"
+      },
+      "net_interest_income": {
+        "value": 4052.0,
+        "formatted": "$4.1B"
+      },
+      "pcl": {
+        "value": 449.0,
+        "formatted": "$449M"
+      },
+      "pcl_ratio": {
+        "value": 34.7,
+        "formatted": "35 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 2208.0,
+        "formatted": "$2.2B"
+      },
+      "gil_ratio": {
+        "value": 0.4,
+        "formatted": "0.4%"
+      },
+      "total_assets": {
+        "value": 934.0,
+        "formatted": "$934B"
+      },
+      "total_loans": {
+        "value": 550.0,
+        "formatted": "$550B"
+      },
+      "total_deposits": {
+        "value": 700.0,
+        "formatted": "$700B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 87.6,
+        "formatted": "87.6%"
+      },
+      "common_equity": {
+        "value": 57.0,
+        "formatted": "$57B"
+      },
+      "non_interest_revenue": {
+        "value": 2686.0,
+        "formatted": "$2.7B"
+      },
+      "aum": {
+        "value": 323.0,
+        "formatted": "$323B"
+      },
+      "dividend_per_share": {
+        "value": 0.97,
+        "formatted": "$0.97"
+      }
+    }
+  },
+  {
+    "bank_id": "NA",
+    "fiscal_year": 2024,
+    "fiscal_quarter": "Q4",
+    "metrics": {
+      "total_revenue": {
+        "value": 2964.0,
+        "formatted": "$3.0B"
+      },
+      "net_income": {
+        "value": 980.0,
+        "formatted": "$980M"
+      },
+      "diluted_eps": {
+        "value": 2.64,
+        "formatted": "$2.64"
+      },
+      "roe": {
+        "value": 18.2,
+        "formatted": "18.2%"
+      },
+      "roa": {
+        "value": 1.1,
+        "formatted": "1.1%"
+      },
+      "cet1_ratio": {
+        "value": 14.6,
+        "formatted": "14.6%"
+      },
+      "tier1_ratio": {
+        "value": 16.2,
+        "formatted": "16.2%"
+      },
+      "total_capital_ratio": {
+        "value": 17.8,
+        "formatted": "17.8%"
+      },
+      "book_value_per_share": {
+        "value": 64.03,
+        "formatted": "$64.03"
+      },
+      "nim": {
+        "value": 3.1,
+        "formatted": "3.1%"
+      },
+      "efficiency_ratio": {
+        "value": 58.6,
+        "formatted": "58.6%"
+      },
+      "operating_leverage": {
+        "value": 3.9,
+        "formatted": "3.9%"
+      },
+      "net_interest_income": {
+        "value": 1725.0,
+        "formatted": "$1.7B"
+      },
+      "pcl": {
+        "value": 136.0,
+        "formatted": "$136M"
+      },
+      "pcl_ratio": {
+        "value": 22.4,
+        "formatted": "22 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 658.0,
+        "formatted": "$658M"
+      },
+      "gil_ratio": {
+        "value": 0.3,
+        "formatted": "0.3%"
+      },
+      "total_assets": {
+        "value": 432.0,
+        "formatted": "$432B"
+      },
+      "total_loans": {
+        "value": 253.0,
+        "formatted": "$253B"
+      },
+      "total_deposits": {
+        "value": 298.0,
+        "formatted": "$298B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 94.1,
+        "formatted": "94.1%"
+      },
+      "common_equity": {
+        "value": 23.0,
+        "formatted": "$23B"
+      },
+      "non_interest_revenue": {
+        "value": 1173.0,
+        "formatted": "$1.2B"
+      },
+      "aum": {
+        "value": 157.0,
+        "formatted": "$157B"
+      },
+      "dividend_per_share": {
+        "value": 1.19,
+        "formatted": "$1.19"
+      }
+    }
+  },
+  {
+    "bank_id": "RY",
+    "fiscal_year": 2025,
+    "fiscal_quarter": "Q1",
+    "metrics": {
+      "total_revenue": {
+        "value": 15991.0,
+        "formatted": "$16.0B"
+      },
+      "net_income": {
+        "value": 4611.0,
+        "formatted": "$4.6B"
+      },
+      "diluted_eps": {
+        "value": 3.21,
+        "formatted": "$3.21"
+      },
+      "roe": {
+        "value": 17.6,
+        "formatted": "17.6%"
+      },
+      "roa": {
+        "value": 1.0,
+        "formatted": "1.0%"
+      },
+      "cet1_ratio": {
+        "value": 14.4,
+        "formatted": "14.4%"
+      },
+      "tier1_ratio": {
+        "value": 16.2,
+        "formatted": "16.2%"
+      },
+      "total_capital_ratio": {
+        "value": 17.6,
+        "formatted": "17.6%"
+      },
+      "book_value_per_share": {
+        "value": 93.12,
+        "formatted": "$93.12"
+      },
+      "nim": {
+        "value": 2.9,
+        "formatted": "2.9%"
+      },
+      "efficiency_ratio": {
+        "value": 56.5,
+        "formatted": "56.5%"
+      },
+      "operating_leverage": {
+        "value": 2.2,
+        "formatted": "2.2%"
+      },
+      "net_interest_income": {
+        "value": 8985.0,
+        "formatted": "$9.0B"
+      },
+      "pcl": {
+        "value": 936.0,
+        "formatted": "$936M"
+      },
+      "pcl_ratio": {
+        "value": 26.7,
+        "formatted": "27 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 4599.0,
+        "formatted": "$4.6B"
+      },
+      "gil_ratio": {
+        "value": 0.5,
+        "formatted": "0.5%"
+      },
+      "total_assets": {
+        "value": 2196.0,
+        "formatted": "$2196B"
+      },
+      "total_loans": {
+        "value": 945.0,
+        "formatted": "$945B"
+      },
+      "total_deposits": {
+        "value": 1215.0,
+        "formatted": "$1215B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 84.6,
+        "formatted": "84.6%"
+      },
+      "common_equity": {
+        "value": 134.0,
+        "formatted": "$134B"
+      },
+      "non_interest_revenue": {
+        "value": 7092.0,
+        "formatted": "$7.1B"
+      },
+      "aum": {
+        "value": 1482.0,
+        "formatted": "$1482B"
+      },
+      "dividend_per_share": {
+        "value": 1.44,
+        "formatted": "$1.44"
+      }
+    }
+  },
+  {
+    "bank_id": "TD",
+    "fiscal_year": 2025,
+    "fiscal_quarter": "Q1",
+    "metrics": {
+      "total_revenue": {
+        "value": 14748.0,
+        "formatted": "$14.7B"
+      },
+      "net_income": {
+        "value": 3579.0,
+        "formatted": "$3.6B"
+      },
+      "diluted_eps": {
+        "value": 1.98,
+        "formatted": "$1.98"
+      },
+      "roe": {
+        "value": 12.9,
+        "formatted": "12.9%"
+      },
+      "roa": {
+        "value": 0.8,
+        "formatted": "0.8%"
+      },
+      "cet1_ratio": {
+        "value": 13.8,
+        "formatted": "13.8%"
+      },
+      "tier1_ratio": {
+        "value": 15.8,
+        "formatted": "15.8%"
+      },
+      "total_capital_ratio": {
+        "value": 17.8,
+        "formatted": "17.8%"
+      },
+      "book_value_per_share": {
+        "value": 69.11,
+        "formatted": "$69.11"
+      },
+      "nim": {
+        "value": 3.0,
+        "formatted": "3.0%"
+      },
+      "efficiency_ratio": {
+        "value": 63.4,
+        "formatted": "63.4%"
+      },
+      "operating_leverage": {
+        "value": 0.6,
+        "formatted": "0.6%"
+      },
+      "net_interest_income": {
+        "value": 9217.0,
+        "formatted": "$9.2B"
+      },
+      "pcl": {
+        "value": 1295.0,
+        "formatted": "$1.3B"
+      },
+      "pcl_ratio": {
+        "value": 57.5,
+        "formatted": "58 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 5746.0,
+        "formatted": "$5.7B"
+      },
+      "gil_ratio": {
+        "value": 0.6,
+        "formatted": "0.6%"
+      },
+      "total_assets": {
+        "value": 2155.0,
+        "formatted": "$2155B"
+      },
+      "total_loans": {
+        "value": 1039.0,
+        "formatted": "$1039B"
+      },
+      "total_deposits": {
+        "value": 1319.0,
+        "formatted": "$1319B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 82.6,
+        "formatted": "82.6%"
+      },
+      "common_equity": {
+        "value": 121.0,
+        "formatted": "$121B"
+      },
+      "non_interest_revenue": {
+        "value": 5507.0,
+        "formatted": "$5.5B"
+      },
+      "aum": {
+        "value": 569.0,
+        "formatted": "$569B"
+      },
+      "dividend_per_share": {
+        "value": 1.1,
+        "formatted": "$1.10"
+      }
+    }
+  },
+  {
+    "bank_id": "BMO",
+    "fiscal_year": 2025,
+    "fiscal_quarter": "Q1",
+    "metrics": {
+      "total_revenue": {
+        "value": 8409.0,
+        "formatted": "$8.4B"
+      },
+      "net_income": {
+        "value": 2108.0,
+        "formatted": "$2.1B"
+      },
+      "diluted_eps": {
+        "value": 2.9,
+        "formatted": "$2.90"
+      },
+      "roe": {
+        "value": 11.7,
+        "formatted": "11.7%"
+      },
+      "roa": {
+        "value": 0.8,
+        "formatted": "0.8%"
+      },
+      "cet1_ratio": {
+        "value": 14.0,
+        "formatted": "14.0%"
+      },
+      "tier1_ratio": {
+        "value": 16.3,
+        "formatted": "16.3%"
+      },
+      "total_capital_ratio": {
+        "value": 18.6,
+        "formatted": "18.6%"
+      },
+      "book_value_per_share": {
+        "value": 111.28,
+        "formatted": "$111.28"
+      },
+      "nim": {
+        "value": 3.0,
+        "formatted": "3.0%"
+      },
+      "efficiency_ratio": {
+        "value": 63.0,
+        "formatted": "63.0%"
+      },
+      "operating_leverage": {
+        "value": 5.3,
+        "formatted": "5.3%"
+      },
+      "net_interest_income": {
+        "value": 5359.0,
+        "formatted": "$5.4B"
+      },
+      "pcl": {
+        "value": 652.0,
+        "formatted": "$652M"
+      },
+      "pcl_ratio": {
+        "value": 57.6,
+        "formatted": "58 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 3448.0,
+        "formatted": "$3.4B"
+      },
+      "gil_ratio": {
+        "value": 0.8,
+        "formatted": "0.8%"
+      },
+      "total_assets": {
+        "value": 1208.0,
+        "formatted": "$1208B"
+      },
+      "total_loans": {
+        "value": 495.0,
+        "formatted": "$495B"
+      },
+      "total_deposits": {
+        "value": 742.0,
+        "formatted": "$742B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 74.1,
+        "formatted": "74.1%"
+      },
+      "common_equity": {
+        "value": 81.0,
+        "formatted": "$81B"
+      },
+      "non_interest_revenue": {
+        "value": 3391.0,
+        "formatted": "$3.4B"
+      },
+      "aum": {
+        "value": 405.0,
+        "formatted": "$405B"
+      },
+      "dividend_per_share": {
+        "value": 1.71,
+        "formatted": "$1.71"
+      }
+    }
+  },
+  {
+    "bank_id": "BNS",
+    "fiscal_year": 2025,
+    "fiscal_quarter": "Q1",
+    "metrics": {
+      "total_revenue": {
+        "value": 9166.0,
+        "formatted": "$9.2B"
+      },
+      "net_income": {
+        "value": 2063.0,
+        "formatted": "$2.1B"
+      },
+      "diluted_eps": {
+        "value": 1.59,
+        "formatted": "$1.59"
+      },
+      "roe": {
+        "value": 10.4,
+        "formatted": "10.4%"
+      },
+      "roa": {
+        "value": 0.7,
+        "formatted": "0.7%"
+      },
+      "cet1_ratio": {
+        "value": 14.0,
+        "formatted": "14.0%"
+      },
+      "tier1_ratio": {
+        "value": 15.9,
+        "formatted": "15.9%"
+      },
+      "total_capital_ratio": {
+        "value": 17.4,
+        "formatted": "17.4%"
+      },
+      "book_value_per_share": {
+        "value": 64.26,
+        "formatted": "$64.26"
+      },
+      "nim": {
+        "value": 2.6,
+        "formatted": "2.6%"
+      },
+      "efficiency_ratio": {
+        "value": 65.9,
+        "formatted": "65.9%"
+      },
+      "operating_leverage": {
+        "value": -1.7,
+        "formatted": "-1.7%"
+      },
+      "net_interest_income": {
+        "value": 5406.0,
+        "formatted": "$5.4B"
+      },
+      "pcl": {
+        "value": 1076.0,
+        "formatted": "$1.1B"
+      },
+      "pcl_ratio": {
+        "value": 57.4,
+        "formatted": "57 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 6373.0,
+        "formatted": "$6.4B"
+      },
+      "gil_ratio": {
+        "value": 0.8,
+        "formatted": "0.8%"
+      },
+      "total_assets": {
+        "value": 1402.0,
+        "formatted": "$1402B"
+      },
+      "total_loans": {
+        "value": 862.0,
+        "formatted": "$862B"
+      },
+      "total_deposits": {
+        "value": 928.0,
+        "formatted": "$928B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 99.1,
+        "formatted": "99.1%"
+      },
+      "common_equity": {
+        "value": 88.0,
+        "formatted": "$88B"
+      },
+      "non_interest_revenue": {
+        "value": 3709.0,
+        "formatted": "$3.7B"
+      },
+      "aum": {
+        "value": 357.0,
+        "formatted": "$357B"
+      },
+      "dividend_per_share": {
+        "value": 1.14,
+        "formatted": "$1.14"
+      }
+    }
+  },
+  {
+    "bank_id": "CM",
+    "fiscal_year": 2025,
+    "fiscal_quarter": "Q1",
+    "metrics": {
+      "total_revenue": {
+        "value": 6882.0,
+        "formatted": "$6.9B"
+      },
+      "net_income": {
+        "value": 1860.0,
+        "formatted": "$1.9B"
+      },
+      "diluted_eps": {
+        "value": 1.89,
+        "formatted": "$1.89"
+      },
+      "roe": {
+        "value": 13.8,
+        "formatted": "13.8%"
+      },
+      "roa": {
+        "value": 0.9,
+        "formatted": "0.9%"
+      },
+      "cet1_ratio": {
+        "value": 14.1,
+        "formatted": "14.1%"
+      },
+      "tier1_ratio": {
+        "value": 16.1,
+        "formatted": "16.1%"
+      },
+      "total_capital_ratio": {
+        "value": 17.4,
+        "formatted": "17.4%"
+      },
+      "book_value_per_share": {
+        "value": 60.68,
+        "formatted": "$60.68"
+      },
+      "nim": {
+        "value": 2.9,
+        "formatted": "2.9%"
+      },
+      "efficiency_ratio": {
+        "value": 61.8,
+        "formatted": "61.8%"
+      },
+      "operating_leverage": {
+        "value": 1.7,
+        "formatted": "1.7%"
+      },
+      "net_interest_income": {
+        "value": 4126.0,
+        "formatted": "$4.1B"
+      },
+      "pcl": {
+        "value": 452.0,
+        "formatted": "$452M"
+      },
+      "pcl_ratio": {
+        "value": 34.5,
+        "formatted": "34 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 2177.0,
+        "formatted": "$2.2B"
+      },
+      "gil_ratio": {
+        "value": 0.4,
+        "formatted": "0.4%"
+      },
+      "total_assets": {
+        "value": 959.0,
+        "formatted": "$959B"
+      },
+      "total_loans": {
+        "value": 547.0,
+        "formatted": "$547B"
+      },
+      "total_deposits": {
+        "value": 710.0,
+        "formatted": "$710B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 86.1,
+        "formatted": "86.1%"
+      },
+      "common_equity": {
+        "value": 59.0,
+        "formatted": "$59B"
+      },
+      "non_interest_revenue": {
+        "value": 2739.0,
+        "formatted": "$2.7B"
+      },
+      "aum": {
+        "value": 334.0,
+        "formatted": "$334B"
+      },
+      "dividend_per_share": {
+        "value": 0.94,
+        "formatted": "$0.94"
+      }
+    }
+  },
+  {
+    "bank_id": "NA",
+    "fiscal_year": 2025,
+    "fiscal_quarter": "Q1",
+    "metrics": {
+      "total_revenue": {
+        "value": 2919.0,
+        "formatted": "$2.9B"
+      },
+      "net_income": {
+        "value": 974.0,
+        "formatted": "$974M"
+      },
+      "diluted_eps": {
+        "value": 2.69,
+        "formatted": "$2.69"
+      },
+      "roe": {
+        "value": 18.9,
+        "formatted": "18.9%"
+      },
+      "roa": {
+        "value": 1.1,
+        "formatted": "1.1%"
+      },
+      "cet1_ratio": {
+        "value": 14.7,
+        "formatted": "14.7%"
+      },
+      "tier1_ratio": {
+        "value": 16.7,
+        "formatted": "16.7%"
+      },
+      "total_capital_ratio": {
+        "value": 18.1,
+        "formatted": "18.1%"
+      },
+      "book_value_per_share": {
+        "value": 65.25,
+        "formatted": "$65.25"
+      },
+      "nim": {
+        "value": 3.1,
+        "formatted": "3.1%"
+      },
+      "efficiency_ratio": {
+        "value": 56.9,
+        "formatted": "56.9%"
+      },
+      "operating_leverage": {
+        "value": 4.0,
+        "formatted": "4.0%"
+      },
+      "net_interest_income": {
+        "value": 1791.0,
+        "formatted": "$1.8B"
+      },
+      "pcl": {
+        "value": 136.0,
+        "formatted": "$136M"
+      },
+      "pcl_ratio": {
+        "value": 23.8,
+        "formatted": "24 bps"
+      },
+      "gross_impaired_loans": {
+        "value": 691.0,
+        "formatted": "$691M"
+      },
+      "gil_ratio": {
+        "value": 0.3,
+        "formatted": "0.3%"
+      },
+      "total_assets": {
+        "value": 435.0,
+        "formatted": "$435B"
+      },
+      "total_loans": {
+        "value": 267.0,
+        "formatted": "$267B"
+      },
+      "total_deposits": {
+        "value": 315.0,
+        "formatted": "$315B"
+      },
+      "loan_to_deposit_ratio": {
+        "value": 90.2,
+        "formatted": "90.2%"
+      },
+      "common_equity": {
+        "value": 23.0,
+        "formatted": "$23B"
+      },
+      "non_interest_revenue": {
+        "value": 1169.0,
+        "formatted": "$1.2B"
+      },
+      "aum": {
+        "value": 152.0,
+        "formatted": "$152B"
+      },
+      "dividend_per_share": {
+        "value": 1.18,
+        "formatted": "$1.18"
+      }
+    }
+  }
+]

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Designer - Demo Guide</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      line-height: 1.6;
+      color: #333;
+      background: #f9fafb;
+    }
+    h1 { color: #1f2937; border-bottom: 3px solid #3b82f6; padding-bottom: 10px; }
+    h2 { color: #374151; margin-top: 40px; border-left: 4px solid #3b82f6; padding-left: 12px; }
+    h3 { color: #4b5563; }
+    code {
+      background: #e5e7eb;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+    pre {
+      background: #1f2937;
+      color: #f3f4f6;
+      padding: 16px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+    pre code { background: none; color: inherit; }
+    .tip {
+      background: #dbeafe;
+      border-left: 4px solid #3b82f6;
+      padding: 12px 16px;
+      margin: 16px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .warning {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      padding: 12px 16px;
+      margin: 16px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+    th, td {
+      border: 1px solid #d1d5db;
+      padding: 10px 12px;
+      text-align: left;
+    }
+    th { background: #f3f4f6; }
+    .checklist { list-style: none; padding: 0; }
+    .checklist li {
+      padding: 8px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .checklist li:before {
+      content: '☐ ';
+      color: #6b7280;
+    }
+    a { color: #3b82f6; }
+    .urls {
+      background: #ecfdf5;
+      border: 1px solid #10b981;
+      padding: 16px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .urls a { font-weight: bold; font-size: 1.1em; }
+  </style>
+</head>
+<body>
+  <h1>🏦 Report Designer - Demo Guide</h1>
+
+  <div class="urls">
+    <strong>Application URLs:</strong><br><br>
+    <a href="http://localhost:5173" target="_blank">📱 Frontend: http://localhost:5173</a><br><br>
+    <a href="http://localhost:8000/api/v1/docs" target="_blank">📚 API Docs: http://localhost:8000/api/v1/docs</a>
+  </div>
+
+  <h2>1. Template Management (Home Page)</h2>
+  <p>Open <a href="http://localhost:5173" target="_blank">http://localhost:5173</a></p>
+
+  <h3>Create a Template:</h3>
+  <ol>
+    <li>Click <strong>"New Template"</strong> button</li>
+    <li>Enter name: <code>Q4 2024 Bank Analysis</code></li>
+    <li>Description: <code>Quarterly analysis of Canadian Big 6 banks</code></li>
+    <li>Format: PDF, Orientation: Landscape</li>
+    <li>Click <strong>Create</strong></li>
+  </ol>
+
+  <h2>2. Workspace Overview</h2>
+  <p>After creating, you'll be in the workspace. Header features:</p>
+  <ul>
+    <li><strong>Template name</strong> → Click to edit (change name/format)</li>
+    <li><strong>Edit/Preview</strong> toggle → Switch between editing and preview mode</li>
+    <li><strong>Documents</strong> button → Upload files modal</li>
+    <li><strong>History</strong> button → Version history</li>
+    <li><strong>Generate All</strong> → Batch AI generation</li>
+    <li><strong>Export PDF</strong> → Download report as PDF</li>
+  </ul>
+
+  <h2>3. Section Management (Left Sidebar)</h2>
+
+  <h3>Create sections:</h3>
+  <ol>
+    <li>Click <strong>"+"</strong> to add section</li>
+    <li>Title: <code>Executive Summary</code></li>
+    <li>Layout: Select <strong>"Title + Content"</strong></li>
+    <li>Click <strong>Add</strong></li>
+  </ol>
+
+  <h3>Create more sections:</h3>
+  <ul>
+    <li><code>Revenue Analysis</code> (Two Column layout)</li>
+    <li><code>Capital Ratios</code> (Chart + Text layout)</li>
+  </ul>
+
+  <h3>Drag & Drop:</h3>
+  <ul>
+    <li>Grab the <strong>grip handle</strong> (⠿ 6 dots) on any section</li>
+    <li>Drag to reorder sections</li>
+  </ul>
+
+  <h3>Edit/Delete:</h3>
+  <ul>
+    <li>Hover over section → ✏️ pencil to rename, 🗑️ trash to delete</li>
+  </ul>
+
+  <h2>4. Content Editing (Main Area)</h2>
+
+  <h3>Instructions panel:</h3>
+  <pre><code>Summarize Q4 2024 performance for Royal Bank (RY) including:
+- Revenue and earnings highlights
+- Key metrics vs prior quarter
+- Management commentary from earnings call</code></pre>
+
+  <h3>Features to try:</h3>
+  <ul>
+    <li>Type instructions, see "Unsaved changes" indicator</li>
+    <li>Click <strong>Save</strong> or press <strong>⌘+S / Ctrl+S</strong></li>
+    <li>Notice the toast notification</li>
+  </ul>
+
+  <h3>Version dropdown:</h3>
+  <ul>
+    <li>After saving content multiple times, use the dropdown to view previous versions</li>
+    <li>Historical versions show in amber (read-only)</li>
+  </ul>
+
+  <h2>5. Mini Chat Popup</h2>
+  <p>Click the <strong>💬 chat bubble icon</strong> next to any subsection tab</p>
+
+  <h3>Try these prompts:</h3>
+  <ul>
+    <li><code>Generate content for this section</code></li>
+    <li><code>Summarize key points</code></li>
+    <li><code>Add a data table</code></li>
+  </ul>
+
+  <h2>6. Main Chat Panel (Bottom)</h2>
+  <p>Click <strong>"Chat with AI"</strong> at the bottom to expand</p>
+
+  <h3>Example prompts:</h3>
+  <pre><code>Search for Royal Bank Q4 2024 earnings transcript and summarize the management discussion</code></pre>
+  <pre><code>Get the CET1 ratio for all Big 6 banks in Q4 2024 and create a comparison table</code></pre>
+  <pre><code>What was TD Bank's net income in Q4 2024?</code></pre>
+  <pre><code>Create a new section called "Stock Performance" with a two_column layout</code></pre>
+
+  <div class="tip">
+    <strong>💡 The chat has access to:</strong>
+    <ul>
+      <li>Earnings call transcripts (RY, TD, BMO, BNS, CM, NA)</li>
+      <li>Financial metrics (25 metrics across 5 quarters)</li>
+      <li>Stock prices</li>
+      <li>Your uploaded documents</li>
+    </ul>
+  </div>
+
+  <h2>7. File Uploads</h2>
+  <p>Click <strong>"Documents"</strong> button in header</p>
+
+  <h3>Try:</h3>
+  <ul>
+    <li>Drag & drop a PDF, DOCX, or TXT file</li>
+    <li>See extraction status (Processing → Text extracted)</li>
+    <li>Delete files</li>
+  </ul>
+
+  <h3>Then in chat:</h3>
+  <pre><code>List my uploaded documents</code></pre>
+  <pre><code>Summarize the uploaded document</code></pre>
+
+  <h2>8. Preview Mode</h2>
+  <p>Click <strong>"Preview"</strong> toggle in header</p>
+  <ul>
+    <li>See the assembled report with proper layout styling</li>
+    <li>Each section renders with its layout structure</li>
+    <li>Toggle back to <strong>Edit</strong> to continue working</li>
+  </ul>
+
+  <h2>9. Export PDF</h2>
+  <p>Click <strong>"Export PDF"</strong> button</p>
+  <ul>
+    <li>Downloads the report as a PDF file</li>
+    <li>Check the downloaded file</li>
+  </ul>
+
+  <h2>10. Version History</h2>
+  <p>Click <strong>"History"</strong> button in header</p>
+
+  <h3>Try:</h3>
+  <ol>
+    <li>Click <strong>"Save Current Version"</strong></li>
+    <li>Name it: <code>Before Q4 updates</code></li>
+    <li>Make some changes to sections</li>
+    <li>Go back to History</li>
+    <li>Click <strong>Restore</strong> on the saved version</li>
+    <li>Confirm the restore (auto-saves current state first)</li>
+  </ol>
+
+  <h2>11. Generation Pipeline</h2>
+
+  <div class="warning">
+    <strong>⚠️ Setup:</strong> Make sure at least 2-3 sections have instructions before running.
+  </div>
+
+  <p>Click <strong>"Generate All"</strong></p>
+  <ul>
+    <li>Watch the progress modal</li>
+    <li>See each subsection being generated</li>
+    <li>Content populates automatically</li>
+    <li>Toast notification on completion</li>
+  </ul>
+
+  <h2>📊 Sample Data Available</h2>
+  <table>
+    <tr>
+      <th>Data Source</th>
+      <th>Banks</th>
+      <th>Periods</th>
+    </tr>
+    <tr>
+      <td>Transcripts</td>
+      <td>RY, TD, BMO, BNS, CM, NA</td>
+      <td>FY2024 Q1-Q4, FY2025 Q1</td>
+    </tr>
+    <tr>
+      <td>Financials</td>
+      <td>All Big 6</td>
+      <td>25 metrics × 5 quarters</td>
+    </tr>
+    <tr>
+      <td>Stock Prices</td>
+      <td>All Big 6</td>
+      <td>Quarter-end closing prices</td>
+    </tr>
+  </table>
+
+  <h3>Example financial queries:</h3>
+  <ul>
+    <li><code>What is BMO's efficiency ratio trend over the last 4 quarters?</code></li>
+    <li><code>Compare ROE across all Big 6 banks for Q4 2024</code></li>
+    <li><code>Show me the PCL ratio for Scotia Bank</code></li>
+  </ul>
+
+  <h2>✅ Quick Test Checklist</h2>
+  <ul class="checklist">
+    <li>Create template</li>
+    <li>Add 3 sections with different layouts</li>
+    <li>Drag to reorder sections</li>
+    <li>Add instructions to a subsection</li>
+    <li>Save with ⌘+S (see toast)</li>
+    <li>Use mini chat popup</li>
+    <li>Use main chat to search transcripts</li>
+    <li>Upload a document</li>
+    <li>Switch to Preview mode</li>
+    <li>Export PDF</li>
+    <li>Save a version in History</li>
+    <li>Run Generate All</li>
+    <li>Restore from version history</li>
+  </ul>
+
+</body>
+</html>
