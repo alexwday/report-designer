@@ -14,7 +14,10 @@ router = APIRouter(prefix="/data-sources", tags=["Data Sources"])
 @router.get("")
 def get_data_sources_endpoint(
     current_user: CurrentUser,
-    category: Optional[str] = Query(None, description="Filter by category (e.g., 'bank_data')"),
+    category: Optional[str] = Query(
+        None,
+        description="Filter by category (e.g., 'bank_data', 'document_data')",
+    ),
     active_only: bool = Query(True, description="Only return active sources"),
 ) -> list[dict]:
     """

@@ -21,6 +21,132 @@ from .data_sources import validate_data_source_config
 _UNSET = object()
 
 
+def _save_subsection_version_with_cursor(
+    cur,
+    subsection_id: str,
+    *,
+    content: str | None = _UNSET,
+    content_type: str | None = None,
+    instructions: str | None = _UNSET,
+    notes: str | None = _UNSET,
+    generated_by: str = "agent",
+    is_final: bool = False,
+    generation_context: dict = None,
+    title: str = None,
+) -> dict:
+    """
+    Create a subsection version and update current subsection state.
+
+    This helper runs inside an existing transaction/cursor so callers can
+    compose additional reads/writes atomically.
+    """
+    cur.execute("""
+        SELECT version_number, instructions, notes, content, content_type
+        FROM subsections WHERE id = %s
+    """, (subsection_id,))
+    row = cur.fetchone()
+    if not row:
+        return {"error": f"Subsection not found: {subsection_id}"}
+
+    current_version = row[0]
+    current_instructions = row[1]
+    current_notes = row[2]
+    current_content = row[3]
+    current_content_type = row[4]
+
+    resolved_instructions = (
+        current_instructions if instructions is _UNSET else instructions
+    )
+    resolved_notes = current_notes if notes is _UNSET else notes
+    resolved_content = current_content if content is _UNSET else content
+    resolved_content_type = (
+        current_content_type if content_type is None else content_type
+    )
+    if resolved_content_type is None:
+        resolved_content_type = "markdown"
+
+    new_version = current_version + 1
+    version_id = str(uuid.uuid4())
+
+    cur.execute("""
+        INSERT INTO subsection_versions
+        (id, subsection_id, version_number, instructions, notes, content,
+         content_type, generated_by, is_final, generation_context)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        RETURNING id, version_number, created_at
+    """, (
+        version_id,
+        subsection_id,
+        new_version,
+        resolved_instructions,
+        resolved_notes,
+        resolved_content,
+        resolved_content_type,
+        generated_by,
+        is_final,
+        json.dumps(generation_context) if generation_context else None,
+    ))
+    version_row = cur.fetchone()
+
+    if title is not None:
+        cur.execute("""
+            UPDATE subsections
+            SET instructions = %s,
+                notes = %s,
+                content = %s,
+                content_type = %s,
+                version_number = %s,
+                title = %s
+            WHERE id = %s
+        """, (
+            resolved_instructions,
+            resolved_notes,
+            resolved_content,
+            resolved_content_type,
+            new_version,
+            title,
+            subsection_id,
+        ))
+    else:
+        cur.execute("""
+            UPDATE subsections
+            SET instructions = %s,
+                notes = %s,
+                content = %s,
+                content_type = %s,
+                version_number = %s
+            WHERE id = %s
+        """, (
+            resolved_instructions,
+            resolved_notes,
+            resolved_content,
+            resolved_content_type,
+            new_version,
+            subsection_id,
+        ))
+
+    if is_final:
+        cur.execute("""
+            UPDATE subsection_versions
+            SET is_final = FALSE
+            WHERE subsection_id = %s AND id != %s
+        """, (subsection_id, version_id))
+
+    return {
+        "version_id": str(version_row[0]),
+        "version_number": version_row[1],
+        "subsection_id": subsection_id,
+        "content_type": resolved_content_type,
+        "generated_by": generated_by,
+        "is_final": is_final,
+        "title": title,
+        "instructions": resolved_instructions,
+        "notes": resolved_notes,
+        "content": resolved_content,
+        "created_at": str(version_row[2]) if version_row[2] else None,
+    }
+
+
 def get_subsection(
     subsection_id: str,
     include_versions: bool = True,
@@ -335,6 +461,9 @@ def update_notes(
     """
     Update the notes for a subsection.
 
+    Saving notes creates a new subsection version so history stays aligned
+    with collaborative context changes.
+
     Args:
         subsection_id: UUID of the subsection
         notes: Updated notes text
@@ -346,30 +475,33 @@ def update_notes(
     conn = get_connection()
     try:
         with conn.cursor() as cur:
+            next_notes = notes
             if append:
                 cur.execute("""
-                    UPDATE subsections
-                    SET notes = COALESCE(notes, '') || %s
-                    WHERE id = %s
-                    RETURNING id, notes
-                """, ("\n\n" + notes, subsection_id))
-            else:
-                cur.execute("""
-                    UPDATE subsections
-                    SET notes = %s
-                    WHERE id = %s
-                    RETURNING id, notes
-                """, (notes, subsection_id))
+                    SELECT notes FROM subsections WHERE id = %s
+                """, (subsection_id,))
+                row = cur.fetchone()
+                if not row:
+                    return {"error": f"Subsection not found: {subsection_id}"}
+                existing_notes = row[0] or ""
+                next_notes = existing_notes + "\n\n" + notes
 
-            row = cur.fetchone()
-            if not row:
-                return {"error": f"Subsection not found: {subsection_id}"}
+            save_result = _save_subsection_version_with_cursor(
+                cur,
+                subsection_id,
+                notes=next_notes,
+                generated_by="user_edit",
+            )
+            if "error" in save_result:
+                return save_result
 
             conn.commit()
 
             return {
-                "id": str(row[0]),
-                "notes": row[1],
+                "id": subsection_id,
+                "notes": next_notes,
+                "version_id": save_result["version_id"],
+                "version_number": save_result["version_number"],
                 "updated": True,
             }
     finally:
@@ -383,6 +515,9 @@ def update_instructions(
     """
     Update the generation instructions for a subsection.
 
+    Saving instructions creates a new subsection version so users can
+    revisit prior prompt iterations.
+
     Args:
         subsection_id: UUID of the subsection
         instructions: Updated instructions text
@@ -393,22 +528,22 @@ def update_instructions(
     conn = get_connection()
     try:
         with conn.cursor() as cur:
-            cur.execute("""
-                UPDATE subsections
-                SET instructions = %s
-                WHERE id = %s
-                RETURNING id, instructions
-            """, (instructions, subsection_id))
-
-            row = cur.fetchone()
-            if not row:
-                return {"error": f"Subsection not found: {subsection_id}"}
+            save_result = _save_subsection_version_with_cursor(
+                cur,
+                subsection_id,
+                instructions=instructions,
+                generated_by="user_edit",
+            )
+            if "error" in save_result:
+                return save_result
 
             conn.commit()
 
             return {
-                "id": str(row[0]),
-                "instructions": row[1],
+                "id": subsection_id,
+                "instructions": instructions,
+                "version_id": save_result["version_id"],
+                "version_number": save_result["version_number"],
                 "updated": True,
             }
     finally:
@@ -482,99 +617,53 @@ def configure_subsection(
 
 def save_subsection_version(
     subsection_id: str,
-    content: str,
-    content_type: str = "markdown",
+    content: str | None = _UNSET,
+    content_type: str | None = None,
     generated_by: str = "agent",
     is_final: bool = False,
     generation_context: dict = None,
     title: str = None,
+    instructions: str | None = _UNSET,
+    notes: str | None = _UNSET,
 ) -> dict:
     """
     Save a new version of subsection content.
 
     Args:
         subsection_id: UUID of the subsection
-        content: Generated/edited content
-        content_type: Content format (text, markdown, html, json)
+        content: Generated/edited content. Omit to keep current content.
+        content_type: Content format (text, markdown, html, json). Omit to keep current type.
         generated_by: How this version was created (agent, user_edit, import)
         is_final: Mark this version as finalized
         generation_context: Optional metadata about generation
         title: Optional title to set for the subsection
+        instructions: Optional instructions override for this version/state
+        notes: Optional notes override for this version/state
 
     Returns:
         Created version info
     """
-    version_id = str(uuid.uuid4())
-
     conn = get_connection()
     try:
         with conn.cursor() as cur:
-            # Get current state
-            cur.execute("""
-                SELECT version_number, instructions, notes
-                FROM subsections WHERE id = %s
-            """, (subsection_id,))
-
-            row = cur.fetchone()
-            if not row:
-                return {"error": f"Subsection not found: {subsection_id}"}
-
-            current_version = row[0]
-            current_instructions = row[1]
-            current_notes = row[2]
-
-            new_version = current_version + 1
-
-            # Create version record
-            cur.execute("""
-                INSERT INTO subsection_versions
-                (id, subsection_id, version_number, instructions, notes, content,
-                 content_type, generated_by, is_final, generation_context)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                RETURNING id, version_number, created_at
-            """, (
-                version_id, subsection_id, new_version,
-                current_instructions, current_notes, content,
-                content_type, generated_by, is_final,
-                json.dumps(generation_context) if generation_context else None
-            ))
-
-            version_row = cur.fetchone()
-
-            # Update subsection with new content, version, and optionally title
-            if title is not None:
-                cur.execute("""
-                    UPDATE subsections
-                    SET content = %s, content_type = %s, version_number = %s, title = %s
-                    WHERE id = %s
-                """, (content, content_type, new_version, title, subsection_id))
-            else:
-                cur.execute("""
-                    UPDATE subsections
-                    SET content = %s, content_type = %s, version_number = %s
-                    WHERE id = %s
-                """, (content, content_type, new_version, subsection_id))
-
-            # If marking as final, clear any other final flags
-            if is_final:
-                cur.execute("""
-                    UPDATE subsection_versions
-                    SET is_final = FALSE
-                    WHERE subsection_id = %s AND id != %s
-                """, (subsection_id, version_id))
+            save_result = _save_subsection_version_with_cursor(
+                cur,
+                subsection_id,
+                content=content,
+                content_type=content_type,
+                instructions=instructions,
+                notes=notes,
+                generated_by=generated_by,
+                is_final=is_final,
+                generation_context=generation_context,
+                title=title,
+            )
+            if "error" in save_result:
+                return save_result
 
             conn.commit()
 
-            return {
-                "version_id": str(version_row[0]),
-                "version_number": version_row[1],
-                "subsection_id": subsection_id,
-                "content_type": content_type,
-                "generated_by": generated_by,
-                "is_final": is_final,
-                "title": title,
-                "created_at": str(version_row[2]) if version_row[2] else None,
-            }
+            return save_result
     finally:
         conn.close()
 
@@ -741,7 +830,8 @@ Notes are informal collaboration context - use them to:
 - Add observations for future reference
 - Keep context for the next generation iteration
 
-Both you and the user can edit notes. They persist across sessions.""",
+Both you and the user can edit notes. They persist across sessions.
+Each save also creates a new subsection version.""",
         "inputSchema": {
             "type": "object",
             "properties": {
@@ -772,7 +862,8 @@ Instructions are the formal prompt used to generate content:
 - Specify comparisons or context to include
 - Note any constraints (length, tone, etc.)
 
-Instructions are used when generating or regenerating content.""",
+Instructions are used when generating or regenerating content.
+Each save also creates a new subsection version.""",
         "inputSchema": {
             "type": "object",
             "properties": {

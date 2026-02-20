@@ -4,6 +4,7 @@ import {
   useSections,
   useSubsection,
   useDataSourceRegistry,
+  useUploads,
   useConfigureSubsection,
   useUpdateNotes,
   useUpdateInstructions,
@@ -80,12 +81,6 @@ interface PeriodBinding {
 interface InputReadiness {
   ready: boolean;
   issues: string[];
-}
-
-interface SourceStatus {
-  sourceId: string;
-  status: 'not_configured' | 'needs_input' | 'ready';
-  inputIndices: number[];
 }
 
 function isVariableBindingCandidate(value: unknown): value is Record<string, unknown> {
@@ -416,6 +411,7 @@ export function SubsectionWorkspace({
 
   const { data: subsection, isLoading: subsectionLoading } = useSubsection(effectiveSubsectionId || '');
   const { data: dataSources } = useDataSourceRegistry();
+  const { data: uploads } = useUploads(templateId);
   const { data: sections } = useSections(templateId);
 
   const configureSubsection = useConfigureSubsection();
@@ -518,49 +514,6 @@ export function SubsectionWorkspace({
     () => configuredInputs.map((input) => evaluateInputReadiness(input, dataSources)),
     [configuredInputs, dataSources],
   );
-
-  const sourceStatuses = useMemo<SourceStatus[]>(() => {
-    if (!dataSources) return [];
-
-    return dataSources.map((source) => {
-      const indices = configuredInputs
-        .map((input, index) => ({ input, index }))
-        .filter((entry) => entry.input.source_id === source.id)
-        .map((entry) => entry.index);
-
-      if (indices.length === 0) {
-        return {
-          sourceId: source.id,
-          status: 'not_configured',
-          inputIndices: [],
-        };
-      }
-
-      const ready = indices.every((index) => inputReadiness[index]?.ready);
-      return {
-        sourceId: source.id,
-        status: ready ? 'ready' : 'needs_input',
-        inputIndices: indices,
-      };
-    });
-  }, [configuredInputs, dataSources, inputReadiness]);
-
-  const sourceStatusMap = useMemo(
-    () => new Map(sourceStatuses.map((item) => [item.sourceId, item])),
-    [sourceStatuses],
-  );
-
-  const selectedSourceIds = useMemo(() => {
-    const ids = new Set<string>();
-    for (const input of configuredInputs) {
-      if (input.source_id) ids.add(input.source_id);
-    }
-    return ids;
-  }, [configuredInputs]);
-
-  const selectedSourceCount = selectedSourceIds.size;
-  const readySourceCount = sourceStatuses.filter((item) => item.status === 'ready').length;
-  const needsInputSourceCount = sourceStatuses.filter((item) => item.status === 'needs_input').length;
 
   const runtimeInputKeys = useMemo(
     () => collectRuntimeInputKeys(configuredInputs),
@@ -1197,41 +1150,29 @@ export function SubsectionWorkspace({
     ? generatingSubsections.has(effectiveSubsectionId) || generateSubsection.isPending
     : false;
 
-  const saveEverythingBeforeSwitch = useCallback(async () => {
-    await Promise.all([
-      saveInstructionsIfDirty(true),
-      saveNotesIfDirty(true),
-    ]);
-
+  const saveDataBeforeSwitch = useCallback(async () => {
     if (activeTab === 'data') {
       await persistDataDraft(true);
     }
-  }, [activeTab, saveInstructionsIfDirty, saveNotesIfDirty, persistDataDraft]);
+  }, [activeTab, persistDataDraft]);
 
   const handleTabChange = (nextTab: TabKey) => {
     if (nextTab === activeTab) return;
-    void saveEverythingBeforeSwitch();
+    void saveDataBeforeSwitch();
     setActiveTab(nextTab);
   };
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key === 's') {
+      if ((event.metaKey || event.ctrlKey) && event.key === 's' && activeTab === 'data') {
         event.preventDefault();
-        if (activeTab === 'instructions') {
-          void Promise.all([
-            saveInstructionsIfDirty(false),
-            saveNotesIfDirty(false),
-          ]);
-          return;
-        }
         void persistDataDraft(false);
       }
     };
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [activeTab, saveInstructionsIfDirty, saveNotesIfDirty, persistDataDraft]);
+  }, [activeTab, persistDataDraft]);
 
   if (!effectiveSubsectionId) {
     return (
@@ -1261,6 +1202,15 @@ export function SubsectionWorkspace({
   const contentPreviewType = isViewingHistorical
     ? (historicalVersion?.content_type || subsection.content_type || 'markdown')
     : (subsection.content_type || 'markdown');
+  const instructionsPreview = isViewingHistorical
+    ? (historicalVersion?.instructions || '')
+    : instructions;
+  const notesPreview = isViewingHistorical
+    ? (historicalVersion?.notes || '')
+    : notes;
+  const selectedVersionValue = selectedVersionId
+    || subsection.versions?.find((item) => item.version_number === subsection.version_number)?.id
+    || '';
   const hasContentPreview = contentPreview.trim().length > 0;
   const instructionsTabDirty = instructionsDirty || notesDirty;
   const dataTabDirty = dataDraftDirty;
@@ -1284,22 +1234,6 @@ export function SubsectionWorkspace({
         </div>
 
         <div className="flex items-center gap-2">
-          <select
-            value={widgetType}
-            onChange={(event) => {
-              event.stopPropagation();
-              void handleWidgetTypeChange(event.target.value as WidgetType);
-            }}
-            onClick={(event) => event.stopPropagation()}
-            className="px-2.5 py-2 text-sm border border-zinc-300 rounded-lg bg-white text-zinc-700 focus:outline-none focus:ring-2 focus:ring-sky-500"
-            title="Select subsection widget type"
-          >
-            {WIDGET_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
           {onDelete && (
             <button
               type="button"
@@ -1307,10 +1241,13 @@ export function SubsectionWorkspace({
                 event.stopPropagation();
                 onDelete();
               }}
-              className="px-3 py-2 text-sm border border-zinc-300 text-zinc-600 rounded-lg hover:bg-zinc-100"
+              className="h-10 w-10 inline-flex items-center justify-center rounded-lg border border-red-300 bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 transition-colors"
               title="Delete subsection"
+              aria-label="Delete subsection"
             >
-              Delete
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
           )}
           <button
@@ -1319,31 +1256,26 @@ export function SubsectionWorkspace({
               void handleGenerateSubsection();
             }}
             disabled={isSubsectionGenerating}
-            className={`px-4 py-2 text-sm rounded-lg transition-colors flex items-center justify-center gap-2 ${
+            className={`h-10 w-10 inline-flex items-center justify-center rounded-lg border transition-colors ${
               hasDataSourceConfigured
-                ? 'bg-green-600 text-white hover:bg-green-700'
-                : 'bg-amber-100 text-amber-800 hover:bg-amber-200'
+                ? 'border-green-600 bg-green-600 text-white hover:bg-green-700'
+                : 'border-green-300 bg-green-100 text-green-700 hover:bg-green-200'
             } disabled:opacity-50 disabled:cursor-not-allowed`}
             title={
               hasDataSourceConfigured
                 ? 'Run generation for this subsection'
                 : 'Open Data Sources tab and complete setup before running'
             }
+            aria-label="Run subsection"
           >
             {isSubsectionGenerating ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current" />
-                Running...
-              </>
-            ) : hasDataSourceConfigured ? (
-              <>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                Run subsection
-              </>
+              <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.5 4.5v5h5M19.5 19.5v-5h-5M5.6 14a7 7 0 0011.8 2.1L19.5 14M18.4 10a7 7 0 00-11.8-2.1L4.5 10" />
+              </svg>
             ) : (
-              'Finish data source setup'
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.5 4.5v5h5M19.5 19.5v-5h-5M5.6 14a7 7 0 0011.8 2.1L19.5 14M18.4 10a7 7 0 00-11.8-2.1L4.5 10" />
+              </svg>
             )}
           </button>
         </div>
@@ -1383,7 +1315,7 @@ export function SubsectionWorkspace({
                 {subsection?.versions && subsection.versions.length > 0 && (
                   <select
                     className="text-xs border border-zinc-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-sky-500"
-                    value={selectedVersionId || subsection.versions.find((item) => item.version_number === subsection.version_number)?.id || ''}
+                    value={selectedVersionValue}
                     onChange={(event) => handleVersionChange(event.target.value)}
                   >
                     {subsection.versions.map((version: VersionSummary) => (
@@ -1425,101 +1357,236 @@ export function SubsectionWorkspace({
 
         {activeTab === 'instructions' && (
           <div className="space-y-4">
-            <div className="text-xs text-zinc-500">
-              Use this tab for author guidance and internal notes. These notes are not automatically included in output.
+            <div className="flex flex-wrap items-center gap-2 justify-between">
+              <div className="text-xs text-zinc-500">
+                Configure subsection behavior, generation guidance, and internal collaboration notes.
+              </div>
+              {subsection?.versions && subsection.versions.length > 0 && (
+                <select
+                  className="text-xs border border-zinc-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-sky-500"
+                  value={selectedVersionValue}
+                  onChange={(event) => handleVersionChange(event.target.value)}
+                >
+                  {subsection.versions.map((version: VersionSummary) => (
+                    <option key={version.id} value={version.id}>
+                      v{version.version_number}{version.version_number === subsection.version_number ? ' (current)' : ''}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
+            {isViewingHistorical && (
+              <div className="text-xs text-amber-700 bg-amber-50 border border-amber-200 px-3 py-2 rounded">
+                Viewing historical version. Switch to current version to edit.
+              </div>
+            )}
+
+            <div className="rounded-lg border border-zinc-200 bg-white p-4 space-y-3">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <h4 className="text-sm font-semibold text-zinc-900">Subsection format</h4>
+                  <p className="text-xs text-zinc-500 mt-1">
+                    Choose how this subsection should be treated when generating output.
+                  </p>
+                </div>
+                <select
+                  value={widgetType}
+                  onChange={(event) => void handleWidgetTypeChange(event.target.value as WidgetType)}
+                  disabled={isViewingHistorical}
+                  className="w-full sm:w-56 px-2.5 py-2 text-sm border border-zinc-300 rounded-lg bg-white text-zinc-700 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  title="Select subsection widget type"
+                >
+                  {WIDGET_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="text-xs font-semibold uppercase tracking-wide text-zinc-500">Author instructions</label>
+            <div className="rounded-lg border border-zinc-200 bg-white p-4 space-y-3">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <h4 className="text-sm font-semibold text-zinc-900">Author instructions</h4>
+                  <p className="text-xs text-zinc-500 mt-1">
+                    Define what the generator should produce, including structure, emphasis, and constraints.
+                  </p>
+                </div>
                 <button
                   onClick={() => void saveInstructionsIfDirty(false)}
-                  disabled={updateInstructions.isPending || !instructionsDirty}
-                  className="px-3 py-1.5 text-xs bg-sky-600 text-white rounded hover:bg-sky-700 disabled:opacity-50"
+                  disabled={updateInstructions.isPending || !instructionsDirty || isViewingHistorical}
+                  className="px-3 py-1.5 text-xs bg-sky-600 text-white rounded hover:bg-sky-700 disabled:opacity-50 sm:min-w-[130px]"
                 >
                   {updateInstructions.isPending ? 'Saving...' : 'Save instructions'}
                 </button>
               </div>
               <textarea
-                value={instructions}
+                value={instructionsPreview}
                 onChange={(event) => handleInstructionsChange(event.target.value)}
                 placeholder="How should this subsection be generated?"
-                className="w-full min-h-[150px] px-3 py-2 text-sm border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 resize-y"
+                className={`w-full min-h-[150px] px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 resize-y ${
+                  isViewingHistorical
+                    ? 'border-amber-300 bg-amber-50 cursor-not-allowed'
+                    : 'border-zinc-300 focus:ring-sky-500'
+                }`}
+                readOnly={isViewingHistorical}
               />
             </div>
 
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <label className="text-xs font-semibold uppercase tracking-wide text-zinc-500">Reviewer notes</label>
+            <div className="rounded-lg border border-zinc-200 bg-white p-4 space-y-3">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <h4 className="text-sm font-semibold text-zinc-900">Reviewer notes</h4>
+                  <p className="text-xs text-zinc-500 mt-1">
+                    Capture context, assumptions, or follow-ups for collaborators. These notes are not exported.
+                  </p>
+                </div>
                 <button
                   onClick={() => void saveNotesIfDirty(false)}
-                  disabled={updateNotes.isPending || !notesDirty}
-                  className="px-3 py-1.5 text-xs bg-sky-600 text-white rounded hover:bg-sky-700 disabled:opacity-50"
+                  disabled={updateNotes.isPending || !notesDirty || isViewingHistorical}
+                  className="px-3 py-1.5 text-xs bg-sky-600 text-white rounded hover:bg-sky-700 disabled:opacity-50 sm:min-w-[130px]"
                 >
                   {updateNotes.isPending ? 'Saving...' : 'Save notes'}
                 </button>
               </div>
               <textarea
-                value={notes}
+                value={notesPreview}
                 onChange={(event) => handleNotesChange(event.target.value)}
                 placeholder="Internal notes for reviewers or operators..."
-                className="w-full min-h-[130px] px-3 py-2 text-sm border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 resize-y"
+                className={`w-full min-h-[130px] px-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 resize-y ${
+                  isViewingHistorical
+                    ? 'border-amber-300 bg-amber-50 cursor-not-allowed'
+                    : 'border-zinc-300 focus:ring-sky-500'
+                }`}
+                readOnly={isViewingHistorical}
               />
             </div>
           </div>
         )}
 
         {activeTab === 'data' && (
-          <div className="space-y-5">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <SummaryStat label="Sources selected" value={String(selectedSourceCount)} />
-              <SummaryStat label="Ready" value={String(readySourceCount)} tone="green" />
-              <SummaryStat label="Needs input" value={String(needsInputSourceCount)} tone={needsInputSourceCount > 0 ? 'amber' : 'zinc'} />
-              <SummaryStat label="Run-time inputs" value={String(runtimeInputKeys.length)} />
+          <div className="space-y-4">
+            <div className="text-xs text-zinc-500">
+              Configure the data source and parameters used to generate this subsection.
             </div>
 
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <h4 className="text-sm font-semibold text-zinc-900">1. Select data sources</h4>
+            <div className="rounded-lg border border-zinc-200 bg-white p-4 space-y-4">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <h4 className="text-sm font-semibold text-zinc-900">Select data source</h4>
+                  <p className="text-xs text-zinc-500 mt-1">
+                    Pick a source to add a new configuration or edit an existing one.
+                  </p>
+                </div>
                 {configuredInputs.length > 0 && (
                   <button
                     onClick={handleClearDataSources}
-                    className="text-xs text-red-600 hover:text-red-700"
+                    className="px-3 py-1.5 text-xs text-red-700 border border-red-200 rounded hover:bg-red-50"
                   >
                     Clear all
                   </button>
                 )}
               </div>
-              <p className="text-xs text-zinc-500 mb-3">
-                Pick one or more sources. Each source can be configured with fixed, dynamic, or run-time values.
-              </p>
 
               {dataSources && dataSources.length > 0 ? (
-                <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
-                  {dataSources.map((source) => {
-                    const status = sourceStatusMap.get(source.id)?.status || 'not_configured';
-                    const isSelectedSource = selectedSourceId === source.id;
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-xs font-medium text-zinc-600 mb-1">Data source</label>
+                    <select
+                      value={selectedSourceId}
+                      onChange={(event) => handleSourceCardSelect(event.target.value)}
+                      className="w-full px-3 py-2 text-sm border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    >
+                      <option value="">Select a data source...</option>
+                      {dataSources.map((source) => {
+                        const configuredCount = configuredInputs.filter((input) => input.source_id === source.id).length;
+                        return (
+                          <option key={source.id} value={source.id}>
+                            {source.name}{configuredCount > 0 ? ` (${configuredCount} configured)` : ''}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
 
-                    return (
-                      <button
-                        key={source.id}
-                        type="button"
-                        onClick={() => handleSourceCardSelect(source.id)}
-                        className={`text-left p-3 rounded-lg border transition-colors ${
-                          isSelectedSource
-                            ? 'border-sky-500 bg-sky-50'
-                            : 'border-zinc-200 bg-white hover:border-zinc-300 hover:bg-zinc-50'
-                        }`}
-                      >
-                        <div className="flex items-start justify-between gap-2">
-                          <p className="text-sm font-medium text-zinc-900">{source.name}</p>
-                          <SourceBadge status={status} />
-                        </div>
-                        <p className="text-xs text-zinc-500 mt-1">{source.category}</p>
-                        <p className="text-xs text-zinc-500 mt-1 line-clamp-2">{source.description}</p>
-                      </button>
-                    );
-                  })}
+                  {configuredInputs.length > 0 && (
+                    <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">Configured sources</p>
+                        <span className="text-xs text-zinc-500">{configuredInputs.length}</span>
+                      </div>
+                      <div className="space-y-2">
+                        {configuredInputs.map((input, index) => {
+                          const inputSource = dataSources.find((source) => source.id === input.source_id);
+                          return (
+                            <div
+                              key={`${input.source_id}-${input.method_id}-${index}`}
+                              className="rounded border border-zinc-200 bg-white px-3 py-2 flex items-center justify-between gap-3"
+                            >
+                              <p className="text-sm text-zinc-900">{inputSource?.name || input.source_id}</p>
+                              <div className="flex items-center gap-2">
+                                <button
+                                  onClick={() => loadInputDraft(input, index)}
+                                  className="px-2.5 py-1 text-xs text-sky-700 border border-sky-200 rounded hover:bg-sky-50"
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  onClick={() => void handleRemoveDataInput(index)}
+                                  className="px-2.5 py-1 text-xs text-red-700 border border-red-200 rounded hover:bg-red-50"
+                                >
+                                  Remove
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3 space-y-2">
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">Source details</p>
+                      <p className="text-xs text-zinc-500 mt-1">
+                        Expand a source with the info icon to view source details and available retrieval methods.
+                      </p>
+                    </div>
+                    <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+                      {dataSources.map((source) => (
+                        <details key={source.id} className="rounded-lg border border-zinc-200 bg-white">
+                          <summary className="list-none cursor-pointer px-3 py-2 flex items-center justify-between gap-2">
+                            <span className="text-sm font-medium text-zinc-900">{source.name}</span>
+                            <span className="inline-flex items-center gap-2">
+                              <span className="text-xs text-zinc-500">{source.category}</span>
+                              <span className="h-6 w-6 inline-flex items-center justify-center rounded-full border border-zinc-300 text-zinc-500">
+                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 21a9 9 0 100-18 9 9 0 000 18z" />
+                                </svg>
+                              </span>
+                            </span>
+                          </summary>
+                          <div className="px-3 pb-3 border-t border-zinc-100 space-y-2">
+                            <p className="text-xs text-zinc-600 pt-2">{source.description}</p>
+                            {source.retrieval_methods.length > 0 && (
+                              <div>
+                                <p className="text-xs font-medium text-zinc-600 mb-1">Available methods</p>
+                                <ul className="space-y-1">
+                                  {source.retrieval_methods.map((method) => (
+                                    <li key={getMethodId(method)} className="text-xs text-zinc-600">
+                                      <span className="text-zinc-800 font-medium">{method.name}</span>
+                                      {method.description ? <span className="text-zinc-500"> - {method.description}</span> : null}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
+                          </div>
+                        </details>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <div className="p-4 border border-zinc-200 rounded-lg text-sm text-zinc-500">
@@ -1528,58 +1595,12 @@ export function SubsectionWorkspace({
               )}
             </div>
 
-            {configuredInputs.length > 0 && (
-              <div className="rounded-lg border border-zinc-200">
-                <div className="px-3 py-2 border-b border-zinc-200 bg-zinc-50 flex items-center justify-between">
-                  <h4 className="text-sm font-semibold text-zinc-900">Configured sources</h4>
-                  <span className="text-xs text-zinc-500">{configuredInputs.length} configured</span>
-                </div>
-                <div className="divide-y divide-zinc-100">
-                  {configuredInputs.map((input, index) => {
-                    const inputSource = dataSources?.find((source) => source.id === input.source_id);
-                    const inputMethod = inputSource?.retrieval_methods.find((method) => getMethodId(method) === input.method_id);
-                    const readiness = inputReadiness[index];
-
-                    return (
-                      <div key={`${input.source_id}-${input.method_id}-${index}`} className="px-3 py-2 flex items-center justify-between gap-3">
-                        <div>
-                          <p className="text-sm text-zinc-900">{inputSource?.name || input.source_id}</p>
-                          <p className="text-xs text-zinc-500">{inputMethod?.name || input.method_id}</p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className={`text-xs px-2 py-0.5 rounded ${
-                            readiness?.ready
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-amber-100 text-amber-700'
-                          }`}>
-                            {readiness?.ready ? 'Ready' : 'Needs input'}
-                          </span>
-                          <button
-                            onClick={() => loadInputDraft(input, index)}
-                            className="text-xs text-sky-600 hover:text-sky-700"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => void handleRemoveDataInput(index)}
-                            className="text-xs text-red-600 hover:text-red-700"
-                          >
-                            Remove
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-
             {selectedSourceId && (
-              <div className="rounded-lg border border-zinc-200 p-4 space-y-3">
+              <div className="rounded-lg border border-zinc-200 bg-white p-4 space-y-4">
                 <div>
-                  <h4 className="text-sm font-semibold text-zinc-900">2. Configure source parameters</h4>
+                  <h4 className="text-sm font-semibold text-zinc-900">Configure source parameters</h4>
                   <p className="text-xs text-zinc-500 mt-1">
-                    Dynamic values update automatically quarter over quarter. Ask each run prompts for input every run.
+                    Choose a retrieval method and provide parameter values for this data source.
                   </p>
                 </div>
 
@@ -1611,7 +1632,12 @@ export function SubsectionWorkspace({
                       const options = parameter.options || parameter.enum || [];
                       const arrayItemOptions = parameter.items?.options || parameter.items?.enum || [];
                       const periodOptions = getPeriodSelectorOptions(parameterType);
-                      const supportsDynamicMode = periodOptions.length > 0;
+                      const isUploadIdParameter = (
+                        selectedSourceId === 'uploaded_documents'
+                        && selectedMethodId === 'by_upload'
+                        && parameterKey === 'upload_id'
+                      );
+                      const supportsDynamicMode = !isUploadIdParameter && periodOptions.length > 0;
 
                       const mode = getParameterMode(parameterType, value);
                       const variableBinding = mode === 'prompt' ? toVariableBinding(value) : null;
@@ -1622,13 +1648,18 @@ export function SubsectionWorkspace({
                       const periodCount = periodBinding?.$count;
 
                       return (
-                        <div key={parameterKey} className="rounded-lg border border-zinc-200 p-3">
-                          <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
-                            <label className="text-sm text-zinc-800">
-                              {label}
-                              {parameter.required && <span className="text-red-500"> *</span>}
-                            </label>
-                            <div className="inline-flex rounded-lg border border-zinc-200 overflow-hidden">
+                        <div key={parameterKey} className="rounded-lg border border-zinc-200 bg-zinc-50 p-3 space-y-2">
+                          <div className="flex flex-wrap items-start justify-between gap-2">
+                            <div>
+                              <label className="text-sm text-zinc-800">
+                                {label}
+                                {parameter.required && <span className="text-red-500"> *</span>}
+                              </label>
+                              <p className="text-[11px] text-zinc-500 mt-1">
+                                {parameter.description || parameter.prompt || 'Set how this value should be resolved during generation.'}
+                              </p>
+                            </div>
+                            <div className="inline-flex rounded-lg border border-zinc-200 overflow-hidden bg-white">
                               <button
                                 type="button"
                                 onClick={() => handleParameterModeChange(parameterKey, parameterType, 'fixed')}
@@ -1661,9 +1692,9 @@ export function SubsectionWorkspace({
                             </div>
                           </div>
 
-                          <p className="text-[11px] text-zinc-500 mb-2">
+                          <p className="text-[11px] text-zinc-500">
                             {mode === 'fixed' && 'Use the same value for every run.'}
-                            {mode === 'dynamic' && 'Dynamic values auto-update each run (for example: previous fiscal quarter).'}
+                            {mode === 'dynamic' && 'Auto-update this value each run using a period rule.'}
                             {mode === 'prompt' && 'Prompt for this value each time the report runs.'}
                           </p>
 
@@ -1795,6 +1826,28 @@ export function SubsectionWorkspace({
                             </div>
                           ) : (
                             <>
+                              {isUploadIdParameter && (
+                                <div className="space-y-1">
+                                  <select
+                                    value={typeof value === 'string' ? value : ''}
+                                    onChange={(event) => handleParameterChange(parameterKey, event.target.value)}
+                                    className="w-full px-2.5 py-2 text-sm border border-zinc-300 rounded focus:outline-none focus:ring-1 focus:ring-sky-500"
+                                  >
+                                    <option value="">
+                                      {uploads && uploads.length > 0 ? 'Select uploaded file...' : 'No uploaded files available'}
+                                    </option>
+                                    {uploads?.map((upload) => (
+                                      <option key={upload.id} value={upload.id}>
+                                        {upload.original_filename} ({upload.id.slice(0, 8)})
+                                      </option>
+                                    ))}
+                                  </select>
+                                  <p className="text-[11px] text-zinc-500">
+                                    Upload files from the Documents button in the header.
+                                  </p>
+                                </div>
+                              )}
+
                               {parameterType === 'enum' && (
                                 <select
                                   value={typeof value === 'string' ? value : ''}
@@ -1856,7 +1909,7 @@ export function SubsectionWorkspace({
                                 || parameterType === 'integer'
                                 || parameterType === 'number'
                                 || (parameterType === 'array' && arrayItemOptions.length === 0)
-                              ) && (
+                              ) && !isUploadIdParameter && (
                                 <input
                                   type={parameterType === 'integer' || parameterType === 'number' ? 'number' : 'text'}
                                   value={
@@ -1875,16 +1928,12 @@ export function SubsectionWorkspace({
                           )}
 
                           {parameterErrors[parameterKey] && (
-                            <p className="text-xs text-red-600 mt-2">{parameterErrors[parameterKey]}</p>
+                            <p className="text-xs text-red-600">{parameterErrors[parameterKey]}</p>
                           )}
                         </div>
                       );
                     })}
                   </div>
-                )}
-
-                {selectedSource && (
-                  <p className="text-xs text-zinc-500">{selectedSource.description}</p>
                 )}
 
                 <div className="flex flex-wrap items-center gap-2">
@@ -1909,7 +1958,7 @@ export function SubsectionWorkspace({
             )}
 
             {widgetType === 'chart' && (
-              <div className="rounded-lg border border-zinc-200 p-4 space-y-3">
+              <div className="rounded-lg border border-zinc-200 bg-white p-4 space-y-3">
                 <h4 className="text-sm font-semibold text-zinc-900">Chart visualization</h4>
                 <p className="text-xs text-zinc-500">
                   These settings shape chart output when this subsection runs as a chart widget.
@@ -1982,87 +2031,107 @@ export function SubsectionWorkspace({
             )}
 
             {(dependencySectionOptions.length > 0 || dependencySubsectionOptions.length > 0) && (
-              <div className="rounded-lg border border-zinc-200 p-4 space-y-3">
-                <h4 className="text-sm font-semibold text-zinc-900">Dependencies</h4>
-                <p className="text-xs text-zinc-500">
-                  Include context from related sections or subsections. This will be available during generation.
-                </p>
-
-                {dependencySectionOptions.length > 0 && (
+              <details className="rounded-lg border border-zinc-200 bg-white">
+                <summary className="list-none cursor-pointer px-4 py-3 flex items-center justify-between gap-2">
                   <div>
-                    <p className="text-xs font-medium text-zinc-600 mb-1">Sections</p>
-                    <div className="space-y-1 max-h-32 overflow-y-auto rounded border border-zinc-100 p-2">
-                      {dependencySectionOptions.map((section) => (
-                        <label key={section.id} className="flex items-center gap-2 text-xs text-zinc-700">
-                          <input
-                            type="checkbox"
-                            checked={dependencySectionIds.includes(section.id)}
-                            onChange={() => toggleDependencySection(section.id)}
-                            className="rounded border-zinc-300 text-sky-600 focus:ring-sky-500"
-                          />
-                          <span>{section.title || `Section ${section.position}`}</span>
-                        </label>
-                      ))}
-                    </div>
+                    <h4 className="text-sm font-semibold text-zinc-900">Optional: dependencies</h4>
+                    <p className="text-xs text-zinc-500 mt-1">
+                      Include context from related sections or subsections for generation.
+                    </p>
                   </div>
-                )}
-
-                {dependencySubsectionOptions.length > 0 && (
-                  <div>
-                    <p className="text-xs font-medium text-zinc-600 mb-1">Subsections</p>
-                    <div className="space-y-1 max-h-40 overflow-y-auto rounded border border-zinc-100 p-2">
-                      {dependencySubsectionOptions.map((option) => {
-                          const isSelf = option.id === effectiveSubsectionId;
-                        return (
-                          <label
-                            key={option.id}
-                            className={`flex items-center gap-2 text-xs ${isSelf ? 'text-zinc-400' : 'text-zinc-700'}`}
-                          >
+                  <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="px-4 pb-4 border-t border-zinc-100 space-y-3">
+                  {dependencySectionOptions.length > 0 && (
+                    <div>
+                      <p className="text-xs font-medium text-zinc-600 mb-1 mt-3">Sections</p>
+                      <div className="space-y-1 max-h-32 overflow-y-auto rounded border border-zinc-100 p-2">
+                        {dependencySectionOptions.map((section) => (
+                          <label key={section.id} className="flex items-center gap-2 text-xs text-zinc-700">
                             <input
                               type="checkbox"
-                              checked={dependencySubsectionIds.includes(option.id)}
-                              onChange={() => toggleDependencySubsection(option.id)}
-                              disabled={isSelf}
+                              checked={dependencySectionIds.includes(section.id)}
+                              onChange={() => toggleDependencySection(section.id)}
                               className="rounded border-zinc-300 text-sky-600 focus:ring-sky-500"
                             />
-                            <span>
-                              {option.sectionTitle} • {option.subsectionLabel}. {option.subsectionTitle}
-                            </span>
+                            <span>{section.title || `Section ${section.position}`}</span>
                           </label>
-                        );
-                      })}
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
-                <button
-                  onClick={() => void saveDependencies(false)}
-                  disabled={configureSubsection.isPending || configuredInputs.length === 0}
-                  className="px-3 py-2 text-sm bg-zinc-100 text-zinc-700 rounded hover:bg-zinc-200 disabled:opacity-50"
-                >
-                  {configureSubsection.isPending ? 'Saving...' : 'Save dependencies'}
-                </button>
-              </div>
+                  {dependencySubsectionOptions.length > 0 && (
+                    <div>
+                      <p className="text-xs font-medium text-zinc-600 mb-1">Subsections</p>
+                      <div className="space-y-1 max-h-40 overflow-y-auto rounded border border-zinc-100 p-2">
+                        {dependencySubsectionOptions.map((option) => {
+                          const isSelf = option.id === effectiveSubsectionId;
+                          return (
+                            <label
+                              key={option.id}
+                              className={`flex items-center gap-2 text-xs ${isSelf ? 'text-zinc-400' : 'text-zinc-700'}`}
+                            >
+                              <input
+                                type="checkbox"
+                                checked={dependencySubsectionIds.includes(option.id)}
+                                onChange={() => toggleDependencySubsection(option.id)}
+                                disabled={isSelf}
+                                className="rounded border-zinc-300 text-sky-600 focus:ring-sky-500"
+                              />
+                              <span>
+                                {option.sectionTitle} • {option.subsectionLabel}. {option.subsectionTitle}
+                              </span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  <button
+                    onClick={() => void saveDependencies(false)}
+                    disabled={configureSubsection.isPending || configuredInputs.length === 0}
+                    className="px-3 py-2 text-sm bg-zinc-100 text-zinc-700 rounded hover:bg-zinc-200 disabled:opacity-50"
+                  >
+                    {configureSubsection.isPending ? 'Saving...' : 'Save dependencies'}
+                  </button>
+                </div>
+              </details>
             )}
 
-            <div className="rounded-lg border border-zinc-200 p-4">
-              <h4 className="text-sm font-semibold text-zinc-900">3. Run-time input preview</h4>
-              <p className="text-xs text-zinc-500 mt-1 mb-2">
-                This subsection needs {runtimeInputKeys.length} value{runtimeInputKeys.length === 1 ? '' : 's'} at run time.
-              </p>
+            <details className="rounded-lg border border-zinc-200 bg-white">
+              <summary className="list-none cursor-pointer px-4 py-3 flex items-center justify-between gap-2">
+                <div>
+                  <h4 className="text-sm font-semibold text-zinc-900">Optional: run-time input preview</h4>
+                  <p className="text-xs text-zinc-500 mt-1">
+                    Review the values this subsection will ask for during generation.
+                  </p>
+                </div>
+                <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <div className="px-4 pb-4 border-t border-zinc-100">
+                <p className="text-xs text-zinc-500 mt-3 mb-2">
+                  This subsection needs {runtimeInputKeys.length} run-time value{runtimeInputKeys.length === 1 ? '' : 's'}.
+                </p>
 
-              {runtimeInputKeys.length === 0 ? (
-                <p className="text-xs text-zinc-500">No run-time prompts required for this subsection.</p>
-              ) : (
-                <ul className="space-y-1">
-                  {runtimeInputKeys.map((key) => (
-                    <li key={key} className="text-xs text-zinc-700 font-mono bg-zinc-50 border border-zinc-200 rounded px-2 py-1">
-                      {key}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
+                {runtimeInputKeys.length === 0 ? (
+                  <p className="text-xs text-zinc-500">No run-time prompts required.</p>
+                ) : (
+                  <ul className="space-y-1">
+                    {runtimeInputKeys.map((key) => (
+                      <li key={key} className="text-xs text-zinc-700 font-mono bg-zinc-50 border border-zinc-200 rounded px-2 py-1">
+                        {key}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </details>
           </div>
         )}
       </div>
@@ -2098,35 +2167,4 @@ function TabButton({ label, isActive, showDirty = false, showIssue = false, onCl
       )}
     </button>
   );
-}
-
-interface SummaryStatProps {
-  label: string;
-  value: string;
-  tone?: 'zinc' | 'green' | 'amber';
-}
-
-function SummaryStat({ label, value, tone = 'zinc' }: SummaryStatProps) {
-  const toneClass = tone === 'green'
-    ? 'bg-green-50 border-green-200 text-green-700'
-    : tone === 'amber'
-      ? 'bg-amber-50 border-amber-200 text-amber-700'
-      : 'bg-zinc-50 border-zinc-200 text-zinc-700';
-
-  return (
-    <div className={`rounded-lg border px-3 py-2 ${toneClass}`}>
-      <p className="text-[11px] uppercase tracking-wide opacity-80">{label}</p>
-      <p className="text-lg font-semibold leading-tight">{value}</p>
-    </div>
-  );
-}
-
-function SourceBadge({ status }: { status: SourceStatus['status'] }) {
-  if (status === 'ready') {
-    return <span className="text-[11px] px-2 py-0.5 rounded bg-green-100 text-green-700">Ready</span>;
-  }
-  if (status === 'needs_input') {
-    return <span className="text-[11px] px-2 py-0.5 rounded bg-amber-100 text-amber-700">Needs input</span>;
-  }
-  return <span className="text-[11px] px-2 py-0.5 rounded bg-zinc-100 text-zinc-600">Not configured</span>;
 }

@@ -12,8 +12,8 @@ const components: Components = {
   h1: ({ children }) => <h1 className="text-lg font-bold mb-2 mt-3 first:mt-0">{children}</h1>,
   h2: ({ children }) => <h2 className="text-base font-bold mb-2 mt-3 first:mt-0">{children}</h2>,
   h3: ({ children }) => <h3 className="text-sm font-bold mb-1 mt-2 first:mt-0">{children}</h3>,
-  ul: ({ children }) => <ul className="list-disc list-inside mb-2 space-y-0.5">{children}</ul>,
-  ol: ({ children }) => <ol className="list-decimal list-inside mb-2 space-y-0.5">{children}</ol>,
+  ul: ({ children }) => <ul className="list-disc list-outside mb-2 pl-5 space-y-0.5">{children}</ul>,
+  ol: ({ children }) => <ol className="list-decimal list-outside mb-2 pl-5 space-y-0.5">{children}</ol>,
   li: ({ children }) => <li className="leading-relaxed">{children}</li>,
   code: (props) => {
     const { children, className } = props;

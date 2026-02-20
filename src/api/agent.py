@@ -933,7 +933,7 @@ Formatting Profile: {formatting_profile_summary}
 
 ## Your Capabilities
 You can help users by:
-1. **Retrieve data** from transcripts, financials, and stock prices
+1. **Retrieve data** from transcripts, financials, stock prices, and uploaded documents
 2. **Create sections** to organize the report into logical parts
 3. **Add subsections** (A, B, C) within sections for different content pieces
 4. **Configure subsections** with data sources and widget types
@@ -953,10 +953,15 @@ Each subsection can have:
 
 ## Workflow
 When generating content:
-1. First retrieve relevant data using search_transcripts, search_financials, or search_stock_prices
+1. First retrieve relevant data using search_transcripts, search_financials, search_stock_prices, and/or uploaded document tools
 2. Review the data to understand key insights
 3. Craft content based on the user's instructions
 4. Save the content using save_subsection_version (include title if appropriate)
+
+When the user asks to replicate structure from an uploaded document:
+1. Use list_uploads to find candidate documents
+2. Use get_uploaded_document to inspect the chosen document text
+3. Propose or apply section/subsection creation that mirrors the document's structure
 
 ## Data Source Configuration Rules
 - Always call get_data_sources before configuring if source/method/parameter shape is uncertain.
@@ -968,7 +973,7 @@ When generating content:
 - UUIDs are internal; only use a UUID when the user explicitly provides one.
 - In `configure_subsection`, `subsection_id` must identify a subsection (never a section).
 - Put retrieval parameters under `data_source_config.inputs[i].parameters` (not top-level `data_source_config.parameters`).
-- `source_id` must match registry IDs (`transcripts`, `financials`, `stock_prices`) and `method_id` must match retrieval method IDs (`by_quarter`, `compare_banks`, `trend` where applicable).
+- `source_id` must match registry IDs (`transcripts`, `financials`, `stock_prices`, `uploaded_documents`) and `method_id` must match retrieval method IDs (`by_quarter`, `compare_banks`, `trend`, `by_upload` where applicable).
 - For chart subsections, use `widget_type='chart'` and set `data_source_config.visualization` when chart settings are requested.
 - Call `configure_subsection` once per subsection update; do not repeat identical calls unless parameters changed.
 

@@ -43,6 +43,7 @@ from ..workspace.sections import get_section_by_id
 from ..retrievers.transcripts import search_transcripts
 from ..retrievers.financials import search_financials
 from ..retrievers.stock_prices import search_stock_prices
+from ..uploads import get_upload_content
 from ..infra.llm import get_openai_client, resolve_chat_runtime
 
 
@@ -1576,6 +1577,7 @@ You can reference data from:
 - Canadian Big 6 bank earnings call transcripts (RY, TD, BMO, BNS, CM, NA)
 - Financial metrics (revenue, EPS, ROE, CET1 ratio, etc.)
 - Stock price performance
+- Uploaded documents (PDF, DOCX, TXT, MD, CSV) when configured in data sources
 
 {formatting_brief}
 
@@ -1804,6 +1806,29 @@ def _format_stock_data_context(results: list[dict]) -> str:
     return "\n".join(lines) if added else ""
 
 
+def _format_uploaded_document_data_context(upload_result: dict) -> str:
+    """Render extracted uploaded-document content for prompt context."""
+    if not isinstance(upload_result, dict):
+        return ""
+
+    content = upload_result.get("content")
+    if not isinstance(content, str):
+        return ""
+    normalized_content = content.strip()
+    if not normalized_content:
+        return ""
+
+    filename = upload_result.get("filename")
+    if not isinstance(filename, str) or not filename.strip():
+        filename = "Uploaded document"
+
+    max_chars = 12000
+    if len(normalized_content) > max_chars:
+        normalized_content = normalized_content[:max_chars].rstrip() + "\n\n[...truncated for context window...]"
+
+    return f"### Uploaded Document: {filename}\n{normalized_content}"
+
+
 async def _fetch_data_for_input(input_config: dict) -> str:
     """Fetch retriever data for one resolved data input."""
     source_id = input_config.get("source_id")
@@ -1811,6 +1836,24 @@ async def _fetch_data_for_input(input_config: dict) -> str:
     parameters = input_config.get("parameters") or {}
     if not source_id or not method_id or not isinstance(parameters, dict):
         return ""
+
+    if source_id == "uploaded_documents":
+        if method_id != "by_upload":
+            return ""
+
+        upload_id = parameters.get("upload_id")
+        if not isinstance(upload_id, str) or not upload_id.strip():
+            return ""
+
+        try:
+            upload_result = get_upload_content(upload_id.strip())
+        except Exception:
+            return ""
+
+        if not isinstance(upload_result, dict) or upload_result.get("error"):
+            return ""
+
+        return _format_uploaded_document_data_context(upload_result)
 
     queries = _build_queries_from_method_config(source_id, method_id, parameters)
     if not queries:

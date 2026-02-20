@@ -32,6 +32,48 @@ VISUALIZATION_SERIES_KEY = "series_key"
 VISUALIZATION_METRIC_ID_KEY = "metric_id"
 VALID_CHART_TYPES = {"bar", "line"}
 
+UPLOADED_DOCUMENTS_SOURCE_ID = "uploaded_documents"
+UPLOADED_DOCUMENTS_CATEGORY = "document_data"
+UPLOADED_DOCUMENTS_SOURCE = {
+    "id": UPLOADED_DOCUMENTS_SOURCE_ID,
+    "name": "Uploaded Documents",
+    "description": (
+        "User-uploaded PDFs, Word documents, and text files attached to the template. "
+        "Use this source when subsection generation should reference an uploaded file."
+    ),
+    "category": UPLOADED_DOCUMENTS_CATEGORY,
+    "retrieval_methods": [
+        {
+            "method_id": "by_upload",
+            "name": "By Uploaded File",
+            "description": "Use extracted text from one uploaded file identified by upload_id.",
+            "mcp_tool": "get_uploaded_document",
+            "parameters": [
+                {
+                    "key": "upload_id",
+                    "type": "string",
+                    "required": True,
+                    "prompt": "Which uploaded file?",
+                    "description": "Upload UUID from the template's Documents list.",
+                }
+            ],
+            "returns": "Extracted text content for the selected uploaded file",
+        }
+    ],
+    "suggested_widgets": ["summary", "key_points", "comparison", "custom"],
+    "is_active": True,
+    "created_at": None,
+}
+
+
+def _include_uploaded_documents_source(category: str | None, active_only: bool) -> bool:
+    """Return True when the virtual uploaded-documents source should be included."""
+    if active_only and not UPLOADED_DOCUMENTS_SOURCE["is_active"]:
+        return False
+    if category:
+        return category == UPLOADED_DOCUMENTS_CATEGORY
+    return True
+
 
 def get_section_period_anchor_year_key(section_id: str) -> str:
     """Build section-scoped run input key for base fiscal year."""
@@ -68,6 +110,7 @@ def get_data_sources(
 
     where_clause = f"WHERE {' AND '.join(conditions)}" if conditions else ""
 
+    sources: list[dict] = []
     conn = get_connection()
     try:
         with conn.cursor() as cur:
@@ -79,7 +122,7 @@ def get_data_sources(
                 ORDER BY category, name
             """, tuple(params) if params else None)
 
-            return [
+            sources = [
                 {
                     "id": row[0],
                     "name": row[1],
@@ -94,6 +137,17 @@ def get_data_sources(
             ]
     finally:
         conn.close()
+
+    if _include_uploaded_documents_source(category, active_only):
+        sources.append(deepcopy(UPLOADED_DOCUMENTS_SOURCE))
+
+    return sorted(
+        sources,
+        key=lambda source: (
+            str(source.get("category") or ""),
+            str(source.get("name") or ""),
+        ),
+    )
 
 
 def _get_method_id(method: dict) -> Any:
@@ -894,6 +948,9 @@ def get_data_source(source_id: str) -> dict:
     Returns:
         Data source details or error
     """
+    if source_id == UPLOADED_DOCUMENTS_SOURCE_ID:
+        return deepcopy(UPLOADED_DOCUMENTS_SOURCE)
+
     conn = get_connection()
     try:
         with conn.cursor() as cur:
@@ -934,13 +991,13 @@ Returns list of data sources with:
 
 Use this to understand what data is available and how to retrieve it.
 
-Available categories: bank_data""",
+Available categories: bank_data, document_data""",
     "inputSchema": {
         "type": "object",
         "properties": {
             "category": {
                 "type": "string",
-                "description": "Filter by category (e.g., 'bank_data'). Optional."
+                "description": "Filter by category (e.g., 'bank_data', 'document_data'). Optional."
             },
             "active_only": {
                 "type": "boolean",
