@@ -173,6 +173,11 @@ export function SectionEditor({ templateId }: SectionEditorProps) {
   const handleGenerateSection = async () => {
     if (!selectedSectionId || !currentSection) return;
 
+    if (!canGenerateSection) {
+      toast.error('Configure source, method, and required parameters for each subsection before running this section.');
+      return;
+    }
+
     try {
       setSectionGenerating(selectedSectionId, true);
       toast.info('Generating section content...');
@@ -188,7 +193,7 @@ export function SectionEditor({ templateId }: SectionEditorProps) {
 
   if (!selectedSectionId) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-zinc-100">
+      <div className="flex-1 flex items-center justify-center rounded-xl border border-zinc-200 bg-gradient-to-b from-zinc-100/95 to-zinc-200/70 shadow-sm">
         <div className="text-center text-zinc-500">
           <svg className="w-16 h-16 mx-auto mb-4 text-zinc-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -202,16 +207,16 @@ export function SectionEditor({ templateId }: SectionEditorProps) {
 
   if (!currentSection || !previewSection) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-zinc-100">
+      <div className="flex-1 flex items-center justify-center rounded-xl border border-zinc-200 bg-gradient-to-b from-zinc-100/95 to-zinc-200/70 shadow-sm">
         <div className="text-zinc-500">Loading section...</div>
       </div>
     );
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-zinc-100 overflow-hidden">
+    <div className="flex-1 flex flex-col rounded-xl border border-zinc-200 bg-gradient-to-b from-zinc-100/95 to-zinc-200/70 shadow-sm overflow-hidden">
       {/* Section header */}
-      <div className="bg-white border-b border-zinc-200 px-6 py-4 flex items-center justify-between">
+      <div className="bg-white/90 backdrop-blur-sm border-b border-zinc-200/90 px-6 py-4 flex items-center justify-between">
         <div>
           <h2 className="text-xl font-semibold text-zinc-900">
             <span className="text-zinc-400 mr-2">{currentSection.position}.</span>
@@ -221,41 +226,37 @@ export function SectionEditor({ templateId }: SectionEditorProps) {
             {sortedSubsections?.length || 0} subsection{(sortedSubsections?.length || 0) !== 1 ? 's' : ''}
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          {selectedSubsectionId && (
-            <span className="text-sm text-sky-600 bg-sky-50 px-3 py-1 rounded">
-              Editing subsection
-            </span>
-          )}
+        <div className="flex items-center">
           <button
             onClick={handleGenerateSection}
-            disabled={isSectionGenerating || generateSection.isPending || !canGenerateSection}
-            className="px-4 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            disabled={isSectionGenerating || generateSection.isPending}
+            className={`h-10 w-10 inline-flex items-center justify-center rounded-lg border transition-colors ${
+              canGenerateSection
+                ? 'border-green-600 bg-green-600 text-white hover:bg-green-700'
+                : 'border-green-300 bg-green-100 text-green-700 hover:bg-green-200'
+            } disabled:opacity-50 disabled:cursor-not-allowed`}
             title={
               canGenerateSection
                 ? 'Generate all configured subsections in this section'
                 : 'Configure data source, method, and required parameters for each subsection with instructions'
             }
+            aria-label="Run section"
           >
             {isSectionGenerating || generateSection.isPending ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
-                Generating...
-              </>
+              <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.5 4.5v5h5M19.5 19.5v-5h-5M5.6 14a7 7 0 0011.8 2.1L19.5 14M18.4 10a7 7 0 00-11.8-2.1L4.5 10" />
+              </svg>
             ) : (
-              <>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                Generate Section
-              </>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.5 4.5v5h5M19.5 19.5v-5h-5M5.6 14a7 7 0 0011.8 2.1L19.5 14M18.4 10a7 7 0 00-11.8-2.1L4.5 10" />
+              </svg>
             )}
           </button>
         </div>
       </div>
 
       {/* Subsection list */}
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto p-6 bg-zinc-100/55">
         <div className="max-w-5xl mx-auto space-y-4">
           {/* Generating overlay */}
           {isSectionGenerating && (

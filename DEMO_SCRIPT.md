@@ -7,9 +7,9 @@
 
 ## Pre-Demo Checklist
 
-- [ ] Backend running (`uvicorn src.api.main:app --port 8000`)
+- [ ] Backend running (`uvicorn src.api.main:app --port 42110`)
 - [ ] Frontend running (`npm run dev` in frontend folder)
-- [ ] Browser open to `http://localhost:5173`
+- [ ] Browser open to `http://localhost:42174`
 - [ ] Screen recording software ready
 - [ ] Clear any test data if needed
 

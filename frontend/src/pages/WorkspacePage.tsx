@@ -495,7 +495,7 @@ export function WorkspacePage() {
   return (
     <div className="h-screen bg-zinc-50 flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-white border-b border-zinc-200 px-4 py-3 flex items-center justify-between">
+      <header className="bg-gradient-to-b from-zinc-100 to-zinc-200/70 border-b border-zinc-300/80 shadow-[0_1px_0_rgba(15,23,42,0.06)] px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link
             to="/"
@@ -506,119 +506,118 @@ export function WorkspacePage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </Link>
-          <button
-            onClick={openEditModal}
-            className="text-lg font-semibold text-zinc-900 hover:text-sky-600 transition-colors flex items-center gap-1"
-            title="Click to edit template details"
-          >
-            {template.name}
-            <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-            </svg>
-          </button>
-          <span className="px-2 py-0.5 text-xs bg-zinc-100 text-zinc-600 rounded">
-            {template.output_format}
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={openFormattingModal}
-            className="px-4 py-2 text-sm border border-zinc-300 text-zinc-700 rounded-lg hover:bg-zinc-50 transition-colors flex items-center gap-2"
-            title="Choose and tweak document formatting theme"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10M12 3v18m-8-9h16" />
-            </svg>
-            Formatting
-          </button>
-          {/* View mode toggle */}
-          <div className="flex bg-zinc-100 rounded-lg p-1">
-            <button
-              onClick={() => setViewMode('edit')}
-              className={`px-3 py-1 text-sm rounded-md transition-colors ${
-                viewMode === 'edit'
-                  ? 'bg-white shadow text-zinc-900'
-                  : 'text-zinc-600 hover:text-zinc-900'
-              }`}
-            >
-              Edit
-            </button>
-            <button
-              onClick={() => setViewMode('preview')}
-              className={`px-3 py-1 text-sm rounded-md transition-colors ${
-                viewMode === 'preview'
-                  ? 'bg-white shadow text-zinc-900'
-                  : 'text-zinc-600 hover:text-zinc-900'
-              }`}
-            >
-              Preview
-            </button>
+          <div className="flex flex-col gap-1">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-zinc-500 px-1">Title</p>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={openEditModal}
+                className="text-lg font-semibold text-zinc-900 hover:text-sky-600 transition-colors flex items-center gap-1"
+                title="Click to edit template details"
+              >
+                {template.name}
+                <svg className="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+              </button>
+              <span className="px-2 py-0.5 text-xs bg-zinc-100 text-zinc-600 rounded">
+                {template.output_format}
+              </span>
+            </div>
           </div>
-          {/* Uploads button */}
-          <button
-            onClick={() => setIsUploadModalOpen(true)}
-            className="px-4 py-2 text-sm border border-zinc-300 text-zinc-700 rounded-lg hover:bg-zinc-50 transition-colors flex items-center gap-2"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-            </svg>
-            Documents
-          </button>
-          {/* Version History button */}
-          <button
-            onClick={() => setIsVersionModalOpen(true)}
-            className="px-4 py-2 text-sm border border-zinc-300 text-zinc-700 rounded-lg hover:bg-zinc-50 transition-colors flex items-center gap-2"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            History
-          </button>
-          {/* Generate All button */}
-          <button
-            onClick={handleGenerateAll}
-            disabled={startGeneration.isPending || generationRequirements.isPending}
-            className="px-4 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 flex items-center gap-2"
-          >
-            {startGeneration.isPending ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                Starting...
-              </>
-            ) : generationRequirements.isPending ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                Checking...
-              </>
-            ) : (
-              <>
+        </div>
+        <div className="flex items-start gap-5 flex-wrap justify-end">
+          <div className="flex flex-col gap-1">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-zinc-500 px-1">Editor</p>
+            <div className="inline-flex rounded-xl border border-zinc-300/90 overflow-hidden bg-gradient-to-b from-white to-zinc-50 shadow-[0_4px_14px_rgba(15,23,42,0.10)] ring-1 ring-white/80">
+              <button
+                onClick={() => setViewMode('edit')}
+                className={`px-4 py-2.5 text-sm font-medium transition-colors ${
+                  viewMode === 'edit'
+                    ? 'bg-zinc-900 text-white shadow-inner'
+                    : 'text-zinc-700 hover:bg-white'
+                }`}
+              >
+                Edit
+              </button>
+              <button
+                onClick={openFormattingModal}
+                className="px-4 py-2.5 text-sm font-medium text-zinc-700 border-l border-zinc-300/90 hover:bg-white transition-colors"
+                title="Choose and tweak document formatting theme"
+              >
+                Format
+              </button>
+              <button
+                onClick={() => setViewMode('preview')}
+                className={`px-4 py-2.5 text-sm font-medium border-l border-zinc-300/90 transition-colors ${
+                  viewMode === 'preview'
+                    ? 'bg-zinc-900 text-white shadow-inner'
+                    : 'text-zinc-700 hover:bg-white'
+                }`}
+              >
+                Preview
+              </button>
+            </div>
+          </div>
+
+          <div className="hidden lg:block w-px h-14 bg-zinc-300/80 self-end mb-1" aria-hidden="true"></div>
+
+          <div className="flex flex-col gap-1">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-zinc-500 px-1">Output</p>
+            <div className="inline-flex rounded-xl border border-zinc-300/90 overflow-hidden bg-gradient-to-b from-white to-zinc-50 shadow-[0_4px_14px_rgba(15,23,42,0.10)] ring-1 ring-white/80">
+              <button
+                onClick={handleGenerateAll}
+                disabled={startGeneration.isPending || generationRequirements.isPending}
+                className="px-4 py-2.5 text-sm font-medium bg-green-600 text-white hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 border-r border-zinc-300/90"
+              >
+                {startGeneration.isPending ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    Starting...
+                  </>
+                ) : generationRequirements.isPending ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    Checking...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    Generate
+                  </>
+                )}
+              </button>
+              <button
+                onClick={handleExport}
+                disabled={exportPdf.isPending}
+                className="px-4 py-2.5 text-sm font-medium bg-zinc-900 text-white hover:bg-zinc-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 border-r border-zinc-300/90"
+              >
+                {exportPdf.isPending ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    Exporting...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Export
+                  </>
+                )}
+              </button>
+              <button
+                onClick={() => setIsVersionModalOpen(true)}
+                className="px-4 py-2.5 text-sm font-medium text-zinc-700 hover:bg-white transition-colors flex items-center gap-2"
+              >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                Generate All
-              </>
-            )}
-          </button>
-          {/* Export button */}
-          <button
-            onClick={handleExport}
-            disabled={exportPdf.isPending}
-            className="px-4 py-2 text-sm bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors disabled:opacity-50 flex items-center gap-2"
-          >
-            {exportPdf.isPending ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                Exporting...
-              </>
-            ) : (
-              <>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Export PDF
-              </>
-            )}
-          </button>
+                History
+              </button>
+            </div>
+          </div>
         </div>
       </header>
 
@@ -627,10 +626,15 @@ export function WorkspacePage() {
         <ReportPreview templateId={templateId} />
       ) : (
         <>
-          <div className="flex-1 flex overflow-hidden">
-            <SectionNav templateId={templateId} />
-            <SectionEditor templateId={templateId} />
-            <ChatPanel templateId={templateId} />
+          <div className="flex-1 overflow-hidden bg-gradient-to-br from-zinc-100 to-zinc-200/50 p-3">
+            <div className="h-full flex gap-3 overflow-hidden">
+              <SectionNav
+                templateId={templateId}
+                onOpenDocuments={() => setIsUploadModalOpen(true)}
+              />
+              <SectionEditor templateId={templateId} />
+              <ChatPanel templateId={templateId} />
+            </div>
           </div>
         </>
       )}

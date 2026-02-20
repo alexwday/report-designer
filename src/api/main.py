@@ -5,7 +5,7 @@ Provides REST API endpoints for managing templates, sections, subsections,
 and data sources.
 
 Usage:
-    uvicorn src.api.main:app --reload --port 8000
+    uvicorn src.api.main:app --reload --port 42110
 """
 
 import os
@@ -36,7 +36,7 @@ app = FastAPI(
 )
 
 # CORS middleware
-default_origins = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174"
+default_origins = "http://localhost:42174,http://127.0.0.1:42174"
 cors_origins = [
     origin.strip()
     for origin in os.getenv("CORS_ALLOW_ORIGINS", default_origins).split(",")
@@ -44,10 +44,8 @@ cors_origins = [
 ]
 if not cors_origins:
     cors_origins = [
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "http://localhost:5174",
-        "http://127.0.0.1:5174",
+        "http://localhost:42174",
+        "http://127.0.0.1:42174",
     ]
 
 # Browsers reject wildcard origins when credentials are enabled.

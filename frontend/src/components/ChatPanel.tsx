@@ -92,7 +92,7 @@ export function ChatPanel({ templateId }: ChatPanelProps) {
 
   if (!chatExpanded) {
     return (
-      <div className="w-14 border-l border-zinc-200 bg-white flex flex-col items-center justify-between py-4">
+      <div className="w-14 rounded-xl border border-zinc-200 bg-gradient-to-b from-sky-50/80 to-zinc-100 shadow-sm flex flex-col items-center justify-between py-4">
         <button
           onClick={toggleChat}
           className="p-2 rounded-lg text-zinc-500 hover:text-zinc-700 hover:bg-zinc-100"
@@ -113,15 +113,14 @@ export function ChatPanel({ templateId }: ChatPanelProps) {
     <div className="relative flex-shrink-0" style={{ width: `${panelWidth}px` }}>
       <div
         onMouseDown={startResize}
-        className={`absolute left-0 top-0 h-full w-1.5 cursor-col-resize ${isResizing ? 'bg-sky-300' : 'hover:bg-zinc-200'}`}
+        className={`absolute -left-1.5 top-0 h-full w-2.5 cursor-col-resize ${isResizing ? 'bg-sky-300/80' : 'hover:bg-zinc-300/60'}`}
         title="Resize chat panel"
       />
 
-      <div className="h-full border-l border-zinc-200 bg-white flex flex-col">
-        <div className="px-4 py-3 border-b border-zinc-200 flex items-center justify-between">
+      <div className="h-full rounded-xl border border-zinc-200 bg-gradient-to-b from-white to-zinc-50 shadow-sm flex flex-col overflow-hidden">
+        <div className="px-4 py-3 border-b border-zinc-300/80 bg-sky-50/85 flex items-center justify-between">
           <div>
             <h3 className="text-sm font-semibold text-zinc-900">AI Assistant</h3>
-            <p className="text-xs text-zinc-500">Docked beside your subsection preview</p>
           </div>
           <div className="flex items-center gap-1">
             <button
@@ -145,7 +144,7 @@ export function ChatPanel({ templateId }: ChatPanelProps) {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-zinc-50/70">
           {historyLoading ? (
             <div className="text-center text-zinc-500 text-sm">Loading history...</div>
           ) : (
@@ -170,7 +169,7 @@ export function ChatPanel({ templateId }: ChatPanelProps) {
           )}
         </div>
 
-        <form onSubmit={handleSubmit} className="p-4 border-t border-zinc-200 space-y-2">
+        <form onSubmit={handleSubmit} className="p-4 border-t border-zinc-200/90 bg-white/85 space-y-2">
           <div className="flex gap-2">
             <input
               type="text"

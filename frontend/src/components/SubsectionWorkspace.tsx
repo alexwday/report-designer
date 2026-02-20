@@ -1546,47 +1546,6 @@ export function SubsectionWorkspace({
                     </div>
                   )}
 
-                  <div className="rounded-lg border border-zinc-200 bg-zinc-50 p-3 space-y-2">
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">Source details</p>
-                      <p className="text-xs text-zinc-500 mt-1">
-                        Expand a source with the info icon to view source details and available retrieval methods.
-                      </p>
-                    </div>
-                    <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
-                      {dataSources.map((source) => (
-                        <details key={source.id} className="rounded-lg border border-zinc-200 bg-white">
-                          <summary className="list-none cursor-pointer px-3 py-2 flex items-center justify-between gap-2">
-                            <span className="text-sm font-medium text-zinc-900">{source.name}</span>
-                            <span className="inline-flex items-center gap-2">
-                              <span className="text-xs text-zinc-500">{source.category}</span>
-                              <span className="h-6 w-6 inline-flex items-center justify-center rounded-full border border-zinc-300 text-zinc-500">
-                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 21a9 9 0 100-18 9 9 0 000 18z" />
-                                </svg>
-                              </span>
-                            </span>
-                          </summary>
-                          <div className="px-3 pb-3 border-t border-zinc-100 space-y-2">
-                            <p className="text-xs text-zinc-600 pt-2">{source.description}</p>
-                            {source.retrieval_methods.length > 0 && (
-                              <div>
-                                <p className="text-xs font-medium text-zinc-600 mb-1">Available methods</p>
-                                <ul className="space-y-1">
-                                  {source.retrieval_methods.map((method) => (
-                                    <li key={getMethodId(method)} className="text-xs text-zinc-600">
-                                      <span className="text-zinc-800 font-medium">{method.name}</span>
-                                      {method.description ? <span className="text-zinc-500"> - {method.description}</span> : null}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            )}
-                          </div>
-                        </details>
-                      ))}
-                    </div>
-                  </div>
                 </div>
               ) : (
                 <div className="p-4 border border-zinc-200 rounded-lg text-sm text-zinc-500">

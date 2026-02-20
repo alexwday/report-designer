@@ -42,10 +42,19 @@ Optional LLM runtime overrides (env-only):
 ### 3) Run the server
 
 ```bash
-uvicorn src.api.main:app --reload --host 127.0.0.1 --port 8000
+uvicorn src.api.main:app --reload --host 127.0.0.1 --port 42110
 ```
 
-### 4) Optional data bootstrap
+### 4) Run the frontend (separate terminal)
+
+```bash
+cd frontend
+npm run dev -- --host 127.0.0.1 --port 42174
+```
+
+Then open `http://127.0.0.1:42174` in your browser. API docs are at `http://127.0.0.1:42110/api/v1/docs`.
+
+### 5) Optional data bootstrap
 
 ```bash
 # Only needed for Postgres mode (sqlite auto-seeds on startup)
