@@ -7,15 +7,12 @@ users to save versions and revert to previous states.
 
 import json
 import uuid
-from ..db import get_connection
+from ..db import ensure_column, get_connection
 
 
 def _ensure_template_formatting_columns(cur) -> None:
     """Add template formatting column for backward-compatible upgrades."""
-    cur.execute("""
-        ALTER TABLE templates
-        ADD COLUMN IF NOT EXISTS formatting_profile JSONB NOT NULL DEFAULT '{}'::jsonb
-    """)
+    ensure_column(cur, "templates", "formatting_profile", "JSON NOT NULL DEFAULT '{}'")
 
 
 def _coerce_profile_value(raw_value) -> dict:

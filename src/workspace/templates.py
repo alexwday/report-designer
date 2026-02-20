@@ -10,7 +10,7 @@ import json
 import uuid
 from typing import Any
 
-from ..db import get_connection
+from ..db import ensure_column, get_connection
 
 
 THEME_PRESETS: dict[str, dict[str, Any]] = {
@@ -96,10 +96,7 @@ def _coerce_profile_value(raw_value: Any) -> dict[str, Any]:
 
 def _ensure_template_formatting_columns(cur) -> None:
     """Add template formatting columns when upgrading an existing database."""
-    cur.execute("""
-        ALTER TABLE templates
-        ADD COLUMN IF NOT EXISTS formatting_profile JSONB NOT NULL DEFAULT '{}'::jsonb
-    """)
+    ensure_column(cur, "templates", "formatting_profile", "JSON NOT NULL DEFAULT '{}'")
 
 
 def get_template(template_id: str) -> dict:

@@ -13,6 +13,7 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from ..db import initialize_database
 from .routes import (
     templates_router,
     sections_router,
@@ -59,6 +60,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.on_event("startup")
+def _bootstrap_database() -> None:
+    """Initialize local sqlite schema/data when needed."""
+    initialize_database()
 
 
 @app.get("/health", tags=["Health"])

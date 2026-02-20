@@ -22,6 +22,9 @@ cp .env.example .env
 Set required values in `.env`:
 
 - `OPENAI_API_KEY`, or OAuth settings (`OAUTH_URL`, `CLIENT_ID`, `CLIENT_SECRET`, `AZURE_BASE_URL`)
+- Database mode:
+  - Default/self-contained: `DB_BACKEND=sqlite` (auto-creates local DB and seeds mock data on startup)
+  - Optional external DB: `DB_BACKEND=postgres` plus `DB_HOST/DB_PORT/DB_NAME/DB_USER/DB_PASSWORD`
 
 Optional LLM runtime overrides (env-only):
 
@@ -39,11 +42,9 @@ uvicorn src.api.main:app --reload --host 127.0.0.1 --port 8000
 ### 4) Optional data bootstrap
 
 ```bash
-# Generate mock data
-python scripts/database/generate_mock_data.py
-
-# Load into Postgres
+# Only needed for Postgres mode (sqlite auto-seeds on startup)
 python scripts/database/load_data.py
+python scripts/database/seed_registry.py
 ```
 
 ## Project Structure
