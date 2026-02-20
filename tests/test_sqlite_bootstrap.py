@@ -4,8 +4,13 @@ import sqlite3
 import tempfile
 import unittest
 from pathlib import Path
+from uuid import uuid4
 
 import src.db as db
+from src.workspace.generation_presets import (
+    get_template_generation_preset,
+    save_template_generation_preset,
+)
 
 
 class SQLiteBootstrapTests(unittest.TestCase):
@@ -141,6 +146,67 @@ class SQLiteBootstrapTests(unittest.TestCase):
                 """,
                 ("Demo: Big 6 Earnings Dashboard",),
             )
+            self.assertEqual(cur.fetchone()[0], 4)
+        finally:
+            conn.close()
+
+    def test_generation_presets_table_creation_works_in_sqlite(self):
+        db.initialize_database(force=True)
+
+        conn = sqlite3.connect(str(db.SQLITE_DB_PATH), detect_types=sqlite3.PARSE_DECLTYPES)
+        try:
+            cur = conn.cursor()
+            cur.execute("SELECT id FROM templates ORDER BY created_at DESC LIMIT 1")
+            template_id = cur.fetchone()[0]
+        finally:
+            conn.close()
+
+        preset = get_template_generation_preset(template_id)
+        self.assertEqual(preset["template_id"], template_id)
+        self.assertEqual(preset["run_inputs"], {})
+
+        saved = save_template_generation_preset(
+            template_id,
+            {"fiscal_year": 2025, "fiscal_quarter": "Q1"},
+        )
+        self.assertEqual(saved["template_id"], template_id)
+        self.assertEqual(saved["run_inputs"]["fiscal_year"], 2025)
+
+    def test_demo_template_is_upgraded_when_outdated(self):
+        db.initialize_database(force=True)
+
+        conn = sqlite3.connect(str(db.SQLITE_DB_PATH), detect_types=sqlite3.PARSE_DECLTYPES)
+        try:
+            cur = conn.cursor()
+            cur.execute(
+                """
+                SELECT id
+                FROM templates
+                WHERE name = ?
+                """,
+                ("Demo: Big 6 Earnings Dashboard",),
+            )
+            template_id = cur.fetchone()[0]
+
+            # Simulate an older seed state with only one section.
+            cur.execute("DELETE FROM sections WHERE template_id = ?", (template_id,))
+            cur.execute(
+                """
+                INSERT INTO sections (id, template_id, title, position)
+                VALUES (?, ?, ?, ?)
+                """,
+                (str(uuid4()), template_id, "Legacy Section", 1),
+            )
+            conn.commit()
+        finally:
+            conn.close()
+
+        db.initialize_database(force=True)
+
+        conn = sqlite3.connect(str(db.SQLITE_DB_PATH), detect_types=sqlite3.PARSE_DECLTYPES)
+        try:
+            cur = conn.cursor()
+            cur.execute("SELECT COUNT(*) FROM sections WHERE template_id = ?", (template_id,))
             self.assertEqual(cur.fetchone()[0], 4)
         finally:
             conn.close()

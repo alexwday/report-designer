@@ -62,9 +62,10 @@ def _normalize_sql_for_sqlite(sql: str) -> str:
     """Convert Postgres-flavored SQL to sqlite-compatible SQL."""
     normalized = sql
     normalized = re.sub(r"%s", "?", normalized)
+    # Strip Postgres casts (e.g., ::jsonb, ::text) before type rewrites.
+    normalized = re.sub(r"::[A-Za-z_][A-Za-z0-9_]*", "", normalized)
     normalized = re.sub(r"\bUUID\b", "TEXT", normalized, flags=re.IGNORECASE)
     normalized = re.sub(r"\bJSONB\b", "JSON", normalized, flags=re.IGNORECASE)
-    normalized = re.sub(r"::jsonb", "", normalized, flags=re.IGNORECASE)
     normalized = re.sub(
         r"\bTIMESTAMP\s+WITH\s+TIME\s+ZONE\b",
         "TEXT",
@@ -619,14 +620,41 @@ def _seed_demo_template(conn: sqlite3.Connection) -> None:
     """
     Seed one ready-to-view demo template with chart subsections.
 
-    Only runs when templates table is empty to avoid interfering with user-created workspaces.
+    Behavior:
+    - If the seeded demo template already exists but is outdated (<4 sections), upgrade it.
+    - If no seeded demo exists, create it only when templates table is empty.
+    - Never alter user-created templates.
     """
-    cur = conn.cursor()
-    cur.execute("SELECT COUNT(*) FROM templates")
-    if cur.fetchone()[0] > 0:
-        return
+    demo_name = "Demo: Big 6 Earnings Dashboard"
+    demo_description = "Prebuilt starter template with summary + chart subsections."
 
-    template_id = str(uuid4())
+    cur = conn.cursor()
+
+    cur.execute(
+        """
+        SELECT id
+        FROM templates
+        WHERE name = ? AND created_by = 'system_seed'
+        ORDER BY created_at DESC
+        LIMIT 1
+        """,
+        (demo_name,),
+    )
+    existing_demo = cur.fetchone()
+
+    if existing_demo:
+        template_id = str(existing_demo[0])
+        cur.execute("SELECT COUNT(*) FROM sections WHERE template_id = ?", (template_id,))
+        existing_section_count = int(cur.fetchone()[0] or 0)
+        if existing_section_count >= 4:
+            return
+
+        cur.execute("DELETE FROM sections WHERE template_id = ?", (template_id,))
+    else:
+        cur.execute("SELECT COUNT(*) FROM templates")
+        if int(cur.fetchone()[0] or 0) > 0:
+            return
+        template_id = str(uuid4())
 
     formatting_profile = {
         "theme_id": "executive_blue",
@@ -813,24 +841,43 @@ Use this template as a starting point for your own report layout and prompts."""
         ],
     )
 
-    cur.execute(
-        """
-        INSERT INTO templates (
-            id, name, description, created_by, output_format, orientation, formatting_profile, status
+    if existing_demo:
+        cur.execute(
+            """
+            UPDATE templates
+            SET description = ?,
+                output_format = 'pdf',
+                orientation = 'landscape',
+                formatting_profile = ?,
+                status = 'active',
+                updated_at = CURRENT_TIMESTAMP
+            WHERE id = ?
+            """,
+            (
+                demo_description,
+                json.dumps(formatting_profile),
+                template_id,
+            ),
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """,
-        (
-            template_id,
-            "Demo: Big 6 Earnings Dashboard",
-            "Prebuilt starter template with summary + chart subsections.",
-            "system_seed",
-            "pdf",
-            "landscape",
-            json.dumps(formatting_profile),
-            "active",
-        ),
-    )
+    else:
+        cur.execute(
+            """
+            INSERT INTO templates (
+                id, name, description, created_by, output_format, orientation, formatting_profile, status
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                template_id,
+                demo_name,
+                demo_description,
+                "system_seed",
+                "pdf",
+                "landscape",
+                json.dumps(formatting_profile),
+                "active",
+            ),
+        )
 
     sections = [
         {
