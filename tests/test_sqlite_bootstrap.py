@@ -42,6 +42,40 @@ class SQLiteBootstrapTests(unittest.TestCase):
 
             cur.execute("SELECT COUNT(*) FROM data_source_registry")
             self.assertGreater(cur.fetchone()[0], 0)
+
+            cur.execute(
+                """
+                SELECT id, name, status
+                FROM templates
+                WHERE name = ?
+                """,
+                ("Demo: Big 6 Earnings Dashboard",),
+            )
+            template_row = cur.fetchone()
+            self.assertIsNotNone(template_row)
+            self.assertEqual(template_row[2], "active")
+
+            template_id = template_row[0]
+            cur.execute(
+                """
+                SELECT COUNT(*)
+                FROM sections
+                WHERE template_id = ?
+                """,
+                (template_id,),
+            )
+            self.assertGreaterEqual(cur.fetchone()[0], 1)
+
+            cur.execute(
+                """
+                SELECT COUNT(*)
+                FROM subsections sub
+                JOIN sections sec ON sec.id = sub.section_id
+                WHERE sec.template_id = ? AND sub.content_type = 'json'
+                """,
+                (template_id,),
+            )
+            self.assertGreaterEqual(cur.fetchone()[0], 1)
         finally:
             conn.close()
 
@@ -78,6 +112,25 @@ class SQLiteBootstrapTests(unittest.TestCase):
                 cur.execute("PRAGMA table_info(__column_test)")
                 columns = [row[1] for row in cur.fetchall()]
             self.assertIn("new_col", columns)
+        finally:
+            conn.close()
+
+    def test_demo_template_seed_is_idempotent(self):
+        db.initialize_database(force=True)
+        db.initialize_database(force=True)
+
+        conn = sqlite3.connect(str(db.SQLITE_DB_PATH), detect_types=sqlite3.PARSE_DECLTYPES)
+        try:
+            cur = conn.cursor()
+            cur.execute(
+                """
+                SELECT COUNT(*)
+                FROM templates
+                WHERE name = ?
+                """,
+                ("Demo: Big 6 Earnings Dashboard",),
+            )
+            self.assertEqual(cur.fetchone()[0], 1)
         finally:
             conn.close()
 

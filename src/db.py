@@ -592,6 +592,279 @@ def _seed_data_source_registry(conn: sqlite3.Connection) -> None:
     )
 
 
+def _build_chart_payload(
+    title: str,
+    *,
+    chart_type: str,
+    x_label: str,
+    y_label: str,
+    series: list[dict[str, Any]],
+    insights: list[str],
+) -> str:
+    payload = {
+        "kind": "chart",
+        "title": title,
+        "chart": {
+            "chart_type": chart_type,
+            "x_label": x_label,
+            "y_label": y_label,
+            "series": series,
+        },
+        "insights": insights,
+    }
+    return json.dumps(payload)
+
+
+def _seed_demo_template(conn: sqlite3.Connection) -> None:
+    """
+    Seed one ready-to-view demo template with chart subsections.
+
+    Only runs when templates table is empty to avoid interfering with user-created workspaces.
+    """
+    cur = conn.cursor()
+    cur.execute("SELECT COUNT(*) FROM templates")
+    if cur.fetchone()[0] > 0:
+        return
+
+    template_id = str(uuid4())
+    section_id = str(uuid4())
+    summary_subsection_id = str(uuid4())
+    income_chart_subsection_id = str(uuid4())
+    stock_chart_subsection_id = str(uuid4())
+
+    formatting_profile = {
+        "theme_id": "executive_blue",
+        "theme_name": "Executive Blue",
+        "font_family": "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
+        "title_font_size_pt": 20,
+        "subsection_title_font_size_pt": 13,
+        "body_font_size_pt": 11,
+        "line_height": 1.6,
+        "accent_color": "#1D4ED8",
+        "heading_color": "#111827",
+        "body_color": "#1F2937",
+        "section_title_case": "title",
+        "subsection_title_case": "title",
+    }
+
+    summary_content = """## Q1 2025 Snapshot
+
+1. RBC and TD lead absolute net income among the Big 6 this quarter.
+2. National Bank and Scotiabank show the strongest quarter-over-quarter stock momentum.
+3. Capital ratios remain solid across all banks, with CET1 buffers generally above 12%.
+
+Use this template as a starting point for your own report layout and prompts."""
+
+    income_chart_content = _build_chart_payload(
+        "Big 6 Net Income (Q1 2025)",
+        chart_type="bar",
+        x_label="Bank",
+        y_label="CAD Billions",
+        series=[
+            {
+                "name": "Net Income",
+                "points": [
+                    {"x": "RY", "y": 4.1},
+                    {"x": "TD", "y": 3.8},
+                    {"x": "BMO", "y": 2.0},
+                    {"x": "BNS", "y": 1.9},
+                    {"x": "CM", "y": 1.8},
+                    {"x": "NA", "y": 1.0},
+                ],
+            }
+        ],
+        insights=[
+            "RBC and TD remain the top earners in absolute terms.",
+            "Mid-pack separation between BMO, Scotiabank, and CIBC is narrow.",
+            "National Bank is smaller in absolute income but continues to grow efficiently.",
+        ],
+    )
+
+    stock_chart_content = _build_chart_payload(
+        "Quarter-End Stock Price Trend",
+        chart_type="line",
+        x_label="Fiscal Quarter",
+        y_label="Close Price (CAD)",
+        series=[
+            {
+                "name": "RY",
+                "points": [
+                    {"x": "2024 Q4", "y": 129.2},
+                    {"x": "2025 Q1", "y": 134.8},
+                ],
+            },
+            {
+                "name": "TD",
+                "points": [
+                    {"x": "2024 Q4", "y": 82.5},
+                    {"x": "2025 Q1", "y": 84.9},
+                ],
+            },
+            {
+                "name": "NA",
+                "points": [
+                    {"x": "2024 Q4", "y": 103.4},
+                    {"x": "2025 Q1", "y": 111.1},
+                ],
+            },
+        ],
+        insights=[
+            "All three sample banks show positive QoQ movement.",
+            "National Bank has the steepest slope over this window.",
+            "Line chart layout is useful for multi-quarter trend narratives.",
+        ],
+    )
+
+    cur.execute(
+        """
+        INSERT INTO templates (
+            id, name, description, created_by, output_format, orientation, formatting_profile, status
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        (
+            template_id,
+            "Demo: Big 6 Earnings Dashboard",
+            "Prebuilt starter template with summary + chart subsections.",
+            "system_seed",
+            "pdf",
+            "landscape",
+            json.dumps(formatting_profile),
+            "active",
+        ),
+    )
+
+    cur.execute(
+        """
+        INSERT INTO sections (id, template_id, title, position)
+        VALUES (?, ?, ?, ?)
+        """,
+        (
+            section_id,
+            template_id,
+            "Earnings Dashboard",
+            1,
+        ),
+    )
+
+    cur.execute(
+        """
+        INSERT INTO subsections (
+            id, section_id, title, position, widget_type, data_source_config,
+            notes, instructions, content, content_type, version_number
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        (
+            summary_subsection_id,
+            section_id,
+            "Executive Summary",
+            1,
+            "summary",
+            json.dumps(
+                {
+                    "inputs": [
+                        {
+                            "source_id": "financials",
+                            "method_id": "compare_banks",
+                            "parameters": {
+                                "bank_ids": ["RY", "TD", "BMO", "BNS", "CM", "NA"],
+                                "fiscal_year": 2025,
+                                "fiscal_quarter": "Q1",
+                                "metrics": ["net_income", "roe", "cet1_ratio"],
+                            },
+                        }
+                    ]
+                }
+            ),
+            "Seeded summary block so the UI is populated on first run.",
+            "Summarize the quarter in concise executive language.",
+            summary_content,
+            "markdown",
+            1,
+        ),
+    )
+
+    cur.execute(
+        """
+        INSERT INTO subsections (
+            id, section_id, title, position, widget_type, data_source_config,
+            notes, instructions, content, content_type, version_number
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        (
+            income_chart_subsection_id,
+            section_id,
+            "Net Income Comparison",
+            2,
+            "chart",
+            json.dumps(
+                {
+                    "inputs": [
+                        {
+                            "source_id": "financials",
+                            "method_id": "compare_banks",
+                            "parameters": {
+                                "bank_ids": ["RY", "TD", "BMO", "BNS", "CM", "NA"],
+                                "fiscal_year": 2025,
+                                "fiscal_quarter": "Q1",
+                                "metrics": ["net_income"],
+                            },
+                        }
+                    ],
+                    "visualization": {"chart_type": "bar", "x_key": "bank_id", "y_key": "net_income"},
+                }
+            ),
+            "Chart payload is pre-rendered so the component loads immediately.",
+            "Compare net income across the selected banks.",
+            income_chart_content,
+            "json",
+            1,
+        ),
+    )
+
+    cur.execute(
+        """
+        INSERT INTO subsections (
+            id, section_id, title, position, widget_type, data_source_config,
+            notes, instructions, content, content_type, version_number
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        (
+            stock_chart_subsection_id,
+            section_id,
+            "Stock Trend",
+            3,
+            "chart",
+            json.dumps(
+                {
+                    "inputs": [
+                        {
+                            "source_id": "stock_prices",
+                            "method_id": "trend",
+                            "parameters": {
+                                "bank_id": "RY",
+                                "periods": [
+                                    {"fiscal_year": 2024, "fiscal_quarter": "Q4"},
+                                    {"fiscal_year": 2025, "fiscal_quarter": "Q1"},
+                                ],
+                            },
+                        }
+                    ],
+                    "visualization": {"chart_type": "line", "x_key": "period", "y_key": "close_price"},
+                }
+            ),
+            "Swap the bank IDs in data source config to tailor this trend panel.",
+            "Show stock momentum over recent quarters.",
+            stock_chart_content,
+            "json",
+            1,
+        ),
+    )
+
+
 def _seed_sqlite_if_needed(conn: sqlite3.Connection) -> None:
     cur = conn.cursor()
 
@@ -614,6 +887,8 @@ def _seed_sqlite_if_needed(conn: sqlite3.Connection) -> None:
     registry_count = cur.fetchone()[0]
     if registry_count == 0:
         _seed_data_source_registry(conn)
+
+    _seed_demo_template(conn)
 
     conn.commit()
 
