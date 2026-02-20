@@ -13,6 +13,12 @@ python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
+If you plan to use Postgres mode, also install:
+
+```bash
+pip install -r requirements-postgres.txt
+```
+
 ### 2) Create `.env` from `.env.example`
 
 ```bash
