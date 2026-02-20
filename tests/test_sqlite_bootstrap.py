@@ -24,6 +24,19 @@ class SQLiteBootstrapTests(unittest.TestCase):
         db.SQLITE_DB_PATH = Path(self._tmpdir.name) / "report_designer.db"
         db._SQLITE_INIT_DONE = False
 
+        seed_payload = db._load_system_seed_template_payload()
+        if seed_payload is None:
+            raise RuntimeError("system seed template payload is required for sqlite bootstrap tests")
+        self._seed_payload = seed_payload
+        self._seed_name = str(seed_payload["template"]["name"])
+        self._seed_section_count = len(seed_payload["sections"])
+        self._seed_json_subsection_count = sum(
+            1
+            for section in seed_payload["sections"]
+            for subsection in section.get("subsections", [])
+            if subsection.get("content_type") == "json"
+        )
+
     def tearDown(self) -> None:
         db.DB_BACKEND = self._original_backend
         db.SQLITE_DB_PATH = self._original_sqlite_path
@@ -54,11 +67,11 @@ class SQLiteBootstrapTests(unittest.TestCase):
                 FROM templates
                 WHERE name = ?
                 """,
-                ("Demo: Big 6 Earnings Dashboard",),
+                (self._seed_name,),
             )
             template_row = cur.fetchone()
             self.assertIsNotNone(template_row)
-            self.assertEqual(template_row[2], "active")
+            self.assertEqual(template_row[1], self._seed_name)
 
             template_id = template_row[0]
             cur.execute(
@@ -69,7 +82,7 @@ class SQLiteBootstrapTests(unittest.TestCase):
                 """,
                 (template_id,),
             )
-            self.assertGreaterEqual(cur.fetchone()[0], 4)
+            self.assertEqual(cur.fetchone()[0], self._seed_section_count)
 
             cur.execute(
                 """
@@ -80,7 +93,7 @@ class SQLiteBootstrapTests(unittest.TestCase):
                 """,
                 (template_id,),
             )
-            self.assertGreaterEqual(cur.fetchone()[0], 1)
+            self.assertEqual(cur.fetchone()[0], self._seed_json_subsection_count)
         finally:
             conn.close()
 
@@ -133,7 +146,7 @@ class SQLiteBootstrapTests(unittest.TestCase):
                 FROM templates
                 WHERE name = ?
                 """,
-                ("Demo: Big 6 Earnings Dashboard",),
+                (self._seed_name,),
             )
             self.assertEqual(cur.fetchone()[0], 1)
 
@@ -144,9 +157,9 @@ class SQLiteBootstrapTests(unittest.TestCase):
                 JOIN templates t ON t.id = sec.template_id
                 WHERE t.name = ?
                 """,
-                ("Demo: Big 6 Earnings Dashboard",),
+                (self._seed_name,),
             )
-            self.assertEqual(cur.fetchone()[0], 4)
+            self.assertEqual(cur.fetchone()[0], self._seed_section_count)
         finally:
             conn.close()
 
@@ -184,7 +197,7 @@ class SQLiteBootstrapTests(unittest.TestCase):
                 FROM templates
                 WHERE name = ?
                 """,
-                ("Demo: Big 6 Earnings Dashboard",),
+                (self._seed_name,),
             )
             template_id = cur.fetchone()[0]
 
@@ -207,7 +220,7 @@ class SQLiteBootstrapTests(unittest.TestCase):
         try:
             cur = conn.cursor()
             cur.execute("SELECT COUNT(*) FROM sections WHERE template_id = ?", (template_id,))
-            self.assertEqual(cur.fetchone()[0], 4)
+            self.assertEqual(cur.fetchone()[0], self._seed_section_count)
         finally:
             conn.close()
 

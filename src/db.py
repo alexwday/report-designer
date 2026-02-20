@@ -45,6 +45,11 @@ if os.getenv("DB_PASSWORD"):
 _SQLITE_INIT_DONE = False
 _SQLITE_INIT_LOCK = threading.Lock()
 
+_SYSTEM_SEED_TEMPLATE_PATH = (
+    _PROJECT_ROOT / "scripts" / "database" / "data" / "system_seed_template.json"
+)
+_LEGACY_SYSTEM_SEED_NAMES = {"Demo: Big 6 Earnings Dashboard"}
+
 # sqlite JSON adapters/converters
 sqlite3.register_adapter(dict, lambda value: json.dumps(value))
 sqlite3.register_adapter(list, lambda value: json.dumps(value))
@@ -593,43 +598,75 @@ def _seed_data_source_registry(conn: sqlite3.Connection) -> None:
     )
 
 
-def _build_chart_payload(
-    title: str,
-    *,
-    chart_type: str,
-    x_label: str,
-    y_label: str,
-    series: list[dict[str, Any]],
-    insights: list[str],
-) -> str:
-    payload = {
-        "kind": "chart",
-        "title": title,
-        "chart": {
-            "chart_type": chart_type,
-            "x_label": x_label,
-            "y_label": y_label,
-            "series": series,
-        },
-        "insights": insights,
-    }
-    return json.dumps(payload)
+def _load_system_seed_template_payload() -> dict[str, Any] | None:
+    if not _SYSTEM_SEED_TEMPLATE_PATH.exists():
+        return None
+
+    try:
+        payload = json.loads(_SYSTEM_SEED_TEMPLATE_PATH.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return None
+
+    if not isinstance(payload, dict):
+        return None
+
+    template = payload.get("template")
+    sections = payload.get("sections")
+    if not isinstance(template, dict) or not isinstance(sections, list):
+        return None
+
+    return payload
+
+
+def _serialize_data_source_config(value: Any) -> str | None:
+    if value is None:
+        return None
+    if isinstance(value, str):
+        return value
+    return json.dumps(value)
 
 
 def _seed_demo_template(conn: sqlite3.Connection) -> None:
     """
-    Seed one ready-to-view demo template with chart subsections.
+    Seed a deterministic system template from the exported JSON snapshot.
 
     Behavior:
-    - If the seeded demo template already exists but is outdated (<4 sections), upgrade it.
-    - If no seeded demo exists, create it only when templates table is empty.
-    - Never alter user-created templates.
+    - If the same system seed exists and structure matches, no-op.
+    - If a legacy system seed exists, upgrade it in place.
+    - If no system seed exists, create it only when templates table is empty.
     """
-    demo_name = "Demo: Big 6 Earnings Dashboard"
-    demo_description = "Prebuilt starter template with summary + chart subsections."
+    payload = _load_system_seed_template_payload()
+    if not payload:
+        return
+
+    template_payload = payload["template"]
+    raw_sections = payload["sections"]
+    sections: list[dict[str, Any]] = [s for s in raw_sections if isinstance(s, dict)]
+    if not sections:
+        return
+
+    demo_name = str(template_payload.get("name") or "System Seed Template")
+    demo_description = template_payload.get("description") or ""
+    output_format = str(template_payload.get("output_format") or "pdf")
+    orientation = str(template_payload.get("orientation") or "landscape")
+    status = str(template_payload.get("status") or "active")
+
+    formatting_profile = template_payload.get("formatting_profile")
+    if isinstance(formatting_profile, str):
+        try:
+            formatting_profile = json.loads(formatting_profile)
+        except json.JSONDecodeError:
+            formatting_profile = {}
+    if not isinstance(formatting_profile, dict):
+        formatting_profile = {}
+
+    sorted_sections = sorted(
+        sections,
+        key=lambda item: int(item.get("position") or 0),
+    )
+    desired_section_titles = [str(section.get("title") or "") for section in sorted_sections]
 
     cur = conn.cursor()
-
     cur.execute(
         """
         SELECT id
@@ -642,224 +679,105 @@ def _seed_demo_template(conn: sqlite3.Connection) -> None:
     )
     existing_demo = cur.fetchone()
 
+    if not existing_demo and _LEGACY_SYSTEM_SEED_NAMES:
+        placeholders = ", ".join("?" for _ in _LEGACY_SYSTEM_SEED_NAMES)
+        cur.execute(
+            f"""
+            SELECT id
+            FROM templates
+            WHERE created_by = 'system_seed'
+              AND name IN ({placeholders})
+            ORDER BY created_at DESC
+            LIMIT 1
+            """,
+            tuple(_LEGACY_SYSTEM_SEED_NAMES),
+        )
+        existing_demo = cur.fetchone()
+
+    template_id: str
+    should_reseed = False
     if existing_demo:
         template_id = str(existing_demo[0])
-        cur.execute("SELECT COUNT(*) FROM sections WHERE template_id = ?", (template_id,))
-        existing_section_count = int(cur.fetchone()[0] or 0)
-        if existing_section_count >= 4:
+        cur.execute(
+            """
+            SELECT id, title
+            FROM sections
+            WHERE template_id = ?
+            ORDER BY position
+            """,
+            (template_id,),
+        )
+        existing_sections = cur.fetchall()
+        existing_titles = [str(row[1] or "") for row in existing_sections]
+
+        if len(existing_sections) != len(sorted_sections) or existing_titles != desired_section_titles:
+            should_reseed = True
+        else:
+            for (section_id, _title), seed_section in zip(existing_sections, sorted_sections):
+                seed_subsections = [
+                    subsection
+                    for subsection in seed_section.get("subsections", [])
+                    if isinstance(subsection, dict)
+                ]
+                cur.execute("SELECT COUNT(*) FROM subsections WHERE section_id = ?", (section_id,))
+                existing_subsection_count = int(cur.fetchone()[0] or 0)
+                if existing_subsection_count != len(seed_subsections):
+                    should_reseed = True
+                    break
+
+        if not should_reseed:
             return
+
+        seed_section_ids = [
+            str(section.get("id"))
+            for section in sorted_sections
+            if section.get("id")
+        ]
+        if seed_section_ids:
+            placeholders = ", ".join("?" for _ in seed_section_ids)
+            cur.execute(
+                f"""
+                DELETE FROM subsection_versions
+                WHERE subsection_id IN (
+                    SELECT id FROM subsections WHERE section_id IN ({placeholders})
+                )
+                """,
+                tuple(seed_section_ids),
+            )
+            cur.execute(
+                f"DELETE FROM subsections WHERE section_id IN ({placeholders})",
+                tuple(seed_section_ids),
+            )
 
         cur.execute("DELETE FROM sections WHERE template_id = ?", (template_id,))
-    else:
-        cur.execute("SELECT COUNT(*) FROM templates")
-        if int(cur.fetchone()[0] or 0) > 0:
-            return
-        template_id = str(uuid4())
-
-    formatting_profile = {
-        "theme_id": "executive_blue",
-        "theme_name": "Executive Blue",
-        "font_family": "'Segoe UI', 'Helvetica Neue', Arial, sans-serif",
-        "title_font_size_pt": 20,
-        "subsection_title_font_size_pt": 13,
-        "body_font_size_pt": 11,
-        "line_height": 1.6,
-        "accent_color": "#1D4ED8",
-        "heading_color": "#111827",
-        "body_color": "#1F2937",
-        "section_title_case": "title",
-        "subsection_title_case": "title",
-    }
-
-    summary_content = """## Q1 2025 Snapshot
-
-1. RBC and TD lead absolute net income among the Big 6 this quarter.
-2. National Bank and Scotiabank show the strongest quarter-over-quarter stock momentum.
-3. Capital ratios remain solid across all banks, with CET1 buffers generally above 12%.
-
-Use this template as a starting point for your own report layout and prompts."""
-
-    profitability_narrative = """### Profitability and Capital Readout
-
-- Net income leadership remains concentrated in RBC and TD.
-- CET1 levels are broadly stable and above regulatory minimums.
-- Monitor earnings quality through margin sustainability and credit costs.
-"""
-
-    credit_narrative = """### Credit Quality Highlights
-
-- PCL ratios have normalized versus prior-year stress periods.
-- Relative movement suggests credit quality remains manageable in aggregate.
-- Use this section to add management commentary from transcripts as context.
-"""
-
-    income_chart_content = _build_chart_payload(
-        "Big 6 Net Income (Q1 2025)",
-        chart_type="bar",
-        x_label="Bank",
-        y_label="CAD Billions",
-        series=[
-            {
-                "name": "Net Income",
-                "points": [
-                    {"x": "RY", "y": 4.1},
-                    {"x": "TD", "y": 3.8},
-                    {"x": "BMO", "y": 2.0},
-                    {"x": "BNS", "y": 1.9},
-                    {"x": "CM", "y": 1.8},
-                    {"x": "NA", "y": 1.0},
-                ],
-            }
-        ],
-        insights=[
-            "RBC and TD remain the top earners in absolute terms.",
-            "Mid-pack separation between BMO, Scotiabank, and CIBC is narrow.",
-            "National Bank is smaller in absolute income but continues to grow efficiently.",
-        ],
-    )
-
-    stock_chart_content = _build_chart_payload(
-        "Quarter-End Stock Price Trend",
-        chart_type="line",
-        x_label="Fiscal Quarter",
-        y_label="Close Price (CAD)",
-        series=[
-            {
-                "name": "RY",
-                "points": [
-                    {"x": "2024 Q4", "y": 129.2},
-                    {"x": "2025 Q1", "y": 134.8},
-                ],
-            },
-            {
-                "name": "TD",
-                "points": [
-                    {"x": "2024 Q4", "y": 82.5},
-                    {"x": "2025 Q1", "y": 84.9},
-                ],
-            },
-            {
-                "name": "NA",
-                "points": [
-                    {"x": "2024 Q4", "y": 103.4},
-                    {"x": "2025 Q1", "y": 111.1},
-                ],
-            },
-        ],
-        insights=[
-            "All three sample banks show positive QoQ movement.",
-            "National Bank has the steepest slope over this window.",
-            "Line chart layout is useful for multi-quarter trend narratives.",
-        ],
-    )
-
-    cet1_chart_content = _build_chart_payload(
-        "CET1 Ratio Comparison (Q1 2025)",
-        chart_type="bar",
-        x_label="Bank",
-        y_label="CET1 Ratio (%)",
-        series=[
-            {
-                "name": "CET1 Ratio",
-                "points": [
-                    {"x": "RY", "y": 13.2},
-                    {"x": "TD", "y": 13.1},
-                    {"x": "BMO", "y": 13.4},
-                    {"x": "BNS", "y": 12.8},
-                    {"x": "CM", "y": 12.9},
-                    {"x": "NA", "y": 13.6},
-                ],
-            }
-        ],
-        insights=[
-            "Capital buffers remain healthy across the Big 6.",
-            "Dispersion is narrow, supporting peer comparability.",
-            "Use alongside ROE to assess capital efficiency.",
-        ],
-    )
-
-    pcl_trend_content = _build_chart_payload(
-        "PCL Ratio Trend",
-        chart_type="line",
-        x_label="Fiscal Quarter",
-        y_label="PCL Ratio (%)",
-        series=[
-            {
-                "name": "RY",
-                "points": [
-                    {"x": "2024 Q3", "y": 0.30},
-                    {"x": "2024 Q4", "y": 0.28},
-                    {"x": "2025 Q1", "y": 0.27},
-                ],
-            },
-            {
-                "name": "TD",
-                "points": [
-                    {"x": "2024 Q3", "y": 0.34},
-                    {"x": "2024 Q4", "y": 0.33},
-                    {"x": "2025 Q1", "y": 0.31},
-                ],
-            },
-            {
-                "name": "BNS",
-                "points": [
-                    {"x": "2024 Q3", "y": 0.39},
-                    {"x": "2024 Q4", "y": 0.37},
-                    {"x": "2025 Q1", "y": 0.35},
-                ],
-            },
-        ],
-        insights=[
-            "PCL ratios are trending lower in this sample window.",
-            "Scotiabank remains elevated relative to peers but improving.",
-            "Combine with transcript commentary for forward risk signals.",
-        ],
-    )
-
-    stock_qoq_bar_content = _build_chart_payload(
-        "QoQ Stock Performance",
-        chart_type="bar",
-        x_label="Bank",
-        y_label="QoQ Change (%)",
-        series=[
-            {
-                "name": "QoQ Change",
-                "points": [
-                    {"x": "RY", "y": 4.2},
-                    {"x": "TD", "y": 2.9},
-                    {"x": "BMO", "y": 3.8},
-                    {"x": "BNS", "y": 5.1},
-                    {"x": "CM", "y": 2.4},
-                    {"x": "NA", "y": 7.5},
-                ],
-            }
-        ],
-        insights=[
-            "National Bank and Scotiabank outperform on QoQ move.",
-            "CIBC lags the group in this quarter.",
-            "Use with valuation context before drawing directional conclusions.",
-        ],
-    )
-
-    if existing_demo:
         cur.execute(
             """
             UPDATE templates
-            SET description = ?,
-                output_format = 'pdf',
-                orientation = 'landscape',
+            SET name = ?,
+                description = ?,
+                output_format = ?,
+                orientation = ?,
                 formatting_profile = ?,
-                status = 'active',
+                status = ?,
                 updated_at = CURRENT_TIMESTAMP
             WHERE id = ?
             """,
             (
+                demo_name,
                 demo_description,
+                output_format,
+                orientation,
                 json.dumps(formatting_profile),
+                status,
                 template_id,
             ),
         )
     else:
+        cur.execute("SELECT COUNT(*) FROM templates")
+        if int(cur.fetchone()[0] or 0) > 0:
+            return
+
+        template_id = str(template_payload.get("source_template_id") or uuid4())
         cur.execute(
             """
             INSERT INTO templates (
@@ -872,193 +790,16 @@ Use this template as a starting point for your own report layout and prompts."""
                 demo_name,
                 demo_description,
                 "system_seed",
-                "pdf",
-                "landscape",
+                output_format,
+                orientation,
                 json.dumps(formatting_profile),
-                "active",
+                status,
             ),
         )
 
-    sections = [
-        {
-            "title": "Executive Summary",
-            "subsections": [
-                {
-                    "title": "Quarter Snapshot",
-                    "widget_type": "summary",
-                    "data_source_config": {
-                        "inputs": [
-                            {
-                                "source_id": "financials",
-                                "method_id": "compare_banks",
-                                "parameters": {
-                                    "bank_ids": ["RY", "TD", "BMO", "BNS", "CM", "NA"],
-                                    "fiscal_year": 2025,
-                                    "fiscal_quarter": "Q1",
-                                    "metrics": ["net_income", "roe", "cet1_ratio"],
-                                },
-                            }
-                        ]
-                    },
-                    "notes": "Seeded summary block so the UI is populated on first run.",
-                    "instructions": "Summarize the quarter in concise executive language.",
-                    "content": summary_content,
-                    "content_type": "markdown",
-                },
-            ],
-        },
-        {
-            "title": "Profitability and Capital",
-            "subsections": [
-                {
-                    "title": "Net Income Comparison",
-                    "widget_type": "chart",
-                    "data_source_config": {
-                        "inputs": [
-                            {
-                                "source_id": "financials",
-                                "method_id": "compare_banks",
-                                "parameters": {
-                                    "bank_ids": ["RY", "TD", "BMO", "BNS", "CM", "NA"],
-                                    "fiscal_year": 2025,
-                                    "fiscal_quarter": "Q1",
-                                    "metrics": ["net_income"],
-                                },
-                            }
-                        ],
-                        "visualization": {"chart_type": "bar", "x_key": "bank_id", "y_key": "net_income"},
-                    },
-                    "notes": "Chart payload is pre-rendered so the component loads immediately.",
-                    "instructions": "Compare net income across the selected banks.",
-                    "content": income_chart_content,
-                    "content_type": "json",
-                },
-                {
-                    "title": "CET1 Comparison",
-                    "widget_type": "chart",
-                    "data_source_config": {
-                        "inputs": [
-                            {
-                                "source_id": "financials",
-                                "method_id": "compare_banks",
-                                "parameters": {
-                                    "bank_ids": ["RY", "TD", "BMO", "BNS", "CM", "NA"],
-                                    "fiscal_year": 2025,
-                                    "fiscal_quarter": "Q1",
-                                    "metrics": ["cet1_ratio"],
-                                },
-                            }
-                        ],
-                        "visualization": {"chart_type": "bar", "x_key": "bank_id", "y_key": "cet1_ratio"},
-                    },
-                    "notes": "Capital section complements profitability view.",
-                    "instructions": "Highlight comparative capital strength across peers.",
-                    "content": cet1_chart_content,
-                    "content_type": "json",
-                },
-                {
-                    "title": "Profitability Commentary",
-                    "widget_type": "summary",
-                    "data_source_config": None,
-                    "notes": "Narrative subsection for context around the metrics.",
-                    "instructions": "Provide a concise interpretation of profitability and capital results.",
-                    "content": profitability_narrative,
-                    "content_type": "markdown",
-                },
-            ],
-        },
-        {
-            "title": "Credit Quality",
-            "subsections": [
-                {
-                    "title": "PCL Ratio Trend",
-                    "widget_type": "chart",
-                    "data_source_config": {
-                        "inputs": [
-                            {
-                                "source_id": "financials",
-                                "method_id": "compare_banks",
-                                "parameters": {
-                                    "bank_ids": ["RY", "TD", "BNS"],
-                                    "fiscal_year": 2025,
-                                    "fiscal_quarter": "Q1",
-                                    "metrics": ["pcl_ratio"],
-                                },
-                            }
-                        ],
-                        "visualization": {"chart_type": "line", "x_key": "period", "y_key": "pcl_ratio"},
-                    },
-                    "notes": "Trend chart for credit normalization narrative.",
-                    "instructions": "Track credit quality over recent quarters.",
-                    "content": pcl_trend_content,
-                    "content_type": "json",
-                },
-                {
-                    "title": "Credit Narrative",
-                    "widget_type": "summary",
-                    "data_source_config": None,
-                    "notes": "Use alongside transcript commentary for forward-looking language.",
-                    "instructions": "Summarize key credit quality takeaways.",
-                    "content": credit_narrative,
-                    "content_type": "markdown",
-                },
-            ],
-        },
-        {
-            "title": "Market Performance",
-            "subsections": [
-                {
-                    "title": "Stock Trend",
-                    "widget_type": "chart",
-                    "data_source_config": {
-                        "inputs": [
-                            {
-                                "source_id": "stock_prices",
-                                "method_id": "trend",
-                                "parameters": {
-                                    "bank_id": "RY",
-                                    "periods": [
-                                        {"fiscal_year": 2024, "fiscal_quarter": "Q4"},
-                                        {"fiscal_year": 2025, "fiscal_quarter": "Q1"},
-                                    ],
-                                },
-                            }
-                        ],
-                        "visualization": {"chart_type": "line", "x_key": "period", "y_key": "close_price"},
-                    },
-                    "notes": "Swap bank IDs in config to tailor this trend panel.",
-                    "instructions": "Show stock momentum over recent quarters.",
-                    "content": stock_chart_content,
-                    "content_type": "json",
-                },
-                {
-                    "title": "QoQ Market Comparison",
-                    "widget_type": "chart",
-                    "data_source_config": {
-                        "inputs": [
-                            {
-                                "source_id": "stock_prices",
-                                "method_id": "compare_banks",
-                                "parameters": {
-                                    "bank_ids": ["RY", "TD", "BMO", "BNS", "CM", "NA"],
-                                    "fiscal_year": 2025,
-                                    "fiscal_quarter": "Q1",
-                                },
-                            }
-                        ],
-                        "visualization": {"chart_type": "bar", "x_key": "bank_id", "y_key": "qoq_change_pct"},
-                    },
-                    "notes": "Prebuilt cross-bank market move comparison.",
-                    "instructions": "Compare quarter-over-quarter share-price movement.",
-                    "content": stock_qoq_bar_content,
-                    "content_type": "json",
-                },
-            ],
-        },
-    ]
-
-    for section_position, section in enumerate(sections, start=1):
-        section_id = str(uuid4())
+    for section_position, section in enumerate(sorted_sections, start=1):
+        section_id = str(section.get("id") or uuid4())
+        position = int(section.get("position") or section_position)
         cur.execute(
             """
             INSERT INTO sections (id, template_id, title, position)
@@ -1067,12 +808,18 @@ Use this template as a starting point for your own report layout and prompts."""
             (
                 section_id,
                 template_id,
-                section["title"],
-                section_position,
+                str(section.get("title") or f"Section {section_position}"),
+                position,
             ),
         )
 
-        for subsection_position, subsection in enumerate(section["subsections"], start=1):
+        raw_subsections = section.get("subsections", [])
+        subsections = [sub for sub in raw_subsections if isinstance(sub, dict)]
+        for subsection_position, subsection in enumerate(subsections, start=1):
+            position = int(subsection.get("position") or subsection_position)
+            version_number = subsection.get("version_number")
+            if not isinstance(version_number, int) or version_number < 1:
+                version_number = 1
             cur.execute(
                 """
                 INSERT INTO subsections (
@@ -1082,17 +829,17 @@ Use this template as a starting point for your own report layout and prompts."""
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 (
-                    str(uuid4()),
+                    str(subsection.get("id") or uuid4()),
                     section_id,
-                    subsection["title"],
-                    subsection_position,
-                    subsection["widget_type"],
-                    json.dumps(subsection["data_source_config"]) if subsection["data_source_config"] is not None else None,
-                    subsection["notes"],
-                    subsection["instructions"],
-                    subsection["content"],
-                    subsection["content_type"],
-                    1,
+                    str(subsection.get("title") or f"Subsection {subsection_position}"),
+                    position,
+                    str(subsection.get("widget_type") or "summary"),
+                    _serialize_data_source_config(subsection.get("data_source_config")),
+                    subsection.get("notes"),
+                    subsection.get("instructions"),
+                    subsection.get("content"),
+                    str(subsection.get("content_type") or "markdown"),
+                    version_number,
                 ),
             )
 

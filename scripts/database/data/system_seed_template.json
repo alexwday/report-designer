@@ -1,0 +1,943 @@
+{
+  "template": {
+    "source_template_id": "7a9e753c-0df7-4642-a371-121244e089ca",
+    "name": "Advanced Multi-Lens Banking Intelligence Playbook",
+    "description": "Showcase template demonstrating advanced report generator capabilities across narrative, quantitative, scenario, and dependency-driven synthesis.",
+    "output_format": "pdf",
+    "orientation": "landscape",
+    "formatting_profile": {
+      "theme_id": "modern_slate",
+      "body_color": "#334155",
+      "theme_name": "Modern Slate",
+      "font_family": "'Avenir Next', 'Segoe UI', Arial, sans-serif",
+      "line_height": 1.55,
+      "accent_color": "#0F766E",
+      "heading_color": "#0F172A",
+      "body_font_size_pt": 11,
+      "section_title_case": "sentence",
+      "title_font_size_pt": 21,
+      "subsection_title_case": "sentence",
+      "subsection_title_font_size_pt": 13
+    },
+    "status": "draft"
+  },
+  "sections": [
+    {
+      "id": "a03600e8-d4e9-4c25-8098-54f6022281a0",
+      "title": "Signal Extraction from Earnings Calls",
+      "position": 1,
+      "subsections": [
+        {
+          "id": "5b59ad9a-82be-46fd-be31-9523a88b2629",
+          "title": "Management Macro Pulse",
+          "position": 1,
+          "widget_type": "summary",
+          "data_source_config": {
+            "inputs": [
+              {
+                "method_id": "compare_banks",
+                "source_id": "transcripts",
+                "parameters": {
+                  "section": "management_discussion",
+                  "bank_ids": [
+                    "RY",
+                    "TD",
+                    "BMO",
+                    "BNS",
+                    "CM",
+                    "NA"
+                  ],
+                  "fiscal_year": 2025,
+                  "fiscal_quarter": "Q1"
+                }
+              }
+            ]
+          },
+          "notes": "This is the opening frame for senior decision-makers; keep it sharp, comparative, and evidence-led.",
+          "instructions": "Write a board-level macro pulse in two short paragraphs, then 5 bullets covering growth impulse, margin pressure, credit tone, capital confidence, and management credibility. Anchor each point in transcript evidence and avoid generic language.",
+          "content": "The Canadian Big 6 banks have showcased a robust performance in the first quarter of 2025, driven by diversified business models, strategic market positioning, and strong capital bases. Notably, Royal Bank of Canada (RBC) and BMO Financial Group reported impressive growth in their Wealth Management and Capital Markets divisions, demonstrating their ability to capitalize on favorable market conditions. Meanwhile, TD Bank Group and Scotiabank have made significant strides in addressing strategic priorities, with TD focusing on US remediation efforts and Scotiabank honing its international strategy, particularly in Mexico.\n\nDespite these achievements, challenges remain. Margin pressures are evident across the board, with competitive forces and economic uncertainties testing the resilience of these institutions. However, solid capital positions, as seen in RBC's CET1 ratio of 14.4% and BMO's 14.0%, provide a cushion for potential headwinds and growth opportunities.\n\n1. **Growth Impulse**\n   - BMO's US Personal and Commercial Banking reported outstanding revenue growth of 12%, driven by strong client retention and new relationship wins, indicating robust growth momentum.\n   - RBC's Wealth Management earnings surged by 15%, underscoring their effective client engagement and advisory capabilities.\n\n2. **Margin Pressure**\n   - TD's net interest margins faced competitive pressures, though offset by higher rates, showcasing a balancing act in maintaining profitability.\n   - BNS's Canadian Banking revenue grew modestly at 3%, reflecting ongoing investments in digital capabilities to improve efficiency margins.\n\n3. **Credit Tone**\n   - RBC maintained a strong credit quality with a PCL ratio of 27 bps, highlighting prudent risk management and a diversified portfolio.\n   - Both TD and BMO reported normalized credit conditions with PCLs of 58 bps, emphasizing their cautious approach amidst economic uncertainties.\n\n4. **Capital Confidence**\n   - RBC's CET1 ratio of 14.4% and BMO's 14.0% provide substantial flexibility for strategic investments and capital returns, reinforcing their financial strength.\n   - TD's CET1 ratio increased to 13.8%, signaling readiness for post-remediation growth opportunities.\n\n5. **Management Credibility**\n   - RBC's leadership continues to demonstrate strong execution, with CEO Dave McKay highlighting a diversified business model as a key to sustained performance.\n   - BNS's strategic refocus, articulated by CEO Scott Thomson, is beginning to yield results, particularly in core markets like Mexico, bolstering management's credibility.",
+          "content_type": "markdown",
+          "version_number": 1
+        },
+        {
+          "id": "805a12fd-a504-421b-b3bd-ae1301059012",
+          "title": "Consensus vs Contradiction Matrix",
+          "position": 2,
+          "widget_type": "comparison",
+          "data_source_config": {
+            "inputs": [
+              {
+                "method_id": "compare_banks",
+                "source_id": "transcripts",
+                "parameters": {
+                  "section": "both",
+                  "bank_ids": [
+                    "RY",
+                    "TD",
+                    "BMO",
+                    "BNS",
+                    "CM",
+                    "NA"
+                  ],
+                  "fiscal_year": 2025,
+                  "fiscal_quarter": "Q1"
+                }
+              }
+            ],
+            "dependencies": {
+              "section_ids": [],
+              "subsection_ids": [
+                "5b59ad9a-82be-46fd-be31-9523a88b2629"
+              ]
+            }
+          },
+          "notes": "Show nuanced disagreement, not just a list of themes.",
+          "instructions": "Build a markdown matrix with columns Theme, Where banks align, Where narratives diverge, Why it matters for investors. Include 6-8 rows and explicitly call out at least 3 strategic contradictions.",
+          "content": "| Theme                        | Where Banks Align                                                                                                      | Where Narratives Diverge                                                                                             | Why It Matters for Investors                                                                                  |\n|------------------------------|------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|\n| Revenue Growth               | All banks reported revenue growth, driven by diversified business models and strong market positioning.                  | TD reported lower revenue growth in Canadian Banking compared to peers, citing stable net interest margins.           | Understanding revenue dynamics helps investors assess the sustainability of growth and potential market shifts. |\n| Wealth Management            | Robust performance with increased assets under management across the board.                                              | RBC and BMO reported more significant growth in Wealth Management, highlighting high-net-worth client acquisition.    | Wealth Management is a key growth area, influencing long-term profitability and client retention strategies.    |\n| Capital Markets              | Strong results driven by favorable market conditions and increased client activity.                                      | BNS focused on deepening client relationships, while BMO expanded their North American platform aggressively.         | Capital Markets performance impacts earnings volatility and investor confidence in banks' market strategies.   |\n| Credit Quality               | Credit quality normalization observed across banks with stable PCL ratios.                                               | TD reported a higher PCL ratio compared to peers, reflecting caution amid economic uncertainty.                       | Credit quality influences risk assessment and provisioning strategies, affecting net income and capital ratios. |\n| CET1 Ratio                   | Adequate CET1 ratios maintained, providing flexibility for growth and capital return.                                     | TD's CET1 ratio increased but remains slightly below peers, emphasizing completion of remediation work.               | CET1 ratios are critical for evaluating financial robustness and capacity for future investments or buybacks.  |\n| Strategic Focus              | Emphasis on digital transformation and expanding client engagement through digital tools.                                 | BNS prioritized specific international markets (e.g., Mexico), while others have broader geographic focus.            | Strategic focus guides long-term growth prospects and geographic expansion opportunities.                      |\n| US Market Performance        | Positive momentum in US operations with revenue growth reported.                                                          | BMO highlighted successful Bank of the West integration, whereas TD focused on remediation efforts in the US.         | US market performance is pivotal for banks with significant cross-border operations, impacting overall earnings. |\n| Sustainable Finance          | Building capabilities and presence in sustainable finance as a growing business opportunity.                             | RBC and BMO are more aggressive in building sustainable finance capabilities, with BMO winning significant new share. | Sustainable finance is becoming crucial for addressing climate risks and meeting investor expectations.          |",
+          "content_type": "markdown",
+          "version_number": 1
+        },
+        {
+          "id": "b1edd609-a258-40b3-9009-2fe6214b29f4",
+          "title": "Analyst Pressure Point Watchlist",
+          "position": 3,
+          "widget_type": "key_points",
+          "data_source_config": {
+            "inputs": [
+              {
+                "method_id": "compare_banks",
+                "source_id": "transcripts",
+                "parameters": {
+                  "section": "qa",
+                  "bank_ids": [
+                    "RY",
+                    "TD",
+                    "BMO",
+                    "BNS",
+                    "CM",
+                    "NA"
+                  ],
+                  "fiscal_year": 2025,
+                  "fiscal_quarter": "Q1"
+                }
+              }
+            ],
+            "dependencies": {
+              "section_ids": [],
+              "subsection_ids": [
+                "5b59ad9a-82be-46fd-be31-9523a88b2629",
+                "805a12fd-a504-421b-b3bd-ae1301059012"
+              ]
+            }
+          },
+          "notes": "Treat this like a live risk monitor for portfolio managers.",
+          "instructions": "Create a ranked watchlist of the top 7 analyst pressure points. For each item include why analysts care now, which banks are most exposed, and what would invalidate the concern next quarter.",
+          "content": "### Top 7 Analyst Pressure Points\n\n1. **Canadian Mortgage Market Outlook**\n   - **Why Analysts Care Now**: With interest rates potentially declining, the trajectory of mortgage growth is crucial for revenue projections.\n   - **Most Exposed Banks**: Royal Bank of Canada (RBC), TD Bank Group\n   - **Invalidating Concern Next Quarter**: A clear uptick in mortgage origination volume and improved credit performance metrics.\n\n2. **AML Remediation Progress at TD**\n   - **Why Analysts Care Now**: The completion of anti-money laundering remediation is key to unlocking growth in the US retail sector.\n   - **Most Exposed Banks**: TD Bank Group\n   - **Invalidating Concern Next Quarter**: Completion of critical milestones in AML remediation and a clear outline of post-remediation growth strategy.\n\n3. **Capital Markets Volatility**\n   - **Why Analysts Care Now**: Recent favorable conditions have bolstered earnings, but sustainability is in question.\n   - **Most Exposed Banks**: Royal Bank of Canada (RBC), BMO Financial Group\n   - **Invalidating Concern Next Quarter**: Continued strong performance in capital markets despite potential volatility.\n\n4. **Expense Management and Efficiency Ratios**\n   - **Why Analysts Care Now**: Efficiency ratios are under scrutiny amidst investments in technology and compliance.\n   - **Most Exposed Banks**: Scotiabank (BNS), TD Bank Group\n   - **Invalidating Concern Next Quarter**: Demonstrable improvements in operating leverage and reduced expense growth.\n\n5. **Commercial Real Estate Exposure**\n   - **Why Analysts Care Now**: Concerns over commercial real estate, particularly office space, are rising due to shifting work patterns.\n   - **Most Exposed Banks**: BMO Financial Group\n   - **Invalidating Concern Next Quarter**: Stability in CRE portfolio performance and successful risk management strategies.\n\n6. **International Market Exits and Capital Reallocation**\n   - **Why Analysts Care Now**: Exiting Latin American markets is critical for capital reallocation to core markets.\n   - **Most Exposed Banks**: Scotiabank (BNS)\n   - **Invalidating Concern Next Quarter**: Successful completion of transactions and clear reinvestment strategies in core markets.\n\n7. **Net Interest Margin (NIM) Stability**\n   - **Why Analysts Care Now**: Potential rate cuts could pressure NIM, affecting profitability.\n   - **Most Exposed Banks**: TD Bank Group, BMO Financial Group\n   - **Invalidating Concern Next Quarter**: Maintenance of NIM through strategic portfolio adjustments and favorable rate environment outcomes.",
+          "content_type": "markdown",
+          "version_number": 1
+        }
+      ]
+    },
+    {
+      "id": "9425dcc7-531a-493c-a647-eb55466ec2e6",
+      "title": "Regime Dashboard: Profitability, Risk, and Capital",
+      "position": 2,
+      "subsections": [
+        {
+          "id": "7e6c97d3-6b78-4c7b-9c28-bf1df17e6a6c",
+          "title": "Peer Fundamentals Scoreboard",
+          "position": 1,
+          "widget_type": "table",
+          "data_source_config": {
+            "inputs": [
+              {
+                "method_id": "compare_banks",
+                "source_id": "financials",
+                "parameters": {
+                  "metrics": [
+                    "total_revenue",
+                    "net_income",
+                    "roe",
+                    "roa",
+                    "efficiency_ratio",
+                    "nim"
+                  ],
+                  "bank_ids": [
+                    "RY",
+                    "TD",
+                    "BMO",
+                    "BNS",
+                    "CM",
+                    "NA"
+                  ],
+                  "fiscal_year": 2025,
+                  "fiscal_quarter": "Q1"
+                }
+              }
+            ]
+          },
+          "notes": "This subsection should be numerically crisp and immediately scannable.",
+          "instructions": "Build a compact peer table for all six banks, then add a 3-part readout: who leads profitability, who lags on efficiency, and where margin resilience appears strongest.",
+          "content": "### Financial Metrics Overview\n\n| Bank | Total Revenue ($B) | Net Income ($B) | ROE (%) | ROA (%) | Efficiency Ratio (%) | NIM (%) |\n|------|-------------------|----------------|---------|---------|---------------------|---------|\n| RY   | 16.0              | 4.6            | 17.6    | 1.0     | 56.5                | 2.9     |\n| TD   | 14.7              | 3.6            | 12.9    | 0.8     | 63.4                | 3.0     |\n| BMO  | 8.4               | 2.1            | 11.7    | 0.8     | 63.0                | 3.0     |\n| BNS  | 9.2               | 2.1            | 10.4    | 0.7     | 65.9                | 2.6     |\n| CM   | 6.9               | 1.9            | 13.8    | 0.9     | 61.8                | 2.9     |\n| NA   | 2.9               | 0.974          | 18.9    | 1.1     | 56.9                | 3.1     |\n\n### Profitability Leader\n- **National Bank of Canada (NA)** stands out with the highest Return on Equity (ROE) at **18.9%** and Return on Assets (ROA) at **1.1%**.\n\n### Efficiency Laggard\n- **Bank of Nova Scotia (BNS)** exhibits the highest efficiency ratio at **65.9%**, indicating the most significant operational expense relative to revenue.\n\n### Margin Resilience\n- **National Bank of Canada (NA)** again takes the lead with the highest Net Interest Margin (NIM) at **3.1%**, showcasing strong margin resilience in the current economic environment.",
+          "content_type": "markdown",
+          "version_number": 1
+        },
+        {
+          "id": "fd65e04a-9e37-4fc8-ae30-75fe9e3df421",
+          "title": "Credit Stress vs Capital Buffer",
+          "position": 2,
+          "widget_type": "chart",
+          "data_source_config": {
+            "inputs": [
+              {
+                "method_id": "compare_banks",
+                "source_id": "financials",
+                "parameters": {
+                  "metrics": [
+                    "pcl_ratio",
+                    "gil_ratio",
+                    "cet1_ratio",
+                    "total_capital_ratio"
+                  ],
+                  "bank_ids": [
+                    "RY",
+                    "TD",
+                    "BMO",
+                    "BNS",
+                    "CM",
+                    "NA"
+                  ],
+                  "fiscal_year": 2025,
+                  "fiscal_quarter": "Q1"
+                }
+              }
+            ],
+            "dependencies": {
+              "section_ids": [],
+              "subsection_ids": [
+                "7e6c97d3-6b78-4c7b-9c28-bf1df17e6a6c"
+              ]
+            },
+            "visualization": {
+              "title": "Credit Stress vs Capital Buffer",
+              "x_key": "bank_id",
+              "y_key": "value",
+              "metric_id": "pcl_ratio",
+              "chart_type": "bar",
+              "series_key": "metric_id"
+            }
+          },
+          "notes": "This should feel like a risk committee dashboard callout.",
+          "instructions": "Produce a chart-ready narrative that contrasts credit stress indicators against capital buffers, highlight outliers, and explain whether risk and capital are moving in sync.",
+          "content": "{\"kind\": \"chart\", \"schema_version\": 1, \"title\": \"Credit Stress vs Capital Buffer\", \"chart\": {\"chart_type\": \"bar\", \"x_label\": \"Bank\", \"y_label\": \"PCL Ratio\", \"series\": [{\"name\": \"PCL Ratio\", \"points\": [{\"x\": \"RY\", \"y\": 26.7}, {\"x\": \"TD\", \"y\": 57.5}, {\"x\": \"BMO\", \"y\": 57.6}, {\"x\": \"BNS\", \"y\": 57.4}, {\"x\": \"CM\", \"y\": 34.5}, {\"x\": \"NA\", \"y\": 23.8}]}]}, \"source\": {\"source_id\": \"financials\", \"method_id\": \"compare_banks\"}, \"insights\": [\"Covers 1 series across 6 plotted points.\", \"Highest in PCL Ratio: BMO (57.60).\", \"Lowest in PCL Ratio: NA (23.80).\"]}",
+          "content_type": "json",
+          "version_number": 2
+        },
+        {
+          "id": "5e40dce3-7b15-4d12-8652-c7b718e0eaea",
+          "title": "Operating Model Diagnostic",
+          "position": 3,
+          "widget_type": "custom",
+          "data_source_config": {
+            "inputs": [
+              {
+                "method_id": "compare_banks",
+                "source_id": "financials",
+                "parameters": {
+                  "metrics": [
+                    "efficiency_ratio",
+                    "nim",
+                    "operating_leverage",
+                    "net_interest_income",
+                    "non_interest_revenue"
+                  ],
+                  "bank_ids": [
+                    "RY",
+                    "TD",
+                    "BMO",
+                    "BNS",
+                    "CM",
+                    "NA"
+                  ],
+                  "fiscal_year": 2025,
+                  "fiscal_quarter": "Q1"
+                }
+              },
+              {
+                "method_id": "compare_banks",
+                "source_id": "transcripts",
+                "parameters": {
+                  "section": "management_discussion",
+                  "bank_ids": [
+                    "RY",
+                    "TD",
+                    "BMO",
+                    "BNS",
+                    "CM",
+                    "NA"
+                  ],
+                  "fiscal_year": 2025,
+                  "fiscal_quarter": "Q1"
+                }
+              }
+            ],
+            "dependencies": {
+              "section_ids": [
+                "a03600e8-d4e9-4c25-8098-54f6022281a0"
+              ],
+              "subsection_ids": [
+                "7e6c97d3-6b78-4c7b-9c28-bf1df17e6a6c",
+                "fd65e04a-9e37-4fc8-ae30-75fe9e3df421"
+              ]
+            }
+          },
+          "notes": "This is where qualitative claims must be reconciled with numbers.",
+          "instructions": "Explain why performance gaps exist by linking hard metrics to management narrative. Return 6-8 bullets grouped into Cost discipline, Revenue quality, and Forward earnings durability.",
+          "content": "### Cost Discipline\n\n- **Royal Bank of Canada (RY)**: With an efficiency ratio of 56.5%, RY leads among peers, demonstrating strong cost management. Management attributes this to high digital adoption rates exceeding 85%, which streamline operations and reduce costs.\n  \n- **TD Bank Group**: Despite a higher efficiency ratio of 63.4%, TD's management highlights the ongoing US remediation efforts, which have been a significant cost factor. The bank's investment in digital tools is expected to improve operational efficiency over time.\n\n- **Bank of Montreal (BMO)**: Achieving an efficiency ratio of 63.0% reflects BMO's ongoing integration of the Bank of the West. Management asserts that the completed integration will lead to future cost synergies.\n\n### Revenue Quality\n\n- **Royal Bank of Canada (RY)**: Net interest income of $9.0B and a net interest margin (NIM) of 2.9% illustrate strong revenue foundations, supported by diversified business models and robust demand for mortgages.\n\n- **TD Bank Group**: With a NIM of 3.0%, TD maintains revenue quality amidst competitive pressures. The bank's strong deposit franchise, with a market share above 22%, supports its stable revenue base.\n\n- **Bank of Montreal (BMO)**: Posting a 20% revenue increase in Capital Markets, BMO benefits from a winning North American platform, indicating strong revenue quality across its diversified business.\n\n### Forward Earnings Durability\n\n- **Royal Bank of Canada (RY)**: RY's earnings durability is underpinned by a CET1 ratio of 14.4%, providing substantial flexibility for growth and capital return. Management's focus on sustainable finance and client activity in Capital Markets supports long-term earnings growth.\n\n- **TD Bank Group**: The CET1 ratio of 13.8% and prudent reserve maintenance amid economic uncertainty point to strong earnings durability. Management's emphasis on completing remediation work will further enhance growth prospects.\n\n- **Bank of Montreal (BMO)**: Operating leverage of 5.3% indicates BMO's capacity to enhance earnings as revenue growth outpaces expense increases. The bank's focus on organic growth, supported by a CET1 ratio of 14.0%, ensures future earnings resilience.",
+          "content_type": "markdown",
+          "version_number": 1
+        }
+      ]
+    },
+    {
+      "id": "0ea50de9-00d6-4799-9e01-99f11cd86407",
+      "title": "Market Reaction and Forward Positioning",
+      "position": 3,
+      "subsections": [
+        {
+          "id": "9969e69f-1eee-4640-9d10-75e4b4604bd3",
+          "title": "Relative Price Momentum Grid",
+          "position": 1,
+          "widget_type": "chart",
+          "data_source_config": {
+            "inputs": [
+              {
+                "method_id": "trend",
+                "source_id": "stock_prices",
+                "parameters": {
+                  "bank_id": "RY",
+                  "periods": [
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q2"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q3"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q4"
+                    },
+                    {
+                      "fiscal_year": 2025,
+                      "fiscal_quarter": "Q1"
+                    }
+                  ]
+                }
+              },
+              {
+                "method_id": "trend",
+                "source_id": "stock_prices",
+                "parameters": {
+                  "bank_id": "TD",
+                  "periods": [
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q2"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q3"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q4"
+                    },
+                    {
+                      "fiscal_year": 2025,
+                      "fiscal_quarter": "Q1"
+                    }
+                  ]
+                }
+              },
+              {
+                "method_id": "trend",
+                "source_id": "stock_prices",
+                "parameters": {
+                  "bank_id": "BMO",
+                  "periods": [
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q2"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q3"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q4"
+                    },
+                    {
+                      "fiscal_year": 2025,
+                      "fiscal_quarter": "Q1"
+                    }
+                  ]
+                }
+              },
+              {
+                "method_id": "trend",
+                "source_id": "stock_prices",
+                "parameters": {
+                  "bank_id": "BNS",
+                  "periods": [
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q2"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q3"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q4"
+                    },
+                    {
+                      "fiscal_year": 2025,
+                      "fiscal_quarter": "Q1"
+                    }
+                  ]
+                }
+              },
+              {
+                "method_id": "trend",
+                "source_id": "stock_prices",
+                "parameters": {
+                  "bank_id": "CM",
+                  "periods": [
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q2"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q3"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q4"
+                    },
+                    {
+                      "fiscal_year": 2025,
+                      "fiscal_quarter": "Q1"
+                    }
+                  ]
+                }
+              },
+              {
+                "method_id": "trend",
+                "source_id": "stock_prices",
+                "parameters": {
+                  "bank_id": "NA",
+                  "periods": [
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q2"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q3"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q4"
+                    },
+                    {
+                      "fiscal_year": 2025,
+                      "fiscal_quarter": "Q1"
+                    }
+                  ]
+                }
+              }
+            ],
+            "visualization": {
+              "title": "Relative Price Momentum Grid",
+              "x_key": "period",
+              "y_key": "close_price",
+              "chart_type": "line",
+              "series_key": "bank_id"
+            }
+          },
+          "notes": "This should act as the visual hinge between fundamentals and positioning.",
+          "instructions": "Build a MULTI-BANK momentum line chart over the last four quarters using all configured banks, and summarize who is accelerating, decelerating, and mean-reverting.",
+          "content": "{\"kind\": \"chart\", \"schema_version\": 1, \"title\": \"Relative Price Momentum Grid\", \"chart\": {\"chart_type\": \"line\", \"x_label\": \"Period\", \"y_label\": \"close_price\", \"series\": [{\"name\": \"RY\", \"points\": [{\"x\": \"2024 Q2\", \"y\": 162.23}, {\"x\": \"2024 Q3\", \"y\": 163.29}, {\"x\": \"2024 Q4\", \"y\": 174.89}, {\"x\": \"2025 Q1\", \"y\": 169.0}]}, {\"name\": \"TD\", \"points\": [{\"x\": \"2024 Q2\", \"y\": 82.48}, {\"x\": \"2024 Q3\", \"y\": 83.93}, {\"x\": \"2024 Q4\", \"y\": 87.76}, {\"x\": \"2025 Q1\", \"y\": 91.89}]}, {\"name\": \"BMO\", \"points\": [{\"x\": \"2024 Q2\", \"y\": 124.49}, {\"x\": \"2024 Q3\", \"y\": 128.51}, {\"x\": \"2024 Q4\", \"y\": 124.13}, {\"x\": \"2025 Q1\", \"y\": 126.75}]}, {\"name\": \"BNS\", \"points\": [{\"x\": \"2024 Q2\", \"y\": 65.67}, {\"x\": \"2024 Q3\", \"y\": 71.03}, {\"x\": \"2024 Q4\", \"y\": 70.18}, {\"x\": \"2025 Q1\", \"y\": 76.48}]}, {\"name\": \"CM\", \"points\": [{\"x\": \"2024 Q2\", \"y\": 71.93}, {\"x\": \"2024 Q3\", \"y\": 78.29}, {\"x\": \"2024 Q4\", \"y\": 79.03}, {\"x\": \"2025 Q1\", \"y\": 82.52}]}, {\"name\": \"NA\", \"points\": [{\"x\": \"2024 Q2\", \"y\": 106.17}, {\"x\": \"2024 Q3\", \"y\": 109.72}, {\"x\": \"2024 Q4\", \"y\": 121.12}, {\"x\": \"2025 Q1\", \"y\": 115.58}]}]}, \"source\": {\"source_id\": \"stock_prices\", \"method_id\": \"trend\"}, \"insights\": [\"Covers 6 series across 24 plotted points.\", \"Strongest momentum: BNS (+10.81 over the shown horizon).\", \"Weakest momentum: BMO (+2.26 over the shown horizon).\"]}",
+          "content_type": "json",
+          "version_number": 3
+        },
+        {
+          "id": "a42cca9a-ae8c-4399-833f-82204e92480a",
+          "title": "Valuation and Return Dispersion",
+          "position": 2,
+          "widget_type": "table",
+          "data_source_config": {
+            "inputs": [
+              {
+                "method_id": "compare_banks",
+                "source_id": "stock_prices",
+                "parameters": {
+                  "bank_ids": [
+                    "RY",
+                    "TD",
+                    "BMO",
+                    "BNS",
+                    "CM",
+                    "NA"
+                  ],
+                  "fiscal_year": 2025,
+                  "fiscal_quarter": "Q1"
+                }
+              },
+              {
+                "method_id": "compare_banks",
+                "source_id": "financials",
+                "parameters": {
+                  "metrics": [
+                    "roe",
+                    "book_value_per_share",
+                    "dividend_per_share"
+                  ],
+                  "bank_ids": [
+                    "RY",
+                    "TD",
+                    "BMO",
+                    "BNS",
+                    "CM",
+                    "NA"
+                  ],
+                  "fiscal_year": 2025,
+                  "fiscal_quarter": "Q1"
+                }
+              }
+            ],
+            "dependencies": {
+              "section_ids": [],
+              "subsection_ids": [
+                "9969e69f-1eee-4640-9d10-75e4b4604bd3"
+              ]
+            }
+          },
+          "notes": "Keep this actionable for portfolio rebalancing decisions.",
+          "instructions": "Produce a table combining close_price, qoq_change_pct, yoy_change_pct, ROE, book_value_per_share, and dividend_per_share. Then add four bullets on dispersion and rotation implications.",
+          "content": "### Valuation and Return Dispersion\n\n| Bank | Close Price | QoQ Change (%) | YoY Change (%) | ROE (%) | Book Value per Share | Dividend per Share |\n|------|-------------|----------------|----------------|---------|----------------------|-------------------|\n| RY   | $169.00     | -0.2%          | +9.0%          | 17.6%   | $93.12               | $1.44             |\n| TD   | $91.89      | +2.6%          | +12.1%         | 12.9%   | $69.11               | $1.10             |\n| BMO  | $126.75     | -1.7%          | +7.4%          | 11.7%   | $111.28              | $1.71             |\n| BNS  | $76.48      | +7.7%          | +17.7%         | 10.4%   | $64.26               | $1.14             |\n| CM   | $82.52      | +4.9%          | +14.6%         | 13.8%   | $60.68               | $0.94             |\n| NA   | $115.58     | -2.1%          | +7.0%          | 18.9%   | $65.25               | $1.18             |\n\n#### Dispersion and Rotation Implications\n\n- **Return Dispersion:** The variance in YoY changes, ranging from 7.0% to 17.7%, highlights significant dispersion in market sentiment and performance expectations across the Big 6 banks.\n- **Valuation Considerations:** Higher ROE as seen in NA (18.9%) and RY (17.6%) may suggest a potential for premium valuations, supporting continued investment or reallocation in portfolios.\n- **Dividend Impact:** With dividend yields varying significantly, BMO presents a high dividend per share of $1.71, which could attract income-focused investors despite its lower price momentum.\n- **Strategic Rotation:** Investors might consider rotating out of banks like NA and BMO, which show less favorable QoQ momentum, into those with stronger market momentum like BNS and CM, depending on risk tolerance and investment strategy.",
+          "content_type": "markdown",
+          "version_number": 1
+        },
+        {
+          "id": "25d95648-daf9-4349-9e87-5c074e0b5db7",
+          "title": "Investment Thesis Decision Grid",
+          "position": 3,
+          "widget_type": "summary",
+          "data_source_config": {
+            "inputs": [
+              {
+                "method_id": "compare_banks",
+                "source_id": "transcripts",
+                "parameters": {
+                  "section": "management_discussion",
+                  "bank_ids": [
+                    "RY",
+                    "TD",
+                    "BMO",
+                    "BNS",
+                    "CM",
+                    "NA"
+                  ],
+                  "fiscal_year": 2025,
+                  "fiscal_quarter": "Q1"
+                }
+              },
+              {
+                "method_id": "compare_banks",
+                "source_id": "financials",
+                "parameters": {
+                  "metrics": [
+                    "roe",
+                    "pcl_ratio",
+                    "cet1_ratio",
+                    "efficiency_ratio"
+                  ],
+                  "bank_ids": [
+                    "RY",
+                    "TD",
+                    "BMO",
+                    "BNS",
+                    "CM",
+                    "NA"
+                  ],
+                  "fiscal_year": 2025,
+                  "fiscal_quarter": "Q1"
+                }
+              },
+              {
+                "method_id": "compare_banks",
+                "source_id": "stock_prices",
+                "parameters": {
+                  "bank_ids": [
+                    "RY",
+                    "TD",
+                    "BMO",
+                    "BNS",
+                    "CM",
+                    "NA"
+                  ],
+                  "fiscal_year": 2025,
+                  "fiscal_quarter": "Q1"
+                }
+              }
+            ],
+            "dependencies": {
+              "section_ids": [
+                "a03600e8-d4e9-4c25-8098-54f6022281a0",
+                "9425dcc7-531a-493c-a647-eb55466ec2e6"
+              ],
+              "subsection_ids": [
+                "9969e69f-1eee-4640-9d10-75e4b4604bd3",
+                "a42cca9a-ae8c-4399-833f-82204e92480a"
+              ]
+            }
+          },
+          "notes": "This subsection should synthesize the full report into decision-ready positioning.",
+          "instructions": "Create a decision grid with Bull/Base/Bear by bank and INCLUDE ALL SIX BANKS (RY, TD, BMO, BNS, CM, NA) with one row per bank and no omissions. Then finish with a portfolio action checklist (add, hold, reduce, monitor) and a concrete trigger for each action.",
+          "content": "### Investment Thesis Decision Grid\n\n| Bank | Bull Case | Base Case | Bear Case |\n|------|-----------|-----------|-----------|\n| RY   | Strong digital adoption and diversified growth in wealth and capital markets lead to above-average ROE expansion. | Maintains solid performance across segments with stable credit quality and strong CET1 ratio supporting growth. | Increased competition in capital markets and slowing mortgage growth impact earnings. |\n| TD   | Successful remediation in US operations and strong retail banking performance lead to upward earnings revision. | Steady growth in Canadian and US banking segments with stable market share and credit metrics. | Prolonged remediation impacts U.S. growth; competitive pressures reduce margins. |\n| BMO  | Integration success with Bank of the West drives substantial US growth and market share gains. | Continued strong performance in North America with robust capital markets activity. | Integration challenges and competitive pressures in US markets slow growth. |\n| BNS  | Strategic refocus on core markets leads to strong growth in Mexico and improved asset quality. | Balanced growth in Canadian and international markets with stable credit conditions. | Elevated provisions in Latin America undermine profitability and strategic gains. |\n| CM   | Diversification and digital initiatives boost ROE and market share in key segments. | Stable performance with solid capital ratios and efficient operations. | Slower growth in key segments and higher credit costs impact returns. |\n| NA   | Leading efficiency and ROE drive outperformance in a stable economic environment. | Maintains strong financial metrics and market position with prudent risk management. | Heightened competition and economic headwinds pressure margins and earnings. |\n\n### Portfolio Action Checklist\n\n1. **Add:**\n    - **Bank**: National Bank of Canada (NA)\n    - **Trigger**: ROE remains above industry average, supported by excellent efficiency ratio.\n\n2. **Hold:**\n    - **Bank**: Royal Bank of Canada (RY)\n    - **Trigger**: Sustained growth across wealth and capital markets with strong digital traction.\n\n3. **Reduce:**\n    - **Bank**: Scotiabank (BNS)\n    - **Trigger**: Elevated provisions in Latin America persist, impacting overall profitability.\n\n4. **Monitor:**\n    - **Bank**: Toronto-Dominion Bank (TD)\n    - **Trigger**: Completion and impact of US remediation efforts on growth and margins.",
+          "content_type": "markdown",
+          "version_number": 2
+        }
+      ]
+    },
+    {
+      "id": "71c29522-2521-4195-a5aa-8a1270115643",
+      "title": "Visualization Lab: Metrics + Market Signals",
+      "position": 4,
+      "subsections": [
+        {
+          "id": "e99fe1ba-8e90-42b9-9fe3-b91a1d9ef18e",
+          "title": "Profitability vs Risk Bar Panel",
+          "position": 1,
+          "widget_type": "chart",
+          "data_source_config": {
+            "inputs": [
+              {
+                "method_id": "compare_banks",
+                "source_id": "financials",
+                "parameters": {
+                  "metrics": [
+                    "roe",
+                    "pcl_ratio",
+                    "efficiency_ratio",
+                    "cet1_ratio"
+                  ],
+                  "bank_ids": [
+                    "RY",
+                    "TD",
+                    "BMO",
+                    "BNS",
+                    "CM",
+                    "NA"
+                  ],
+                  "fiscal_year": 2025,
+                  "fiscal_quarter": "Q1"
+                }
+              }
+            ],
+            "visualization": {
+              "title": "Profitability vs Risk Bar Panel",
+              "x_key": "bank_id",
+              "y_key": "value",
+              "chart_type": "bar",
+              "series_key": "metric_id"
+            }
+          },
+          "notes": "This is the fast peer-ranking visual.",
+          "instructions": "Build a grouped bar chart that contrasts profitability and risk resilience across all six banks and call out the three strongest and three weakest profiles.",
+          "content": "{\"kind\": \"chart\", \"schema_version\": 1, \"title\": \"Profitability vs Risk Bar Panel\", \"chart\": {\"chart_type\": \"bar\", \"x_label\": \"Bank\", \"y_label\": \"Value\", \"series\": [{\"name\": \"Return on Equity\", \"points\": [{\"x\": \"RY\", \"y\": 17.6}, {\"x\": \"TD\", \"y\": 12.9}, {\"x\": \"BMO\", \"y\": 11.7}, {\"x\": \"BNS\", \"y\": 10.4}, {\"x\": \"CM\", \"y\": 13.8}, {\"x\": \"NA\", \"y\": 18.9}]}, {\"name\": \"PCL Ratio\", \"points\": [{\"x\": \"RY\", \"y\": 26.7}, {\"x\": \"TD\", \"y\": 57.5}, {\"x\": \"BMO\", \"y\": 57.6}, {\"x\": \"BNS\", \"y\": 57.4}, {\"x\": \"CM\", \"y\": 34.5}, {\"x\": \"NA\", \"y\": 23.8}]}, {\"name\": \"Efficiency Ratio\", \"points\": [{\"x\": \"RY\", \"y\": 56.5}, {\"x\": \"TD\", \"y\": 63.4}, {\"x\": \"BMO\", \"y\": 63.0}, {\"x\": \"BNS\", \"y\": 65.9}, {\"x\": \"CM\", \"y\": 61.8}, {\"x\": \"NA\", \"y\": 56.9}]}, {\"name\": \"CET1 Ratio\", \"points\": [{\"x\": \"RY\", \"y\": 14.4}, {\"x\": \"TD\", \"y\": 13.8}, {\"x\": \"BMO\", \"y\": 14.0}, {\"x\": \"BNS\", \"y\": 14.0}, {\"x\": \"CM\", \"y\": 14.1}, {\"x\": \"NA\", \"y\": 14.7}]}]}, \"source\": {\"source_id\": \"financials\", \"method_id\": \"compare_banks\"}, \"insights\": [\"Covers 4 series across 24 plotted points.\", \"Highest in Return on Equity: NA (18.90).\", \"Lowest in Return on Equity: BNS (10.40).\"]}",
+          "content_type": "json",
+          "version_number": 4
+        },
+        {
+          "id": "514e8b76-495f-4726-86ad-dbe389fec243",
+          "title": "Multi-Bank Price Momentum Lines",
+          "position": 2,
+          "widget_type": "chart",
+          "data_source_config": {
+            "inputs": [
+              {
+                "method_id": "trend",
+                "source_id": "stock_prices",
+                "parameters": {
+                  "bank_id": "RY",
+                  "periods": [
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q1"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q2"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q3"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q4"
+                    },
+                    {
+                      "fiscal_year": 2025,
+                      "fiscal_quarter": "Q1"
+                    }
+                  ]
+                }
+              },
+              {
+                "method_id": "trend",
+                "source_id": "stock_prices",
+                "parameters": {
+                  "bank_id": "TD",
+                  "periods": [
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q1"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q2"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q3"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q4"
+                    },
+                    {
+                      "fiscal_year": 2025,
+                      "fiscal_quarter": "Q1"
+                    }
+                  ]
+                }
+              },
+              {
+                "method_id": "trend",
+                "source_id": "stock_prices",
+                "parameters": {
+                  "bank_id": "BMO",
+                  "periods": [
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q1"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q2"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q3"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q4"
+                    },
+                    {
+                      "fiscal_year": 2025,
+                      "fiscal_quarter": "Q1"
+                    }
+                  ]
+                }
+              },
+              {
+                "method_id": "trend",
+                "source_id": "stock_prices",
+                "parameters": {
+                  "bank_id": "BNS",
+                  "periods": [
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q1"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q2"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q3"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q4"
+                    },
+                    {
+                      "fiscal_year": 2025,
+                      "fiscal_quarter": "Q1"
+                    }
+                  ]
+                }
+              },
+              {
+                "method_id": "trend",
+                "source_id": "stock_prices",
+                "parameters": {
+                  "bank_id": "CM",
+                  "periods": [
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q1"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q2"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q3"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q4"
+                    },
+                    {
+                      "fiscal_year": 2025,
+                      "fiscal_quarter": "Q1"
+                    }
+                  ]
+                }
+              },
+              {
+                "method_id": "trend",
+                "source_id": "stock_prices",
+                "parameters": {
+                  "bank_id": "NA",
+                  "periods": [
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q1"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q2"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q3"
+                    },
+                    {
+                      "fiscal_year": 2024,
+                      "fiscal_quarter": "Q4"
+                    },
+                    {
+                      "fiscal_year": 2025,
+                      "fiscal_quarter": "Q1"
+                    }
+                  ]
+                }
+              }
+            ],
+            "dependencies": {
+              "section_ids": [],
+              "subsection_ids": [
+                "e99fe1ba-8e90-42b9-9fe3-b91a1d9ef18e"
+              ]
+            },
+            "visualization": {
+              "title": "Multi-Bank Price Momentum Lines",
+              "x_key": "period",
+              "y_key": "close_price",
+              "chart_type": "line",
+              "series_key": "bank_id"
+            }
+          },
+          "notes": "Show trend leadership and laggard transitions clearly.",
+          "instructions": "Plot multi-bank line momentum using all configured banks and annotate ranking changes plus at least two momentum reversals.",
+          "content": "{\"kind\": \"chart\", \"schema_version\": 1, \"title\": \"Multi-Bank Price Momentum Lines\", \"chart\": {\"chart_type\": \"line\", \"x_label\": \"Period\", \"y_label\": \"close_price\", \"series\": [{\"name\": \"RY\", \"points\": [{\"x\": \"2024 Q1\", \"y\": 152.81}, {\"x\": \"2024 Q2\", \"y\": 162.23}, {\"x\": \"2024 Q3\", \"y\": 163.29}, {\"x\": \"2024 Q4\", \"y\": 174.89}, {\"x\": \"2025 Q1\", \"y\": 169.0}]}, {\"name\": \"TD\", \"points\": [{\"x\": \"2024 Q1\", \"y\": 81.69}, {\"x\": \"2024 Q2\", \"y\": 82.48}, {\"x\": \"2024 Q3\", \"y\": 83.93}, {\"x\": \"2024 Q4\", \"y\": 87.76}, {\"x\": \"2025 Q1\", \"y\": 91.89}]}, {\"name\": \"BMO\", \"points\": [{\"x\": \"2024 Q1\", \"y\": 122.26}, {\"x\": \"2024 Q2\", \"y\": 124.49}, {\"x\": \"2024 Q3\", \"y\": 128.51}, {\"x\": \"2024 Q4\", \"y\": 124.13}, {\"x\": \"2025 Q1\", \"y\": 126.75}]}, {\"name\": \"BNS\", \"points\": [{\"x\": \"2024 Q1\", \"y\": 66.71}, {\"x\": \"2024 Q2\", \"y\": 65.67}, {\"x\": \"2024 Q3\", \"y\": 71.03}, {\"x\": \"2024 Q4\", \"y\": 70.18}, {\"x\": \"2025 Q1\", \"y\": 76.48}]}, {\"name\": \"CM\", \"points\": [{\"x\": \"2024 Q1\", \"y\": 71.55}, {\"x\": \"2024 Q2\", \"y\": 71.93}, {\"x\": \"2024 Q3\", \"y\": 78.29}, {\"x\": \"2024 Q4\", \"y\": 79.03}, {\"x\": \"2025 Q1\", \"y\": 82.52}]}, {\"name\": \"NA\", \"points\": [{\"x\": \"2024 Q1\", \"y\": 103.25}, {\"x\": \"2024 Q2\", \"y\": 106.17}, {\"x\": \"2024 Q3\", \"y\": 109.72}, {\"x\": \"2024 Q4\", \"y\": 121.12}, {\"x\": \"2025 Q1\", \"y\": 115.58}]}]}, \"source\": {\"source_id\": \"stock_prices\", \"method_id\": \"trend\"}, \"insights\": [\"Covers 6 series across 30 plotted points.\", \"Strongest momentum: RY (+16.19 over the shown horizon).\", \"Weakest momentum: BMO (+4.49 over the shown horizon).\"]}",
+          "content_type": "json",
+          "version_number": 3
+        },
+        {
+          "id": "cf69c9a2-4fbf-48e4-85ef-71456e53da68",
+          "title": "Fundamentals-Price Divergence Monitor",
+          "position": 3,
+          "widget_type": "chart",
+          "data_source_config": {
+            "inputs": [
+              {
+                "method_id": "compare_banks",
+                "source_id": "stock_prices",
+                "parameters": {
+                  "bank_ids": [
+                    "RY",
+                    "TD",
+                    "BMO",
+                    "BNS",
+                    "CM",
+                    "NA"
+                  ],
+                  "fiscal_year": 2025,
+                  "fiscal_quarter": "Q1"
+                }
+              },
+              {
+                "method_id": "compare_banks",
+                "source_id": "financials",
+                "parameters": {
+                  "metrics": [
+                    "roe",
+                    "cet1_ratio",
+                    "pcl_ratio",
+                    "efficiency_ratio"
+                  ],
+                  "bank_ids": [
+                    "RY",
+                    "TD",
+                    "BMO",
+                    "BNS",
+                    "CM",
+                    "NA"
+                  ],
+                  "fiscal_year": 2025,
+                  "fiscal_quarter": "Q1"
+                }
+              }
+            ],
+            "dependencies": {
+              "section_ids": [
+                "9425dcc7-531a-493c-a647-eb55466ec2e6",
+                "0ea50de9-00d6-4799-9e01-99f11cd86407"
+              ],
+              "subsection_ids": [
+                "e99fe1ba-8e90-42b9-9fe3-b91a1d9ef18e",
+                "514e8b76-495f-4726-86ad-dbe389fec243"
+              ]
+            },
+            "visualization": {
+              "title": "Fundamentals-Price Divergence Monitor",
+              "x_key": "bank_id",
+              "y_key": "value",
+              "chart_type": "bar",
+              "series_key": "metric_id"
+            }
+          },
+          "notes": "Use this as a tactical timing panel for position changes.",
+          "instructions": "Build a divergence monitor that compares market performance versus core fundamental quality and flag where price action disagrees with fundamentals.",
+          "content": "{\"kind\": \"chart\", \"schema_version\": 1, \"title\": \"Fundamentals-Price Divergence Monitor\", \"chart\": {\"chart_type\": \"bar\", \"x_label\": \"Bank\", \"y_label\": \"Value\", \"series\": [{\"name\": \"Return on Equity\", \"points\": [{\"x\": \"RY\", \"y\": 17.6}, {\"x\": \"TD\", \"y\": 12.9}, {\"x\": \"BMO\", \"y\": 11.7}, {\"x\": \"BNS\", \"y\": 10.4}, {\"x\": \"CM\", \"y\": 13.8}, {\"x\": \"NA\", \"y\": 18.9}]}, {\"name\": \"CET1 Ratio\", \"points\": [{\"x\": \"RY\", \"y\": 14.4}, {\"x\": \"TD\", \"y\": 13.8}, {\"x\": \"BMO\", \"y\": 14.0}, {\"x\": \"BNS\", \"y\": 14.0}, {\"x\": \"CM\", \"y\": 14.1}, {\"x\": \"NA\", \"y\": 14.7}]}, {\"name\": \"PCL Ratio\", \"points\": [{\"x\": \"RY\", \"y\": 26.7}, {\"x\": \"TD\", \"y\": 57.5}, {\"x\": \"BMO\", \"y\": 57.6}, {\"x\": \"BNS\", \"y\": 57.4}, {\"x\": \"CM\", \"y\": 34.5}, {\"x\": \"NA\", \"y\": 23.8}]}, {\"name\": \"Efficiency Ratio\", \"points\": [{\"x\": \"RY\", \"y\": 56.5}, {\"x\": \"TD\", \"y\": 63.4}, {\"x\": \"BMO\", \"y\": 63.0}, {\"x\": \"BNS\", \"y\": 65.9}, {\"x\": \"CM\", \"y\": 61.8}, {\"x\": \"NA\", \"y\": 56.9}]}]}, \"source\": {\"source_id\": \"financials\", \"method_id\": \"compare_banks\"}, \"insights\": [\"Covers 4 series across 24 plotted points.\", \"Highest in Return on Equity: NA (18.90).\", \"Lowest in Return on Equity: BNS (10.40).\"]}",
+          "content_type": "json",
+          "version_number": 3
+        }
+      ]
+    }
+  ]
+}
